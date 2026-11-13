@@ -1,0 +1,8 @@
+{
+  "method": "Python AF_INET/AF_INET6 connect and connect_ex denied before package import",
+  "blocked_connection_attempts": [],
+  "kernel_network_namespace_isolation": false,
+  "script": "/root/autodl-tmp/digit-robot/scripts/run_llm_baseline.py",
+  "script_sha256": "99c8d1886f051a1b4684554082deaadd01e84d191800651b2321c83243b2e057",
+  "exit_code": 0
+}

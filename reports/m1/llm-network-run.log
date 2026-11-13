@@ -1,0 +1,44 @@
+Loading weights:   0%|          | 0/723 [00:00<?, ?it/s]Loading weights: 100%|██████████| 723/723 [00:00<00:00, 7840.87it/s]
+[transformers] `causal_conv1d_fn` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+[transformers] `chunk_gated_delta_rule` is falling back to its reference PyTorch implementation because `flash-linear-attention` is not installed. This is correct but much slower; install `flash-linear-attention` for the optimized kernel.
+[transformers] `causal_conv1d_update` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+[transformers] `fused_recurrent_gated_delta_rule` is falling back to its reference PyTorch implementation because `flash-linear-attention` is not installed. This is correct but much slower; install `flash-linear-attention` for the optimized kernel.
+{
+  "recorded_at_utc": "2026-11-13T14:47:50.994815+00:00",
+  "model_dir": "/root/autodl-tmp/models/Qwen3.5-4B",
+  "project_adaptation": "none",
+  "python": "3.12.3",
+  "torch": "2.8.0+cu128",
+  "transformers": "5.22.2",
+  "cuda_runtime": "12.8",
+  "gpu": "NVIDIA GeForce RTX 4090 D",
+  "driver": "580.105.08",
+  "precision": "bfloat16",
+  "attention": "sdpa",
+  "max_new_tokens": 512,
+  "do_sample": false,
+  "enable_thinking": false,
+  "offline_evidence": "HF_HUB_OFFLINE=1, TRANSFORMERS_OFFLINE=1, local_files_only=True; host network not disconnected",
+  "load_seconds": 5.043424446135759,
+  "generation_total_seconds": 11.557390246540308,
+  "peak_allocated_bytes": 9335646208,
+  "peak_reserved_bytes": 9376366592,
+  "response_statuses": [
+    "ok",
+    "ok",
+    "ok"
+  ],
+  "parse_failure_count": 0,
+  "contract_ok": true,
+  "requires_human_review": [
+    "回复共情是否适当",
+    "第二轮承接姓名",
+    "reset 后不再引用姓名"
+  ],
+  "not_evaluated": [
+    "分类准确率",
+    "蒸馏收益",
+    "完整数字人验收",
+    "整机断网验收"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "status": "succeeded",
+  "scope": "verification harness public CLI and denial probes; not model inference",
+  "guard_sha256": "a702c6e6c7846293ef321cdef0ce444949ac705f9364620c0c59908627bfad6d",
+  "blocked_calls": 2,
+  "methods": [
+    "connect",
+    "connect_ex"
+  ],
+  "address": "127.0.0.1:9",
+  "target_help_exit_code": 0
+}

@@ -1,0 +1,4 @@
+{"type": "message", "text": "我叫小林，今天考试没考好，我很难过。"}
+{"type": "message", "text": "你还记得我叫什么吗？请叫出我的名字，再安慰我。"}
+{"type": "reset"}
+{"type": "message", "text": "我还没有告诉你名字，你知道我叫什么吗？"}

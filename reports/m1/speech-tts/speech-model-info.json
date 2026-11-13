@@ -1,0 +1,37 @@
+{
+  "Id": "Qwen/Qwen3-TTS-12Hz-1.7B-CustomVoice",
+  "Owner": "Qwen",
+  "Name": "Qwen3-TTS-12Hz-1.7B-CustomVoice",
+  "RepoType": "model",
+  "Visibility": 5,
+  "Description": "",
+  "Downloads": 174112,
+  "Likes": 87,
+  "CreatedAt": "2026-01-21 08:31:38+00:00",
+  "UpdatedAt": "2026-01-29 12:16:43+00:00",
+  "License": "apache-2.0",
+  "Tags": [
+    "license:apache-2.0",
+    "model_type:qwen3_tts",
+    "library:pytorch",
+    "library:safetensors",
+    "task:text-to-speech"
+  ],
+  "display_name": "Qwen3-TTS-12Hz-1.7B-CustomVoice",
+  "file_size": 4520219726,
+  "tasks": [
+    "text-to-speech"
+  ],
+  "private": false,
+  "gated": false,
+  "login_required": null,
+  "sdk_type": null,
+  "sdk_version": null,
+  "base_image": null,
+  "hardware": null,
+  "mcp_support": null,
+  "runtime": null,
+  "model_category": "base",
+  "dataset_category": null,
+  "gated_mode": null
+}
