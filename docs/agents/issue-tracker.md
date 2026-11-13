@@ -1,7 +1,7 @@
 # Issue tracker: GitHub
 
 新发布的需求、PRD 和实施任务使用 GitHub Issues：https://github.com/liucx147/digit-robot/issues。
-使用 gh CLI；本地目录尚未关联 Git 远程，所有 gh issue / gh pr 命令显式加 --repo liucx147/digit-robot，API 路径显式指定 repos/liucx147/digit-robot。
+使用 gh CLI；本地 origin 指向上述仓库，所有 gh issue / gh pr 命令仍显式加 --repo liucx147/digit-robot，API 路径显式指定 repos/liucx147/digit-robot。
 
 ## 常用操作
 

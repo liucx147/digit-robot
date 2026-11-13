@@ -1,0 +1,5 @@
+# 实测环境使用系统已有 torch==2.8.0+cu128；此文件不替换 CUDA PyTorch。
+transformers==5.22.2
+accelerate==1.15.0
+safetensors==0.8.0
+modelscope==1.40.3

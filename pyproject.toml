@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "digit-robot"
+version = "0.1.0"
+description = "Offline emotional dialogue baseline for the digital human"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<10", "mypy>=1.15,<3"]
+llm = ["torch>=2.8", "transformers>=5.2,<6", "accelerate>=1.2,<2", "safetensors>=0.4"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.mypy]
+python_version = "3.12"
+files = ["src"]
+check_untyped_defs = true
+ignore_missing_imports = true
