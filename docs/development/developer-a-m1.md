@@ -15,6 +15,12 @@ TTS 环境：/root/autodl-tmp/digit-robot-envs/speech-tts
 
 实测 GPU 为 NVIDIA GeForce RTX 4090 D、24564 MiB，驱动 580.105.08；Python 3.12.3，PyTorch 2.8.0+cu128。服务器 SSH 非交互 shell 未默认激活 Conda，使用下述绝对 Python 路径。环境、权重和项目均放数据盘；三个模型依次运行，训练未开始。
 
+本轮 Windows 直连 SSH 偶发超时，显式使用本机已监听的 7890 HTTP 代理后成功连接。需要时可在 PowerShell 使用现有 Git 附带的连接工具：
+
+```powershell
+ssh -p 43903 -o 'ProxyCommand=E:/Git/mingw64/bin/connect.exe -H 127.0.0.1:7890 %h %p' root@connect.westb.seetacloud.com
+```
+
 LLM 使用 Transformers 5.22.2、BF16、SDPA、greedy、关闭 thinking、最多生成 512 token。ASR/TTS 官方包锁定不同 Transformers 版本，因此各用独立 venv，共用系统 CUDA PyTorch。安装清单在 `requirements/`，完整实测依赖在 `reports/m1/`。
 
 ## 启动文本对话
