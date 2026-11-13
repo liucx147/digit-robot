@@ -11,7 +11,10 @@ def run(input_stream: TextIO, output_stream: TextIO, backend: ModelBackend) -> N
     session = DialogueSession(backend)
     for line in input_stream:
         try:
-            event = load_json(line)
+            try:
+                event = load_json(line)
+            except RecursionError as error:
+                raise ValueError("输入 JSON 嵌套过深") from error
             if not isinstance(event, dict):
                 raise ValueError("输入必须是 JSON 对象")
             if event.get("type") == "reset":

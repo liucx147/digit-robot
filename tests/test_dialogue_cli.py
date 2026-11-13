@@ -81,6 +81,16 @@ class DialogueCliTests(unittest.TestCase):
         self.assertEqual(len(results), 13)
         self.assertEqual(results[-1]["reply"], "你好。")
 
+    def test_deeply_nested_json_reports_error_and_next_reset_still_runs(self) -> None:
+        nested = "[" * 10000 + "0" + "]" * 10000
+        source = io.StringIO(nested + '\n{"type":"reset"}\n')
+        target = io.StringIO()
+        run(source, target, ScriptedModel([]))
+        results = [json.loads(line) for line in target.getvalue().splitlines()]
+        self.assertEqual(results[0]["type"], "error")
+        self.assertEqual(results[0]["code"], "invalid_input")
+        self.assertEqual(results[1], {"type": "reset", "session_epoch": 1})
+
     def test_invalid_model_output_is_retried_and_raw_failure_remains_visible(self) -> None:
         bad_output = '{"reply":"缺少必需字段"}'
         good_output = '{"user_emotion":"neutral","reply":"我们慢慢说。",' \
