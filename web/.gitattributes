@@ -1,0 +1,3 @@
+# Preserve original third-party/license bytes and their upstream formatting.
+/assets/LICENSE-VRM-PUBLIC-1.0.html -text
+/vendor/** -text -whitespace

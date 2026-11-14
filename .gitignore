@@ -8,3 +8,12 @@ models/
 .env
 *.key
 runs/
+
+# Developer B local development and browser evidence
+_work/
+.worktrees/
+node_modules/
+artifacts/
+web/dist/
+.env.*
+!.env.example
