@@ -2,7 +2,7 @@
 export function createVoiceClient(baseUrl) {
   const base = new URL(baseUrl);
   if (!['127.0.0.1', 'localhost', '[::1]'].includes(base.hostname) || !['http:', 'https:'].includes(base.protocol)) throw new Error('请填写本机服务地址（localhost 或 127.0.0.1）');
-  let session, generation = 0;
+  let session, generation = 0, pendingStop;
   const validSession = value => value && typeof value.session_id === 'string' && /^[a-zA-Z0-9_-]{1,128}$/.test(value.session_id) && Number.isInteger(value.session_epoch) && value.session_epoch >= 0;
   function validateResult(value) {
     const intent = value?.expression_intent, sound = value?.audio;
@@ -31,7 +31,11 @@ export function createVoiceClient(baseUrl) {
   }
   return {
     get connected() { return !!session; },
-    invalidate() { generation++; },
+    invalidate() {
+      generation++;
+      // Discarding a Stop acknowledgement also discards our only confirmed server epoch.
+      if (pendingStop !== undefined) session = undefined;
+    },
     async open() {
       const stamp = ++generation; session = undefined;
       const next = await request('/v1/sessions', { method: 'POST' });
@@ -55,12 +59,14 @@ export function createVoiceClient(baseUrl) {
     },
     async stop() {
       const path = route('/stop'), sid = session.session_id, stamp = ++generation;
+      pendingStop = stamp;
       try {
         const next = await request(path, { method: 'POST' });
         if (stamp !== generation) return null;
         if (next.session_id !== sid || !Number.isInteger(next.session_epoch) || next.session_epoch <= session.session_epoch) throw new Error('停止确认的会话代次无效');
         session = next; return next;
       } catch (error) { if (stamp !== generation) return null; session = undefined; throw error; }
+      finally { if (pendingStop === stamp) pendingStop = undefined; }
     },
   };
 }

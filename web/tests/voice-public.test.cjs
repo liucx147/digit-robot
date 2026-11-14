@@ -91,6 +91,54 @@ for (const boundary of ['text','audio']) for (const lateStatus of [200,502]) {
  });
 }
 
+for (const source of ['sample','file']) {
+ test('Local '+source+' during an unconfirmed Stop requires reconnect and cannot revive old audio',async()=>{
+  let release, stopped, epoch=0;
+  const gate=new Promise(r=>release=r), requested=new Promise(r=>stopped=r);
+  const page=await setup({handle:async(route,json,p)=>{
+   if(p==='/v1/sessions'){epoch=0;await json({session_id:sid,session_epoch:0,state:'idle'});return true;}
+   if(p.endsWith('/stop')){epoch=1;stopped();await gate;await json({session_id:sid,session_epoch:1,state:'stopped'});return true;}
+   if(p.endsWith('/text')){
+    if(route.request().postDataJSON().session_epoch!==epoch){await json({code:'stale_epoch',message:'session epoch is stale'},409);return true;}
+    await json(result('gentle',epoch));return true;
+   }
+  }});
+  try {
+   await connect(page);await send(page);await page.getByRole('status',{name:'对话状态'}).filter({hasText:/正在播放/}).waitFor();
+   await page.getByRole('button',{name:'停止',exact:true}).click();await requested;
+   if(source==='sample')await page.getByRole('button',{name:'载入中文录音示例'}).click();
+   else await page.getByLabel('选择本地音频').setInputFiles({name:'local.wav',mimeType:'audio/wav',buffer:wav()});
+   await page.getByRole('status',{name:'播放状态'}).filter({hasText:/音频已就绪/}).waitFor();
+   assert.equal(await page.getByRole('button',{name:'发送并播放回复'}).isDisabled(),true);
+   assert.match(await page.getByRole('status',{name:'对话状态'}).textContent(),/重新连接/);
+   assert.equal(await page.locator('audio').evaluate(a=>a.paused),true);
+   release();await page.waitForTimeout(250);
+   assert.equal(await page.getByRole('button',{name:'发送并播放回复'}).isDisabled(),true);
+   assert.match(await page.getByRole('status',{name:'对话状态'}).textContent(),/重新连接/);
+   assert.equal(await page.locator('audio').evaluate(a=>a.paused),true);
+   await page.getByRole('button',{name:'播放音频',exact:true}).click();await page.waitForFunction(()=>document.querySelector('audio').currentTime>=.1);
+   assert.equal(await page.locator('audio').evaluate(a=>a.paused),false);
+   await connect(page);await send(page);await page.getByRole('status',{name:'对话状态'}).filter({hasText:/正在播放/}).waitFor();
+   assert.match(await page.getByLabel('数字人回复').textContent(),/我愿意听你说/);
+  } finally { release();await page.close(); }
+ });
+}
+
+test('Invalid reconnect address disables the old session until a valid reconnect succeeds',async()=>{
+ const page=await setup();
+ try {
+  await connect(page);await page.getByText('本地服务连接',{exact:true}).click();
+  await page.getByLabel('本地服务地址').fill('not a local URL');
+  await page.getByRole('button',{name:'连接本地服务',exact:true}).click();
+  await page.getByRole('status',{name:'对话状态'}).filter({hasText:/连接失败/}).waitFor();
+  assert.equal(await page.getByRole('button',{name:'发送并播放回复'}).isDisabled(),true);
+  assert.equal(await page.locator('audio').evaluate(a=>a.paused),true);
+  await page.getByLabel('本地服务地址').fill(api);await connect(page);await send(page);
+  await page.getByRole('status',{name:'对话状态'}).filter({hasText:/正在播放/}).waitFor();
+  assert.match(await page.getByLabel('数字人回复').textContent(),/我愿意听你说/);
+ } finally { await page.close(); }
+});
+
 test('Stop failure leaves actual audio stopped and requires reconnect before a new turn',async()=>{
  const page=await setup({handle:async(route,json,p)=>{if(!p.endsWith('/stop'))return false;await json({code:'unavailable',message:'service unavailable'},503);return true;}});
  await connect(page);await send(page);await page.waitForFunction(()=>document.querySelector('audio').currentTime>=.2);
