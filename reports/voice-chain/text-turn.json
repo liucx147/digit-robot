@@ -1,0 +1,33 @@
+{
+  "type": "response",
+  "utterance_id": "c6f37789-3636-4af2-b824-0b9e7bed33ac",
+  "session_epoch": 0,
+  "user_emotion": "neutral",
+  "reply": "记得，你叫小林。",
+  "expression_intent": {
+    "style": "gentle",
+    "intensity": 0.3
+  },
+  "status": "ok",
+  "attempts": [
+    {
+      "raw_output": "{\"user_emotion\": \"neutral\", \"reply\": \"记得，你叫小林。\", \"expression_intent\": {\"style\": \"gentle\", \"intensity\": 0.3}}",
+      "error": null
+    }
+  ],
+  "session_id": "ee6a3f3a-970a-404f-b956-c532f537c7b7",
+  "state": "ready",
+  "transcript": "你还记得我叫什么吗？请用一句话回答。",
+  "audio": {
+    "mime_type": "audio/wav",
+    "sample_rate_hz": 24000,
+    "channels": 1,
+    "duration_ms": 2640.0,
+    "url": "/v1/sessions/ee6a3f3a-970a-404f-b956-c532f537c7b7/turns/c6f37789-3636-4af2-b824-0b9e7bed33ac/audio"
+  },
+  "timings_ms": {
+    "llm_ms": 9642.532855272293,
+    "tts_ms": 12096.186213195324,
+    "total_ms": 21739.00805413723
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "input_source": "Qwen TTS synthetic Chinese fixture; not microphone accuracy evaluation",
+  "input_sha256": "0f65021e44c5cb922e0b4c7a47ebf7eb66875c063d1a8fea79e86304094a4a4e",
+  "transcript": "我叫小林，今天考试没考好，我很难过。",
+  "user_emotion": "sadness",
+  "audio_turn_timings_ms": {
+    "asr_ms": 11138.744190335274,
+    "llm_ms": 12193.938005715609,
+    "tts_ms": 48493.79601702094,
+    "total_ms": 71829.62114736438
+  },
+  "reply_audio_sha256": [
+    "507d1fa05f28981b9f551b360a2e023fba34644cc0f3f3beba5ee98cfeec246a",
+    "77ba4f7ed05f7d9658be03e7987c060ca2887cd08174b4a657ded5889e34c2ef"
+  ],
+  "checks": {
+    "audio_chain": true,
+    "text_chain": true,
+    "recalls_name": true,
+    "reset_isolates_name": true,
+    "old_audio_expired": true,
+    "stale_request_rejected": true,
+    "inflight_cancelled": true
+  },
+  "server_stop_ack_ms": 3.4982040524482727,
+  "not_evaluated": [
+    "browser playback stop latency",
+    "3D synchronization",
+    "natural microphone ASR accuracy",
+    "full engineering acceptance"
+  ]
+}

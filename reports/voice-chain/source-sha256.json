@@ -1,0 +1,8 @@
+{
+  "src/digit_robot/voice.py": "1e885f0a5abf349a1e9be16cf9a3a1c919ea972c2e7a0571720a44fd0a3de4e7",
+  "src/digit_robot/server.py": "90b805f59420575fcace6340cb203a5bf3eb48f1ba1f186c2730911e398401c7",
+  "src/digit_robot/process_models.py": "5792ffb97004d8193c31fe6584f818c9fdbd093c7328d1b50c548f28e60d78cf",
+  "src/digit_robot/model_worker.py": "9a8807ac075590a730bf170acd2d83ed2d2a6cd9d46b8b417cf56f60573b6ce1",
+  "scripts/speech_baseline.py": "d02c5651b096860d5ce767fb80d71e0a792328fee41370a56eeaf6f35327141c",
+  "scripts/verify_voice_api.py": "1c304913709600ef9398a52beb6907a50db6dbadd091a4c6564da1d62e7b3553"
+}
