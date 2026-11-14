@@ -45,3 +45,7 @@ node --test --test-concurrency=1 web/tests/public-page.test.cjs web/tests/gaze-p
 这 22 项专项不是实际 LLM/TTS 联合运行、人工语气与表情审阅、物理扬声器/屏幕同步、95%/200ms、30分钟20轮或完整500ms停止验收。完整既有浏览器回归与实际模型联合验证由集成阶段另行保留证据；任务03不在此关闭。麦克风输入留给04，完整停止验收留给05，异常恢复/离线整机等按各票验证。
 
 数字人剩余工程估算见 [按功能重新拆分的估算](../docs/implementation/remaining-digital-human-estimate.md)。
+
+## 集成更新：2026-11-14
+
+03已在集成568e390后完成真实Edge/LLM/TTS两轮、画面核验及用户语气听审，并在本地任务中closed。上文22项测试仍仅证明其测试边界；真实固定文本的WAV/PNG/API/帧与耗时另存[联合验证](../reports/b-text-voice/2026-11-14-568e390/README.md)。首次发声约34.7/30.1秒，优化与后续整机指标仍单独判断。

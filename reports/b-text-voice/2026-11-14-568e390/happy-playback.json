@@ -1,0 +1,4091 @@
+{
+  "version": 1,
+  "avatar": {
+    "name": "VRM1_Constraint_Twist_Sample",
+    "version": "v1.0.1",
+    "sha256": "12c2b97e95e700783a6a550dc0eee2d7880aeedccef9ae67bc4c5a2f0f2631a2"
+  },
+  "audio": {
+    "name": "数字人回复.wav · 8.16 秒",
+    "duration_ms": 8160
+  },
+  "frames": [
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 0,
+      "audio_time_ms": 0,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 1,
+      "audio_time_ms": 0,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 2,
+      "audio_time_ms": 0,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 3,
+      "audio_time_ms": 0,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 4,
+      "audio_time_ms": 0,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 5,
+      "audio_time_ms": 0,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 6,
+      "audio_time_ms": 0,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 7,
+      "audio_time_ms": 0,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 8,
+      "audio_time_ms": 0,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 9,
+      "audio_time_ms": 0,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 10,
+      "audio_time_ms": 0,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 11,
+      "audio_time_ms": 0,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 12,
+      "audio_time_ms": 0,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 13,
+      "audio_time_ms": 0,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 14,
+      "audio_time_ms": 0,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 15,
+      "audio_time_ms": 0,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 16,
+      "audio_time_ms": 0,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 17,
+      "audio_time_ms": 0,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 18,
+      "audio_time_ms": 0,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 19,
+      "audio_time_ms": 0,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 20,
+      "audio_time_ms": 0,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 21,
+      "audio_time_ms": 0,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 22,
+      "audio_time_ms": 0,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 23,
+      "audio_time_ms": 0,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 24,
+      "audio_time_ms": 0,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 25,
+      "audio_time_ms": 0,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 26,
+      "audio_time_ms": 0,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 27,
+      "audio_time_ms": 0,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 28,
+      "audio_time_ms": 0,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 29,
+      "audio_time_ms": 0,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 30,
+      "audio_time_ms": 0,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 31,
+      "audio_time_ms": 0,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 32,
+      "audio_time_ms": 0,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 33,
+      "audio_time_ms": 0,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 34,
+      "audio_time_ms": 9,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 35,
+      "audio_time_ms": 17,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 36,
+      "audio_time_ms": 53,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 37,
+      "audio_time_ms": 94,
+      "weights": {
+        "jawOpen": 0.060499533130829675,
+        "smile": 0.6388603174710359,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 38,
+      "audio_time_ms": 135,
+      "weights": {
+        "jawOpen": 0.04433367606901366,
+        "smile": 0.6498531002730707,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 39,
+      "audio_time_ms": 175,
+      "weights": {
+        "jawOpen": 0.8261502354159117,
+        "smile": 0.11821783991718005,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 40,
+      "audio_time_ms": 217,
+      "weights": {
+        "jawOpen": 0.9147674231371985,
+        "smile": 0.057958152266705025,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 41,
+      "audio_time_ms": 257,
+      "weights": {
+        "jawOpen": 0.8830642425156582,
+        "smile": 0.07951631508935245,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 42,
+      "audio_time_ms": 296,
+      "weights": {
+        "jawOpen": 0.7513489513144156,
+        "smile": 0.1690827131061974,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 43,
+      "audio_time_ms": 303,
+      "weights": {
+        "jawOpen": 0.9121567393991555,
+        "smile": 0.05973341720857424,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 44,
+      "audio_time_ms": 319,
+      "weights": {
+        "jawOpen": 1,
+        "smile": 0,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 45,
+      "audio_time_ms": 321,
+      "weights": {
+        "jawOpen": 1,
+        "smile": 0,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 46,
+      "audio_time_ms": 439,
+      "weights": {
+        "jawOpen": 0.8322529957757703,
+        "smile": 0.11406796287247623,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 47,
+      "audio_time_ms": 481,
+      "weights": {
+        "jawOpen": 0.8445708772730693,
+        "smile": 0.10569180345431285,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 48,
+      "audio_time_ms": 487,
+      "weights": {
+        "jawOpen": 0.7533071705287491,
+        "smile": 0.16775112404045064,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 49,
+      "audio_time_ms": 551,
+      "weights": {
+        "jawOpen": 0.8742063983386714,
+        "smile": 0.08553964912970344,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 50,
+      "audio_time_ms": 645,
+      "weights": {
+        "jawOpen": 0.6626649215472518,
+        "smile": 0.22938785334786882,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 51,
+      "audio_time_ms": 648,
+      "weights": {
+        "jawOpen": 0.5903950938667343,
+        "smile": 0.2785313361706207,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 52,
+      "audio_time_ms": 678,
+      "weights": {
+        "jawOpen": 0.49251099523140707,
+        "smile": 0.3450925232426432,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 53,
+      "audio_time_ms": 722,
+      "weights": {
+        "jawOpen": 0.7800281898629531,
+        "smile": 0.1495808308931919,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 54,
+      "audio_time_ms": 728,
+      "weights": {
+        "jawOpen": 0.6645238751632921,
+        "smile": 0.22812376488896136,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 55,
+      "audio_time_ms": 764,
+      "weights": {
+        "jawOpen": 0.3644072521964878,
+        "smile": 0.4322030685063883,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 56,
+      "audio_time_ms": 767,
+      "weights": {
+        "jawOpen": 0.34962569882605343,
+        "smile": 0.4422545247982837,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 57,
+      "audio_time_ms": 773,
+      "weights": {
+        "jawOpen": 0.298674028781642,
+        "smile": 0.4769016604284834,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 58,
+      "audio_time_ms": 810,
+      "weights": {
+        "jawOpen": 0.5463863858316629,
+        "smile": 0.30845725763446924,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 59,
+      "audio_time_ms": 948,
+      "weights": {
+        "jawOpen": 0.5353243637948064,
+        "smile": 0.31597943261953165,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 60,
+      "audio_time_ms": 953,
+      "weights": {
+        "jawOpen": 0.500510057111215,
+        "smile": 0.33965316116437383,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 61,
+      "audio_time_ms": 991,
+      "weights": {
+        "jawOpen": 0.45372718679513896,
+        "smile": 0.3714655129793056,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 62,
+      "audio_time_ms": 1027,
+      "weights": {
+        "jawOpen": 0.26683618758890965,
+        "smile": 0.4985513924395415,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 63,
+      "audio_time_ms": 1064,
+      "weights": {
+        "jawOpen": 1,
+        "smile": 0,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 64,
+      "audio_time_ms": 1101,
+      "weights": {
+        "jawOpen": 0.6621128935710645,
+        "smile": 0.22976323237167615,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 65,
+      "audio_time_ms": 1133,
+      "weights": {
+        "jawOpen": 0.5052788496809085,
+        "smile": 0.3364103822169822,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 66,
+      "audio_time_ms": 1170,
+      "weights": {
+        "jawOpen": 0.5231193517480386,
+        "smile": 0.3242788408113338,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 67,
+      "audio_time_ms": 1207,
+      "weights": {
+        "jawOpen": 0.2906704396533636,
+        "smile": 0.4823441010357128,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 68,
+      "audio_time_ms": 1241,
+      "weights": {
+        "jawOpen": 0.2161093153672778,
+        "smile": 0.5330456655502512,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 69,
+      "audio_time_ms": 1256,
+      "weights": {
+        "jawOpen": 0.24782914307072063,
+        "smile": 0.51147618271191,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 70,
+      "audio_time_ms": 1290,
+      "weights": {
+        "jawOpen": 0.6960325465072785,
+        "smile": 0.2066978683750506,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 71,
+      "audio_time_ms": 1325,
+      "weights": {
+        "jawOpen": 1,
+        "smile": 0,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 72,
+      "audio_time_ms": 1360,
+      "weights": {
+        "jawOpen": 0.8033851252239009,
+        "smile": 0.13369811484774738,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 73,
+      "audio_time_ms": 1396,
+      "weights": {
+        "jawOpen": 0.7147315516541373,
+        "smile": 0.19398254487518668,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 74,
+      "audio_time_ms": 1431,
+      "weights": {
+        "jawOpen": 0.7597426261658689,
+        "smile": 0.1633750142072092,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 75,
+      "audio_time_ms": 1467,
+      "weights": {
+        "jawOpen": 0.6566184860497476,
+        "smile": 0.23349942948617164,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 76,
+      "audio_time_ms": 1503,
+      "weights": {
+        "jawOpen": 0.35194669946568324,
+        "smile": 0.4406762443633354,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 77,
+      "audio_time_ms": 1537,
+      "weights": {
+        "jawOpen": 0.5317388134099346,
+        "smile": 0.31841760688124454,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 78,
+      "audio_time_ms": 1575,
+      "weights": {
+        "jawOpen": 1,
+        "smile": 0,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 79,
+      "audio_time_ms": 1589,
+      "weights": {
+        "jawOpen": 0.7711212464177772,
+        "smile": 0.15563755243591149,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 80,
+      "audio_time_ms": 1625,
+      "weights": {
+        "jawOpen": 0.29598575543979655,
+        "smile": 0.4787296863009384,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 81,
+      "audio_time_ms": 1660,
+      "weights": {
+        "jawOpen": 0.41300158874973975,
+        "smile": 0.39915891965017697,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 82,
+      "audio_time_ms": 1697,
+      "weights": {
+        "jawOpen": 0.3467299207276406,
+        "smile": 0.4442236539052044,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 83,
+      "audio_time_ms": 1731,
+      "weights": {
+        "jawOpen": 1,
+        "smile": 0,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 84,
+      "audio_time_ms": 1766,
+      "weights": {
+        "jawOpen": 1,
+        "smile": 0,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 85,
+      "audio_time_ms": 1802,
+      "weights": {
+        "jawOpen": 1,
+        "smile": 0,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 86,
+      "audio_time_ms": 1836,
+      "weights": {
+        "jawOpen": 0.9526464737551024,
+        "smile": 0.03220039784653039,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 87,
+      "audio_time_ms": 1872,
+      "weights": {
+        "jawOpen": 0.4969169808612472,
+        "smile": 0.3420964530143519,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 88,
+      "audio_time_ms": 1886,
+      "weights": {
+        "jawOpen": 0.3144297335547609,
+        "smile": 0.4661877811827626,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 89,
+      "audio_time_ms": 1920,
+      "weights": {
+        "jawOpen": 0.39338077863952653,
+        "smile": 0.412501070525122,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 90,
+      "audio_time_ms": 1955,
+      "weights": {
+        "jawOpen": 0.3408288744411279,
+        "smile": 0.4482363653800331,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 91,
+      "audio_time_ms": 1989,
+      "weights": {
+        "jawOpen": 0.24980366161969958,
+        "smile": 0.5101335100986043,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 92,
+      "audio_time_ms": 2024,
+      "weights": {
+        "jawOpen": 0.40539949965170785,
+        "smile": 0.40432834023683867,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 93,
+      "audio_time_ms": 2061,
+      "weights": {
+        "jawOpen": 0.16311238828713331,
+        "smile": 0.5690835759647495,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 94,
+      "audio_time_ms": 2097,
+      "weights": {
+        "jawOpen": 0.03202039748297476,
+        "smile": 0.6582261297115772,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 95,
+      "audio_time_ms": 2132,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 96,
+      "audio_time_ms": 2167,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 97,
+      "audio_time_ms": 2201,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 98,
+      "audio_time_ms": 2218,
+      "weights": {
+        "jawOpen": 0.19591994727022138,
+        "smile": 0.5467744358562495,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 99,
+      "audio_time_ms": 2257,
+      "weights": {
+        "jawOpen": 0.7463892874198423,
+        "smile": 0.17245528455450723,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 100,
+      "audio_time_ms": 2296,
+      "weights": {
+        "jawOpen": 0.9982083079707703,
+        "smile": 0.0012183505798761863,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 101,
+      "audio_time_ms": 2334,
+      "weights": {
+        "jawOpen": 0.8547921623752845,
+        "smile": 0.09874132958480651,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 102,
+      "audio_time_ms": 2370,
+      "weights": {
+        "jawOpen": 0.7719901068022308,
+        "smile": 0.15504672737448308,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 103,
+      "audio_time_ms": 2408,
+      "weights": {
+        "jawOpen": 1,
+        "smile": 0,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 104,
+      "audio_time_ms": 2445,
+      "weights": {
+        "jawOpen": 0.8621460487959733,
+        "smile": 0.09374068681873814,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 105,
+      "audio_time_ms": 2478,
+      "weights": {
+        "jawOpen": 0.6000894676584565,
+        "smile": 0.2719391619922496,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 106,
+      "audio_time_ms": 2516,
+      "weights": {
+        "jawOpen": 0.47784074456413794,
+        "smile": 0.3550682936963862,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 107,
+      "audio_time_ms": 2530,
+      "weights": {
+        "jawOpen": 0.7197667072376808,
+        "smile": 0.19055863907837708,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 108,
+      "audio_time_ms": 2565,
+      "weights": {
+        "jawOpen": 0.9106017458659444,
+        "smile": 0.06079081281115778,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 109,
+      "audio_time_ms": 2601,
+      "weights": {
+        "jawOpen": 0.7944805945719653,
+        "smile": 0.13975319569106362,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 110,
+      "audio_time_ms": 2639,
+      "weights": {
+        "jawOpen": 0.031887039947000734,
+        "smile": 0.6583168128360396,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 111,
+      "audio_time_ms": 2676,
+      "weights": {
+        "jawOpen": 0.05626916422499281,
+        "smile": 0.6417369683270049,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 112,
+      "audio_time_ms": 2713,
+      "weights": {
+        "jawOpen": 1,
+        "smile": 0,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 113,
+      "audio_time_ms": 2751,
+      "weights": {
+        "jawOpen": 1,
+        "smile": 0,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 114,
+      "audio_time_ms": 2789,
+      "weights": {
+        "jawOpen": 1,
+        "smile": 0,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 115,
+      "audio_time_ms": 2827,
+      "weights": {
+        "jawOpen": 1,
+        "smile": 0,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 116,
+      "audio_time_ms": 2861,
+      "weights": {
+        "jawOpen": 0.9305731187133766,
+        "smile": 0.04721027927490395,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 117,
+      "audio_time_ms": 2879,
+      "weights": {
+        "jawOpen": 0.43364304550945126,
+        "smile": 0.38512272905357314,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 118,
+      "audio_time_ms": 2916,
+      "weights": {
+        "jawOpen": 0.35273189526104853,
+        "smile": 0.44014231122248704,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 119,
+      "audio_time_ms": 2954,
+      "weights": {
+        "jawOpen": 0.3691411290854776,
+        "smile": 0.42898403222187526,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 120,
+      "audio_time_ms": 2991,
+      "weights": {
+        "jawOpen": 0.15347957577552032,
+        "smile": 0.5756338884726463,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 121,
+      "audio_time_ms": 3028,
+      "weights": {
+        "jawOpen": 0.5066318490725065,
+        "smile": 0.3354903426306956,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 122,
+      "audio_time_ms": 3066,
+      "weights": {
+        "jawOpen": 0.5015558452394305,
+        "smile": 0.33894202523718725,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 123,
+      "audio_time_ms": 3105,
+      "weights": {
+        "jawOpen": 0.15761953191823475,
+        "smile": 0.5728187182956004,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 124,
+      "audio_time_ms": 3143,
+      "weights": {
+        "jawOpen": 0.01727440578536691,
+        "smile": 0.6682534040659506,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 125,
+      "audio_time_ms": 3179,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 126,
+      "audio_time_ms": 3199,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 127,
+      "audio_time_ms": 3236,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 128,
+      "audio_time_ms": 3273,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 129,
+      "audio_time_ms": 3311,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 130,
+      "audio_time_ms": 3348,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 131,
+      "audio_time_ms": 3390,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 132,
+      "audio_time_ms": 3432,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 133,
+      "audio_time_ms": 3470,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 134,
+      "audio_time_ms": 3487,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 135,
+      "audio_time_ms": 3522,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 136,
+      "audio_time_ms": 3560,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 137,
+      "audio_time_ms": 3599,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 138,
+      "audio_time_ms": 3637,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 139,
+      "audio_time_ms": 3674,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 140,
+      "audio_time_ms": 3715,
+      "weights": {
+        "jawOpen": 0.35963122200292097,
+        "smile": 0.4354507690380138,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 141,
+      "audio_time_ms": 3754,
+      "weights": {
+        "jawOpen": 0.6137083660633769,
+        "smile": 0.26267831107690376,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 142,
+      "audio_time_ms": 3794,
+      "weights": {
+        "jawOpen": 0.9935004807666293,
+        "smile": 0.004419673078692053,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 143,
+      "audio_time_ms": 3813,
+      "weights": {
+        "jawOpen": 0.4791881108926519,
+        "smile": 0.35415208459299674,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 144,
+      "audio_time_ms": 3854,
+      "weights": {
+        "jawOpen": 0.4718942270593165,
+        "smile": 0.3591119255996648,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 145,
+      "audio_time_ms": 3893,
+      "weights": {
+        "jawOpen": 1,
+        "smile": 0,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 146,
+      "audio_time_ms": 3933,
+      "weights": {
+        "jawOpen": 0.44029866579332116,
+        "smile": 0.3805969072605416,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 147,
+      "audio_time_ms": 3970,
+      "weights": {
+        "jawOpen": 0.5427145586105897,
+        "smile": 0.310954100144799,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 148,
+      "audio_time_ms": 4009,
+      "weights": {
+        "jawOpen": 0.16120364643959229,
+        "smile": 0.5703815204210773,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 149,
+      "audio_time_ms": 4049,
+      "weights": {
+        "jawOpen": 0.0780884377754017,
+        "smile": 0.6268998623127269,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 150,
+      "audio_time_ms": 4091,
+      "weights": {
+        "jawOpen": 0.5188973378918218,
+        "smile": 0.3271498102335612,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 151,
+      "audio_time_ms": 4130,
+      "weights": {
+        "jawOpen": 0.47367118408683917,
+        "smile": 0.3579035948209494,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 152,
+      "audio_time_ms": 4148,
+      "weights": {
+        "jawOpen": 0.5494670063573261,
+        "smile": 0.30636243567701826,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 153,
+      "audio_time_ms": 4184,
+      "weights": {
+        "jawOpen": 0.7548623717582621,
+        "smile": 0.1666935872043818,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 154,
+      "audio_time_ms": 4220,
+      "weights": {
+        "jawOpen": 0.2214567625447004,
+        "smile": 0.5294094014696038,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 155,
+      "audio_time_ms": 4257,
+      "weights": {
+        "jawOpen": 0.497814537261164,
+        "smile": 0.3414861146624085,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 156,
+      "audio_time_ms": 4291,
+      "weights": {
+        "jawOpen": 1,
+        "smile": 0,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 157,
+      "audio_time_ms": 4327,
+      "weights": {
+        "jawOpen": 1,
+        "smile": 0,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 158,
+      "audio_time_ms": 4364,
+      "weights": {
+        "jawOpen": 0.5123956017278468,
+        "smile": 0.3315709908250642,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 159,
+      "audio_time_ms": 4406,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 160,
+      "audio_time_ms": 4442,
+      "weights": {
+        "jawOpen": 0.6719151028118481,
+        "smile": 0.2230977300879433,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 161,
+      "audio_time_ms": 4455,
+      "weights": {
+        "jawOpen": 0.9962150602806504,
+        "smile": 0.002573759009157706,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 162,
+      "audio_time_ms": 4491,
+      "weights": {
+        "jawOpen": 1,
+        "smile": 0,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 163,
+      "audio_time_ms": 4526,
+      "weights": {
+        "jawOpen": 0.8084681232888985,
+        "smile": 0.13024167616354904,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 164,
+      "audio_time_ms": 4562,
+      "weights": {
+        "jawOpen": 0.4374261650815059,
+        "smile": 0.38255020774457604,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 165,
+      "audio_time_ms": 4597,
+      "weights": {
+        "jawOpen": 0.17541347803329777,
+        "smile": 0.5607188349373575,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 166,
+      "audio_time_ms": 4633,
+      "weights": {
+        "jawOpen": 0.07477077930882092,
+        "smile": 0.6291558700700018,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 167,
+      "audio_time_ms": 4669,
+      "weights": {
+        "jawOpen": 0.03152742335788099,
+        "smile": 0.658561352116641,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 168,
+      "audio_time_ms": 4704,
+      "weights": {
+        "jawOpen": 0.09013979676870491,
+        "smile": 0.6187049381972808,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 169,
+      "audio_time_ms": 4739,
+      "weights": {
+        "jawOpen": 0.37829773305802317,
+        "smile": 0.4227575415205443,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 170,
+      "audio_time_ms": 4773,
+      "weights": {
+        "jawOpen": 0.3924654414878816,
+        "smile": 0.41312349978824053,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 171,
+      "audio_time_ms": 4789,
+      "weights": {
+        "jawOpen": 0.3051494117244191,
+        "smile": 0.472498400027395,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 172,
+      "audio_time_ms": 4825,
+      "weights": {
+        "jawOpen": 0.8886972989930513,
+        "smile": 0.07568583668472514,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 173,
+      "audio_time_ms": 4861,
+      "weights": {
+        "jawOpen": 0.4321211866091974,
+        "smile": 0.38615759310574577,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 174,
+      "audio_time_ms": 4897,
+      "weights": {
+        "jawOpen": 0.5603872700169412,
+        "smile": 0.29893665638848,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 175,
+      "audio_time_ms": 4932,
+      "weights": {
+        "jawOpen": 0.9693734127394797,
+        "smile": 0.020826079337153774,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 176,
+      "audio_time_ms": 4970,
+      "weights": {
+        "jawOpen": 0.9255366839823762,
+        "smile": 0.05063505489198418,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 177,
+      "audio_time_ms": 5005,
+      "weights": {
+        "jawOpen": 1,
+        "smile": 0,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 178,
+      "audio_time_ms": 5040,
+      "weights": {
+        "jawOpen": 0.38446580366996946,
+        "smile": 0.41856325350442075,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 179,
+      "audio_time_ms": 5077,
+      "weights": {
+        "jawOpen": 0.4473226360148744,
+        "smile": 0.3758206075098855,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 180,
+      "audio_time_ms": 5094,
+      "weights": {
+        "jawOpen": 0.605983873957294,
+        "smile": 0.26793096570904007,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 181,
+      "audio_time_ms": 5132,
+      "weights": {
+        "jawOpen": 0.5403638856397464,
+        "smile": 0.3125525577649725,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 182,
+      "audio_time_ms": 5167,
+      "weights": {
+        "jawOpen": 0.15680314058994427,
+        "smile": 0.573373864398838,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 183,
+      "audio_time_ms": 5203,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 184,
+      "audio_time_ms": 5239,
+      "weights": {
+        "jawOpen": 0.17966343873778004,
+        "smile": 0.5578288616583096,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 185,
+      "audio_time_ms": 5274,
+      "weights": {
+        "jawOpen": 0.8313461025934535,
+        "smile": 0.11468465023645161,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 186,
+      "audio_time_ms": 5311,
+      "weights": {
+        "jawOpen": 0.8888903196546076,
+        "smile": 0.07555458263486682,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 187,
+      "audio_time_ms": 5347,
+      "weights": {
+        "jawOpen": 0.775419840510768,
+        "smile": 0.1527145084526778,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 188,
+      "audio_time_ms": 5383,
+      "weights": {
+        "jawOpen": 1,
+        "smile": 0,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 189,
+      "audio_time_ms": 5416,
+      "weights": {
+        "jawOpen": 1,
+        "smile": 0,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 190,
+      "audio_time_ms": 5433,
+      "weights": {
+        "jawOpen": 1,
+        "smile": 0,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 191,
+      "audio_time_ms": 5470,
+      "weights": {
+        "jawOpen": 0.17459052937229227,
+        "smile": 0.5612784400268414,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 192,
+      "audio_time_ms": 5506,
+      "weights": {
+        "jawOpen": 0.05520454505171932,
+        "smile": 0.6424609093648309,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 193,
+      "audio_time_ms": 5542,
+      "weights": {
+        "jawOpen": 0.5656897204630584,
+        "smile": 0.2953309900851203,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 194,
+      "audio_time_ms": 5577,
+      "weights": {
+        "jawOpen": 1,
+        "smile": 0,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 195,
+      "audio_time_ms": 5612,
+      "weights": {
+        "jawOpen": 0.7765988921223398,
+        "smile": 0.15191275335680895,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 196,
+      "audio_time_ms": 5648,
+      "weights": {
+        "jawOpen": 0.116050017382523,
+        "smile": 0.6010859881798845,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 197,
+      "audio_time_ms": 5684,
+      "weights": {
+        "jawOpen": 1,
+        "smile": 0,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 198,
+      "audio_time_ms": 5719,
+      "weights": {
+        "jawOpen": 0.8615857601456024,
+        "smile": 0.09412168310099038,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 199,
+      "audio_time_ms": 5736,
+      "weights": {
+        "jawOpen": 0.43960501760946213,
+        "smile": 0.38106858802556576,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 200,
+      "audio_time_ms": 5771,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 201,
+      "audio_time_ms": 5807,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 202,
+      "audio_time_ms": 5844,
+      "weights": {
+        "jawOpen": 0.9247502847672272,
+        "smile": 0.051169806358285504,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 203,
+      "audio_time_ms": 5880,
+      "weights": {
+        "jawOpen": 0.5254438591587747,
+        "smile": 0.32269817577203325,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 204,
+      "audio_time_ms": 5917,
+      "weights": {
+        "jawOpen": 0.9748234580093605,
+        "smile": 0.01712004855363483,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 205,
+      "audio_time_ms": 5953,
+      "weights": {
+        "jawOpen": 0.6125998558443948,
+        "smile": 0.2634320980258116,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 206,
+      "audio_time_ms": 5991,
+      "weights": {
+        "jawOpen": 0.02712900814498102,
+        "smile": 0.661552274461413,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 207,
+      "audio_time_ms": 6027,
+      "weights": {
+        "jawOpen": 0.3575586760836444,
+        "smile": 0.43686010026312183,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 208,
+      "audio_time_ms": 6061,
+      "weights": {
+        "jawOpen": 1,
+        "smile": 0,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 209,
+      "audio_time_ms": 6077,
+      "weights": {
+        "jawOpen": 1,
+        "smile": 0,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 210,
+      "audio_time_ms": 6114,
+      "weights": {
+        "jawOpen": 1,
+        "smile": 0,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 211,
+      "audio_time_ms": 6152,
+      "weights": {
+        "jawOpen": 0.2321089805205652,
+        "smile": 0.5221658932460157,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 212,
+      "audio_time_ms": 6188,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 213,
+      "audio_time_ms": 6226,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 214,
+      "audio_time_ms": 6265,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 215,
+      "audio_time_ms": 6302,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 216,
+      "audio_time_ms": 6339,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 217,
+      "audio_time_ms": 6375,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 218,
+      "audio_time_ms": 6394,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 219,
+      "audio_time_ms": 6435,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 220,
+      "audio_time_ms": 6471,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 221,
+      "audio_time_ms": 6508,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 222,
+      "audio_time_ms": 6547,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 223,
+      "audio_time_ms": 6584,
+      "weights": {
+        "jawOpen": 0.041319795818881164,
+        "smile": 0.6519025388431609,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 224,
+      "audio_time_ms": 6624,
+      "weights": {
+        "jawOpen": 0.4825779925016258,
+        "smile": 0.35184696509889446,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 225,
+      "audio_time_ms": 6664,
+      "weights": {
+        "jawOpen": 0.7746880972072181,
+        "smile": 0.1532120938990917,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 226,
+      "audio_time_ms": 6698,
+      "weights": {
+        "jawOpen": 1,
+        "smile": 0,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 227,
+      "audio_time_ms": 6716,
+      "weights": {
+        "jawOpen": 0.6224042733701145,
+        "smile": 0.25676509410832216,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 228,
+      "audio_time_ms": 6753,
+      "weights": {
+        "jawOpen": 0.5228992348708646,
+        "smile": 0.32442852028781205,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 229,
+      "audio_time_ms": 6791,
+      "weights": {
+        "jawOpen": 1,
+        "smile": 0,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 230,
+      "audio_time_ms": 6827,
+      "weights": {
+        "jawOpen": 0.3761306156959325,
+        "smile": 0.4242311813267659,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 231,
+      "audio_time_ms": 6866,
+      "weights": {
+        "jawOpen": 0.05900873474987972,
+        "smile": 0.6398740603700818,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 232,
+      "audio_time_ms": 6905,
+      "weights": {
+        "jawOpen": 1,
+        "smile": 0,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 233,
+      "audio_time_ms": 6944,
+      "weights": {
+        "jawOpen": 1,
+        "smile": 0,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 234,
+      "audio_time_ms": 6984,
+      "weights": {
+        "jawOpen": 1,
+        "smile": 0,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 235,
+      "audio_time_ms": 7022,
+      "weights": {
+        "jawOpen": 0.48657796538491965,
+        "smile": 0.3491269835382547,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 236,
+      "audio_time_ms": 7042,
+      "weights": {
+        "jawOpen": 0.18789499165038592,
+        "smile": 0.5522314056777377,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 237,
+      "audio_time_ms": 7081,
+      "weights": {
+        "jawOpen": 0.16008558337552065,
+        "smile": 0.571141803304646,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 238,
+      "audio_time_ms": 7120,
+      "weights": {
+        "jawOpen": 0.16493408069639348,
+        "smile": 0.5678448251264525,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 239,
+      "audio_time_ms": 7159,
+      "weights": {
+        "jawOpen": 0.21850253840926703,
+        "smile": 0.5314182738816985,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 240,
+      "audio_time_ms": 7199,
+      "weights": {
+        "jawOpen": 0.19726484397894994,
+        "smile": 0.5458599060943141,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 241,
+      "audio_time_ms": 7235,
+      "weights": {
+        "jawOpen": 0.7853783882884633,
+        "smile": 0.14594269596384496,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 242,
+      "audio_time_ms": 7274,
+      "weights": {
+        "jawOpen": 0.6804868567896323,
+        "smile": 0.21726893738305006,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 243,
+      "audio_time_ms": 7314,
+      "weights": {
+        "jawOpen": 0.4182782086633013,
+        "smile": 0.39557081810895517,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 244,
+      "audio_time_ms": 7333,
+      "weights": {
+        "jawOpen": 0.1649257927029753,
+        "smile": 0.5678504609619769,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 245,
+      "audio_time_ms": 7378,
+      "weights": {
+        "jawOpen": 0.028979558337049877,
+        "smile": 0.6602939003308061,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 246,
+      "audio_time_ms": 7420,
+      "weights": {
+        "jawOpen": 1,
+        "smile": 0,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 247,
+      "audio_time_ms": 7461,
+      "weights": {
+        "jawOpen": 0.5967272573338593,
+        "smile": 0.2742254650129757,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 248,
+      "audio_time_ms": 7501,
+      "weights": {
+        "jawOpen": 0.6755815180262006,
+        "smile": 0.22060456774218362,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 249,
+      "audio_time_ms": 7541,
+      "weights": {
+        "jawOpen": 0.6333479696778173,
+        "smile": 0.2493233806190843,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 250,
+      "audio_time_ms": 7582,
+      "weights": {
+        "jawOpen": 1,
+        "smile": 0,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 251,
+      "audio_time_ms": 7625,
+      "weights": {
+        "jawOpen": 1,
+        "smile": 0,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 252,
+      "audio_time_ms": 7646,
+      "weights": {
+        "jawOpen": 0.38321373961965777,
+        "smile": 0.41941465705863273,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 253,
+      "audio_time_ms": 7682,
+      "weights": {
+        "jawOpen": 0.2682130260370847,
+        "smile": 0.49761514229478243,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 254,
+      "audio_time_ms": 7720,
+      "weights": {
+        "jawOpen": 0.14440618653468035,
+        "smile": 0.5818037931564174,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 255,
+      "audio_time_ms": 7758,
+      "weights": {
+        "jawOpen": 0.5445521720290654,
+        "smile": 0.3097045230202356,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 256,
+      "audio_time_ms": 7795,
+      "weights": {
+        "jawOpen": 0.4079931655623327,
+        "smile": 0.4025646474176137,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 257,
+      "audio_time_ms": 7832,
+      "weights": {
+        "jawOpen": 0.4816314262603724,
+        "smile": 0.35249063014294674,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 258,
+      "audio_time_ms": 7869,
+      "weights": {
+        "jawOpen": 0.8351130690383705,
+        "smile": 0.1121231130539081,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 259,
+      "audio_time_ms": 7906,
+      "weights": {
+        "jawOpen": 0.18032757176375042,
+        "smile": 0.5573772512006497,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 260,
+      "audio_time_ms": 7943,
+      "weights": {
+        "jawOpen": 1,
+        "smile": 0,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 261,
+      "audio_time_ms": 7977,
+      "weights": {
+        "jawOpen": 1,
+        "smile": 0,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 262,
+      "audio_time_ms": 7994,
+      "weights": {
+        "jawOpen": 1,
+        "smile": 0,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 263,
+      "audio_time_ms": 8032,
+      "weights": {
+        "jawOpen": 1,
+        "smile": 0,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 264,
+      "audio_time_ms": 8069,
+      "weights": {
+        "jawOpen": 0.19953187365232908,
+        "smile": 0.5443183259164163,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 265,
+      "audio_time_ms": 8108,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 266,
+      "audio_time_ms": 8147,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    },
+    {
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "frame_id": 267,
+      "audio_time_ms": 8160,
+      "weights": {
+        "jawOpen": 0,
+        "smile": 0.68,
+        "blink": 0,
+        "gazeLeft": 0,
+        "gazeRight": 0,
+        "gazeUp": 0,
+        "gazeDown": 0
+      }
+    }
+  ],
+  "events": [
+    {
+      "type": "play-request",
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "audio_time_ms": 0,
+      "observed_at_ms": 87187.29999995232
+    },
+    {
+      "type": "play",
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "audio_time_ms": 0,
+      "observed_at_ms": 87263.59999990463
+    },
+    {
+      "type": "ended",
+      "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+      "session_epoch": 0,
+      "audio_time_ms": 8160,
+      "observed_at_ms": 96685.89999997616
+    }
+  ],
+  "session_id": "7c1c269e-e7df-48eb-a0d8-1ccef2d5144a",
+  "response": {
+    "type": "response",
+    "utterance_id": "f1dcbc6e-133e-411b-ac67-d7948e92e18e",
+    "session_epoch": 0,
+    "user_emotion": "happiness",
+    "reply": "听到你完成小任务的消息真为你高兴！这种成就感是努力最好的回报，继续保持这份热情吧！",
+    "expression_intent": {
+      "style": "cheerful",
+      "intensity": 0.8
+    },
+    "status": "ok",
+    "attempts": [
+      {
+        "raw_output": "{\"user_emotion\": \"happiness\", \"reply\": \"听到你完成小任务的消息真为你高兴！这种成就感是努力最好的回报，继续保持这份热情吧！\", \"expression_intent\": {\"style\": \"cheerful\", \"intensity\": 0.8}}",
+        "error": null
+      }
+    ],
+    "session_id": "7c1c269e-e7df-48eb-a0d8-1ccef2d5144a",
+    "state": "ready",
+    "transcript": "现在我又完成了一个小任务，很开心。请用一句简短中文回应。",
+    "audio": {
+      "mime_type": "audio/wav",
+      "sample_rate_hz": 24000,
+      "channels": 1,
+      "duration_ms": 8160,
+      "url": "/v1/sessions/7c1c269e-e7df-48eb-a0d8-1ccef2d5144a/turns/f1dcbc6e-133e-411b-ac67-d7948e92e18e/audio"
+    },
+    "timings_ms": {
+      "llm_ms": 10027.017161250114,
+      "tts_ms": 17807.74175003171,
+      "total_ms": 27835.168976336718
+    }
+  }
+}
