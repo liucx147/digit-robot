@@ -15,9 +15,11 @@ export function createVoiceClient(baseUrl, audio) {
   }
   async function send(suffix, options) {
     const stamp = generation;
+    const sessionId = session.session_id;
     try {
       const result = await request(route(suffix), options);
-      if (stamp !== generation || result.session_epoch !== session.session_epoch) return null;
+      if (stamp !== generation || sessionId !== session.session_id ||
+          result.session_id !== sessionId || result.session_epoch !== session.session_epoch) return null;
       audio.src = base + result.audio.url;
       return result;
     } catch (error) {
@@ -25,17 +27,27 @@ export function createVoiceClient(baseUrl, audio) {
       throw error;
     }
   }
-  async function invalidate(action) {
+  function invalidateLocal() {
     generation += 1; // Invalidate pending browser promises before waiting for the server.
     audio.pause();
     audio.removeAttribute("src");
     audio.load();
-    session = await request(route(`/${action}`), { method: "POST" });
+    return generation;
+  }
+  async function invalidate(action) {
+    const stamp = invalidateLocal();
+    const next = await request(route(`/${action}`), { method: "POST" });
+    if (stamp !== generation) return null;
+    session = next;
     return session;
   }
   return {
     async open() {
-      session = await request("/v1/sessions", { method: "POST" });
+      const stamp = invalidateLocal();
+      session = undefined;
+      const next = await request("/v1/sessions", { method: "POST" });
+      if (stamp !== generation) return null;
+      session = next;
       return session;
     },
     status: () => request(route()),
