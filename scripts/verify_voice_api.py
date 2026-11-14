@@ -46,6 +46,10 @@ def main() -> None:
     if code != 200:
         raise RuntimeError(f"Audio chain HTTP {code}: {data.decode('utf-8')}")
     audio_turn = json.loads(data)
+    # Frozen fixture regression: 133 Chinese reply characters previously ran to 164s.
+    # This guards that observed runaway; it is not a general speech quality metric.
+    if audio_turn["audio"]["duration_ms"] > 90000:
+        raise RuntimeError("Fixed fixture speech exceeded 90s; reject the runaway TTS sample")
     print(json.dumps({"audio_turn": audio_turn}, ensure_ascii=False), flush=True)
     text_turn = post(root + "/text", {"text": "你还记得我叫什么吗？请用一句话回答。", "session_epoch": 0})
     (args.output_dir / "text-turn.json").write_text(json.dumps(text_turn, ensure_ascii=False, indent=2), encoding="utf-8")

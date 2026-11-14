@@ -105,5 +105,5 @@ class ProcessModels:
         instruction = f"用{instructions[intent['style']]}的语气说话，情绪强度为{intent['intensity']:.0%}。"
         report = self._speech("tts", output_dir, cancel,
                               ["--text", text, "--speaker", "Vivian", "--instruct", instruction,
-                               "--max-new-tokens", "2048"])
+                               "--max-new-tokens", "2048", "--sample"])
         return Path(report["raw_output"]["audio_path"])
