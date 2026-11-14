@@ -1,0 +1,7 @@
+.gaze-controls { margin-top: 24px; }
+#gaze-status { line-height: 1.7; color: #b3e3d5; }
+.gaze-preview img, .gaze-preview video { width: 100%; max-height: 190px; object-fit: contain; background: #0e1722; }
+.gaze-preview [hidden] { display: none; }
+.gaze-preview video.camera { transform: scaleX(-1); }
+.gaze-controls .buttons { flex-wrap: wrap; margin: 16px 0; }
+.gaze-controls button { font-size: 13px; padding: 9px 12px; }

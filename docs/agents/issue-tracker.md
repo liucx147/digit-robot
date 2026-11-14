@@ -39,3 +39,11 @@
 - 阻塞优先使用 GitHub 原生 Issue 依赖；不可用时，在正文记录 Blocked by: #<number>。仅选择未关闭、无未完成依赖且未认领的子任务，按 map 顺序处理。
 - 认领时使用 gh issue edit <number> --repo liucx147/digit-robot --add-assignee @me；解决后先评论答案，再关闭子任务，并向 map 的 Decisions-so-far 追加摘要和链接。
 - 既有本地 wayfinder 记录仍使用 map.md 和独立子任务；claimed、resolved 是探索任务状态，与五个分诊状态区分。
+
+## 既有本地任务的完成与阻塞解除
+
+本节仅补充上述 18 张既有本地任务的生命周期，不改变新事项使用 GitHub Issues 的规则，也不自动迁移或重复发布本地任务。
+
+Status 是分诊标签，不承担关闭状态。既有本地任务另用 `State: open` 或 `State: closed`；未写 State 的文件按 open 处理。仅在全部验收完成、证据进入当前集成版本且 Comments 中记录结果后，将 State 设为 closed；未完成时保留 open，并注明缺少的证据或条件。下游阻塞由前置任务的 closed 状态解除，测试替身通过、准备完成或仅有实现代码均不能代替前置验收。
+
+已在上游集成版本完成验收的任务，可以补记 State 并明确引用原有验收提交和证据；这种生命周期补记不代表重新实施或新增硬件实测。GitHub Issue / PR 的开启和关闭继续使用 GitHub 自身的状态。

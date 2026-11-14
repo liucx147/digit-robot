@@ -1,0 +1,3 @@
+# Frozen ledgers are hashed as exact bytes across Windows/Linux checkouts.
+**/ledger.json -text
+*.wav binary

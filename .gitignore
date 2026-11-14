@@ -7,3 +7,12 @@ __pycache__/
 models/
 .env
 *.key
+
+# Developer B local development and browser evidence
+_work/
+.worktrees/
+node_modules/
+artifacts/
+web/dist/
+.env.*
+!.env.example
