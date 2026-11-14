@@ -1,0 +1,9 @@
+{
+  "llm_python": "/root/autodl-tmp/digit-robot-envs/llm/bin/python",
+  "asr_python": "/root/autodl-tmp/digit-robot-envs/speech-asr/bin/python",
+  "tts_python": "/root/autodl-tmp/digit-robot-envs/speech-tts/bin/python",
+  "llm_model": "/root/autodl-tmp/models/Qwen3.5-4B",
+  "asr_model": "/root/autodl-tmp/models/Qwen3-ASR-0.6B",
+  "tts_model": "/root/autodl-tmp/models/Qwen3-TTS-12Hz-1.7B-CustomVoice",
+  "stage_timeout_seconds": 300
+}

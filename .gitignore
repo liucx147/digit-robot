@@ -16,3 +16,4 @@ artifacts/
 web/dist/
 .env.*
 !.env.example
+runs/

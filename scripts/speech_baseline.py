@@ -31,6 +31,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--speaker", default="Vivian")
     parser.add_argument("--instruct", default="用温柔、关切、平静的语气说话。")
     parser.add_argument("--max-new-tokens", type=int, default=512)
+    parser.add_argument("--sample", action="store_true", help="Use the upstream TTS sampling defaults with seed 42")
     args = parser.parse_args()
     if not args.model_dir.is_dir():
         parser.error("--model-dir must be an existing local directory, not a model ID or URL")
@@ -120,11 +121,14 @@ def run(args: argparse.Namespace) -> int:
         with torch.inference_mode():
             if args.task == "tts":
                 report["request"].update(speaker=args.speaker, instruct=args.instruct, language="Chinese")
-                report["generation"] = {"do_sample": False, "subtalker_dosample": False}
+                if args.sample:
+                    torch.manual_seed(42)
+                report["generation"] = {"do_sample": args.sample, "subtalker_dosample": args.sample,
+                                        "seed": 42 if args.sample else None}
                 wavs, sample_rate = model.generate_custom_voice(
                     text=args.text, language="Chinese", speaker=args.speaker,
                     instruct=args.instruct, max_new_tokens=args.max_new_tokens,
-                    do_sample=False, subtalker_dosample=False,
+                    do_sample=args.sample, subtalker_dosample=args.sample,
                 )
                 torch.cuda.synchronize()
                 if len(wavs) != 1 or len(wavs[0]) == 0:

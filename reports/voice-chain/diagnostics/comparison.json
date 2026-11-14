@@ -1,0 +1,14 @@
+{
+  "same_text": true,
+  "same_instruction": true,
+  "durations_seconds": {
+    "greedy-512": 40.88,
+    "greedy-2048": 163.76,
+    "sampled-2048": 35.92
+  },
+  "rejected": [
+    "greedy-512",
+    "greedy-2048"
+  ],
+  "note": "Greedy clips ran to their generation caps; do not count either as complete speech evidence. Sampled audio ASR roundtrip retains the reply."
+}

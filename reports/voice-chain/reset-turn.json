@@ -1,0 +1,33 @@
+{
+  "type": "response",
+  "utterance_id": "ef308f32-e5e1-407b-a9d2-179c8a093c1c",
+  "session_epoch": 1,
+  "user_emotion": "surprise",
+  "reply": "抱歉，我确实不知道您的名字。作为您的对话助手，我专注于倾听和回应您的感受，而不是记住个人信息。如果您愿意告诉我，我很乐意记住。",
+  "expression_intent": {
+    "style": "gentle",
+    "intensity": 0.6
+  },
+  "status": "ok",
+  "attempts": [
+    {
+      "raw_output": "{\n  \"user_emotion\": \"surprise\",\n  \"reply\": \"抱歉，我确实不知道您的名字。作为您的对话助手，我专注于倾听和回应您的感受，而不是记住个人信息。如果您愿意告诉我，我很乐意记住。\",\n  \"expression_intent\": {\n    \"style\": \"gentle\",\n    \"intensity\": 0.6\n  }\n}",
+      "error": null
+    }
+  ],
+  "session_id": "ee6a3f3a-970a-404f-b956-c532f537c7b7",
+  "state": "ready",
+  "transcript": "我还没告诉你名字，你知道我叫什么吗？简短回答。",
+  "audio": {
+    "mime_type": "audio/wav",
+    "sample_rate_hz": 24000,
+    "channels": 1,
+    "duration_ms": 17920.0,
+    "url": "/v1/sessions/ee6a3f3a-970a-404f-b956-c532f537c7b7/turns/ef308f32-e5e1-407b-a9d2-179c8a093c1c/audio"
+  },
+  "timings_ms": {
+    "llm_ms": 10931.36278539896,
+    "tts_ms": 28306.56922236085,
+    "total_ms": 39238.57118189335
+  }
+}

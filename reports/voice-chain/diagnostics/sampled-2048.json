@@ -1,0 +1,132 @@
+{
+  "task": "tts",
+  "status": "succeeded",
+  "started_at_utc": "2026-11-14T06:02:52.042578+00:00",
+  "script_sha256": "d02c5651b096860d5ce767fb80d71e0a792328fee41370a56eeaf6f35327141c",
+  "model_dir": "/root/autodl-tmp/models/Qwen3-TTS-12Hz-1.7B-CustomVoice",
+  "offline_loading": true,
+  "training_performed": false,
+  "evaluation_scope": "single-sample inference smoke; not accuracy or engineering acceptance",
+  "request": {
+    "text": "小林，听到你因为考试没考好而感到难过，我真的很想给你一个拥抱。考试只是学习过程中的一部分，它并不能定义你的全部价值。感到失落是很正常的反应，这说明你在乎自己的进步。请给自己一点时间和空间去平复心情，不要过于苛责自己。无论结果如何，你都已经尽力了，这本身就是一种成长。",
+    "audio": null,
+    "speaker": "Vivian",
+    "instruct": "用温柔、关切、平静的语气说话，情绪强度为75%。",
+    "language": "Chinese"
+  },
+  "model_source": {
+    "model_id": "Qwen/Qwen3-TTS-12Hz-1.7B-CustomVoice",
+    "source": "https://modelscope.cn/models/Qwen/Qwen3-TTS-12Hz-1.7B-CustomVoice",
+    "revision": "54dfa57e196341bfa4994c97ad1f0f874964eeab",
+    "downloaded_at_utc": "2026-11-13T14:38:10.922595+00:00",
+    "license": "apache-2.0",
+    "license_document": "speech-model-info.json",
+    "model_card_path": "README.md",
+    "license_metadata_source": "https://modelscope.cn/api/v1/models/Qwen/Qwen3-TTS-12Hz-1.7B-CustomVoice",
+    "files": [
+      {
+        "path": "README.md",
+        "bytes": 57846,
+        "sha256": "64f65e809b51cc0c35f393fbbfcc2d735c0cb3fdbbc6f3fdc4a5e6ce55e9d088"
+      },
+      {
+        "path": "config.json",
+        "bytes": 4908,
+        "sha256": "17a07f527a1c25ea30b4e023a184482a23d3e279d697b1dc81b1bde498d29cf9"
+      },
+      {
+        "path": "configuration.json",
+        "bytes": 47,
+        "sha256": "c502b6328c67638b401df8dd05de89e9e8d1cff9cd0ada10dfbdbe13556c20de"
+      },
+      {
+        "path": "generation_config.json",
+        "bytes": 245,
+        "sha256": "f1b90b4513f3b34c62851049e2492d7b4c5940daf1276f89c82b8ef04127f3aa"
+      },
+      {
+        "path": "merges.txt",
+        "bytes": 1671839,
+        "sha256": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3"
+      },
+      {
+        "path": "model.safetensors",
+        "bytes": 3833402552,
+        "sha256": "38b1d5971bdbd982b561cccec982669a53b0537c3cf5e9bd4778ed07bb2f5137"
+      },
+      {
+        "path": "preprocessor_config.json",
+        "bytes": 127,
+        "sha256": "efdde1022ea9d76928bf7a9cd53139138f5ba2e466e837f08f6105ab1af1c119"
+      },
+      {
+        "path": "speech-model-info.json",
+        "bytes": 865,
+        "sha256": "7a0c4c7d70d2e86398135adfe1713ff126bf2a57c96da83b60b68faf89ec4782"
+      },
+      {
+        "path": "speech_tokenizer/config.json",
+        "bytes": 2336,
+        "sha256": "ee65bb901c876664ab8707c487157aa1a6ee57c65969b28fb5ec9dc211e68167"
+      },
+      {
+        "path": "speech_tokenizer/configuration.json",
+        "bytes": 76,
+        "sha256": "6bc26d64eb5024b4d1dab5a52371958b429256d6c9d59787f1f5294a54e0cebd"
+      },
+      {
+        "path": "speech_tokenizer/model.safetensors",
+        "bytes": 682293092,
+        "sha256": "836b7b357f5ea43e889936a3709af68dfe3751881acefe4ecf0dbd30ba571258"
+      },
+      {
+        "path": "speech_tokenizer/preprocessor_config.json",
+        "bytes": 234,
+        "sha256": "fcb3805e597e786d4067706e602f6688524640f8d3396790e2e09b5942fcbdfb"
+      },
+      {
+        "path": "tokenizer_config.json",
+        "bytes": 7344,
+        "sha256": "dc3c31c3bdaedd5016382bb3cbe07323026775ad51f5a4fb564505992ae4a670"
+      },
+      {
+        "path": "vocab.json",
+        "bytes": 2776833,
+        "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+      }
+    ]
+  },
+  "source_manifest_path": "/root/autodl-tmp/models/Qwen3-TTS-12Hz-1.7B-CustomVoice/speech-source.json",
+  "source_manifest_sha256": "7bea9431b5415f2d1264402fcf621b992b3b00a69753fad8ba00834bfd23cf78",
+  "license_source_path": "/root/autodl-tmp/models/Qwen3-TTS-12Hz-1.7B-CustomVoice/speech-model-info.json",
+  "license_source_sha256": "7a0c4c7d70d2e86398135adfe1713ff126bf2a57c96da83b60b68faf89ec4782",
+  "environment": {
+    "python": "3.12.3 | packaged by Anaconda, Inc. | (main, May  6 2024, 19:46:43) [GCC 11.2.0]",
+    "torch": "2.8.0+cu128",
+    "cuda": "12.8",
+    "transformers": "4.57.3",
+    "qwen-tts": "0.1.1",
+    "gpu": "NVIDIA GeForce RTX 4090 D",
+    "gpu_total_memory_bytes": 25250627584,
+    "dtype": "bfloat16",
+    "attention": "sdpa"
+  },
+  "model_load_wall_time_seconds": 5.575063738971949,
+  "generation": {
+    "do_sample": true,
+    "subtalker_dosample": true,
+    "seed": 42
+  },
+  "raw_output": {
+    "audio_path": "/root/autodl-tmp/digit-robot/runs/tts-sampling-check/speech-tts.wav",
+    "audio_sha256": "507d1fa05f28981b9f551b360a2e023fba34644cc0f3f3beba5ee98cfeec246a",
+    "sample_rate_hz": 24000,
+    "samples": 862080,
+    "duration_seconds": 35.92
+  },
+  "inference_wall_time_seconds": 40.259183906018734,
+  "max_new_tokens": 2048,
+  "cuda_peak_allocated_bytes": 4708670464,
+  "cuda_peak_reserved_bytes": 5377097728,
+  "wall_time_seconds": 47.45443083718419
+}

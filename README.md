@@ -1,6 +1,15 @@
-# 数字人：开发者 A 的离线模型基线
+# 数字人：离线情感语音服务
 
-实施依据为 `.scratch/digital-human-emotion/spec.md` v1.1。本轮建立文本对话入口及独立 ASR/TTS smoke，供后续数字人与研究使用。当前服务器为 RTX 4090 D 24GB，区别于旧文档的 5090 32GB 规划。
+实施依据为 `.scratch/digital-human-emotion/spec.md` v1.1。当前提供 ASR→情感对话→TTS 的本地 HTTP 服务 v0.2，以及独立文本入口和模型基线。服务器为 RTX 4090 D 24GB。
+
+## B 从这里开始
+
+- [HTTP 接口、隧道与播放规则](docs/development/b-voice-api.md)
+- [浏览器 fetch 与停止样例](examples/b-client.js)
+- [OpenAPI 契约](docs/api/voice-openapi.json)
+- [真实语音链路验证](reports/voice-chain/chain-report.json)
+
+服务默认监听服务器 `127.0.0.1:8000`；B 通过 SSH `-L 18000:127.0.0.1:8000` 访问。输入支持文本和 PCM WAV，提供状态、停止、重置及音频下载。安装 API 依赖使用 `pip install -e '.[api,dev]'`。三维页面及实际播放/动画仍由 B 接入。
 
 ## 安装与检查
 

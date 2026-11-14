@@ -22,3 +22,7 @@
 ## User stories
 
 US07、US08、US09、US10、US11、US12、US46、US58
+
+## A 侧进展（2026-11-14）
+
+已实现文本→情感对话→实际 TTS WAV 的 HTTP 接口、表达意图、音频元数据、发言与代次关联、状态/停止/重置及错误反馈，真实4090验证通过。见 [B 接口交接](../../../docs/development/b-voice-api.md) 和 `reports/voice-chain/`。页面、三维表情和基于实际播放位置的嘴部同步尚待 B 接入，本票完整验收未关闭。
