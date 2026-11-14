@@ -20,7 +20,7 @@ function abandonVoice() {
   voiceGeneration++; voiceClient?.invalidate(); voiceBusy = false;
   if (loadedTurn && avatar) { playing = false; audio.pause(); frame(0); utteranceId = null; }
   loadedTurn = null;
-  voiceStatus('已切换到本地音频，可继续发送新的中文。');
+  voiceStatus(voiceClient?.connected ? '已切换到本地音频，可继续发送新的中文。' : '已切换到本地音频；请重新连接本地服务后发送中文。');
 }
 let record = { version: 1, frames: [], events: [] };
 const MAX_FRAMES = 120000;
@@ -200,7 +200,7 @@ $('#stop').addEventListener('click', async () => {
 });
 $('#voice-connect').addEventListener('click', async () => {
   const stamp = ++voiceGeneration;
-  voiceClient?.invalidate(); stopLocal(); loadedTurn = null; utteranceId = null; powerSamples = null; $('#play').disabled = true;
+  voiceClient?.invalidate(); voiceClient = undefined; stopLocal(); loadedTurn = null; utteranceId = null; powerSamples = null; $('#play').disabled = true;
   voiceBusy = true; voiceStatus('正在连接本地模型服务…');
   try {
     voiceClient = createVoiceClient($('#api-base').value);
