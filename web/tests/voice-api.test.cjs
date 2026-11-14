@@ -35,10 +35,40 @@ const result = () => ({ type: 'response', state: 'ready', status: 'ok', session_
 
 function deferred() { let resolve; const promise = new Promise(value => { resolve = value; }); return { promise, resolve }; }
 
+for (const failed of [false, true]) {
+  test(`a late status poll cannot replace the final ${failed ? 'failure' : 'playing'} state`, async () => {
+    const page = await app.browser.newPage();
+    const turn = deferred(), poll = deferred(), entered = deferred();
+    await setup(page, async () => { await turn.promise; return result(); });
+    if (failed) await page.route('**/v1/sessions/test-session/text', async route => {
+      await turn.promise;
+      await route.fulfill({ status: 502, contentType: 'application/json', body: JSON.stringify({ code: 'dialogue_failed', message: '最终模型失败' }) });
+    });
+    await page.route('**/v1/sessions/test-session', async route => {
+      entered.resolve();
+      await poll.promise;
+      await route.fulfill({ contentType: 'application/json', body: JSON.stringify({ session_id: 'test-session', session_epoch: 0, state: 'generating' }) });
+    });
+    await page.locator('#voice-text').fill('延迟状态');
+    await page.locator('#voice-send').click();
+    await entered.promise;
+    turn.resolve();
+    const finalState = failed ? '最终模型失败' : '正在播放服务回复';
+    await page.locator('#voice-status').filter({ hasText: finalState }).waitFor();
+    const delivered = page.waitForResponse(response => new URL(response.url()).pathname === '/v1/sessions/test-session');
+    poll.resolve();
+    await (await delivered).finished();
+    await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+    assert.match(await page.locator('#voice-status').textContent(), new RegExp(finalState));
+    await page.close();
+  });
+}
+
 test('the public page sends text, plays actual WAV and exports API identifiers with visible intent', async () => {
   const page = await app.browser.newPage({ acceptDownloads: true });
   let sent;
   await setup(page, async request => { sent = request.postDataJSON(); return result(); });
+  assert.equal(await page.getByRole('button', { name: '停止回复', exact: true }).count(), 1);
   await page.getByLabel('对话文本', { exact: true }).fill('今天真开心');
   await page.getByRole('button', { name: '发送文本', exact: true }).click();
   await page.waitForFunction(() => !document.querySelector('audio').paused && Number(document.querySelector('#mouth-weight').textContent) > 0);
@@ -46,7 +76,9 @@ test('the public page sends text, plays actual WAV and exports API identifiers w
   assert.equal(sent.session_epoch, 0);
   assert.match(await page.locator('#voice-reply').textContent(), /为你高兴/);
   assert.match(await page.locator('#voice-intent').textContent(), /cheerful/);
-  await page.getByRole('button', { name: '停止', exact: true }).click();
+  await page.getByRole('button', { name: '停止回复', exact: true }).click();
+  assert.equal(await page.locator('#play').isDisabled(), true);
+  assert.equal(await page.locator('audio').evaluate(a => a.paused && !a.getAttribute('src')), true);
   await page.getByText('播放记录', { exact: true }).click();
   const download = page.waitForEvent('download');
   await page.getByRole('button', { name: '下载播放记录', exact: true }).click();
@@ -77,13 +109,21 @@ test('Stop fences a late model result and does not download or play it', async (
   await page.route('**/v1/sessions/test-session/turns/**/audio', route => { downloads++; return route.fulfill({ contentType: 'audio/wav', body: wav }); });
   await page.locator('#voice-text').fill('等一下'); await page.locator('#voice-send').click();
   await entered.promise;
-  await page.getByRole('button', { name: '停止', exact: true }).click();
+  await page.getByRole('button', { name: '停止回复', exact: true }).click();
   gate.resolve();
   await page.getByRole('status', { name: '语音服务状态' }).filter({ hasText: '旧回复和音频已失效' }).waitFor();
   await page.waitForTimeout(150);
   assert.equal(downloads, 0);
   assert.equal(await page.locator('audio').evaluate(a => a.paused && !a.getAttribute('src')), true);
   assert.equal(await page.locator('#play').isDisabled(), true);
+  await page.close();
+});
+
+test('the nearby reply Stop is disabled until a voice session is connected', async () => {
+  const page = await app.browser.newPage();
+  await page.goto(app.baseURL);
+  await page.getByRole('status', { name: '播放状态' }).filter({ hasText: '三维头部已就绪' }).waitFor();
+  assert.equal(await page.getByRole('button', { name: '停止回复', exact: true }).isDisabled(), true);
   await page.close();
 });
 

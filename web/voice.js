@@ -17,6 +17,7 @@ export function attachVoiceControls(hooks) {
     $('#voice-record').disabled = !session || busy || recording;
     $('#voice-record-end').disabled = !recording || busy;
     $('#voice-reset').disabled = !session;
+    $('#voice-stop').disabled = !session;
   }
   function invalidateLocal() {
     generation++;
@@ -75,20 +76,22 @@ export function attachVoiceControls(hooks) {
     update();
     status(kind === 'text' ? '正在生成回复…' : '正在转写录音…');
     hooks.allowStop();
+    let pollingActive = true;
     polling = setInterval(async () => {
       try {
         const state = await client.status();
-        if (stamp === generation) status(phaseNames[state.state] || '正在处理…', state.state === 'error');
+        if (stamp === generation && pollingActive) status(phaseNames[state.state] || '正在处理…', state.state === 'error');
       } catch { /* The turn request carries the final visible network error. */ }
     }, 700);
     try {
       const result = await (kind === 'text' ? client.text(value) : client.wav(value));
+      pollingActive = false;
       if (stamp !== generation || !result) return;
+      clearInterval(polling);
       const response = await fetch(base + result.audio.url);
       if (!response.ok) throw Error(`语音下载失败（${response.status}）`);
       const blob = await response.blob();
       if (stamp !== generation) return;
-      clearInterval(polling);
       $('#voice-transcript').textContent = result.transcript;
       $('#voice-reply').textContent = result.reply;
       $('#voice-emotion').textContent = result.user_emotion;
@@ -97,11 +100,13 @@ export function attachVoiceControls(hooks) {
       if (stamp !== generation) return;
       status(played ? '正在播放服务回复。' : '语音已就绪，请点击播放音频。');
     } catch (error) {
+      pollingActive = false;
       if (stamp === generation) {
         hooks.stopPlayback(true);
         status(`本轮失败：${error.message}`, true);
       }
     } finally {
+      pollingActive = false;
       if (stamp === generation) { clearInterval(polling); busy = false; update(); }
     }
   }
@@ -162,6 +167,7 @@ export function attachVoiceControls(hooks) {
     $('#voice-wav').value = '';
   });
   $('#voice-reset').addEventListener('click', reset);
+  $('#voice-stop').addEventListener('click', () => stop());
   $('#voice-record').addEventListener('click', startRecording);
   $('#voice-record-end').addEventListener('click', finishRecording);
   for (const selector of ['#sample', '#audio-file']) new MutationObserver(update).observe($(selector), { attributes: true, attributeFilter: ['disabled'] });
