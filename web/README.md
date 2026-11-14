@@ -29,3 +29,5 @@ The test runner serves its own temporary loopback HTTP port. Chrome uses softwar
 These tests check the browser media clock, rendered pixel change across a known pause, a zero mouth at completion, correlated frame records, local resources, invalid input recovery and the 500 ms Stop path. They do not collect speaker-loopback audio/video, prove the 95% visible/audio synchronization criterion, run 30 minutes/20 model turns, exercise the full ASR/LLM/TTS pipeline, or measure GPU inference. Ticket 01 remains subject to integration review and actual audiovisual acceptance.
 
 Source and redistribution terms: [asset notices](assets/NOTICES.md).
+
+文本输入与本地 LLM/TTS 接入见 [文本语音说明](README-voice.md)。页面初载不请求 API，本地音频演示仍可独立使用。
