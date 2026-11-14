@@ -37,9 +37,9 @@ $('#prepare').addEventListener('click',async()=>{
 });
 function lockProductInput() {
   const {document}=product();
-  const controls=['#audio-file','#sample','#play','#stop'].map(selector=>document.querySelector(selector));
+  const controls=['#audio-file','#sample','#play','#stop','#voice-panel'].map(selector=>document.querySelector(selector));
   let allowed=false, playbackStates;
-  const block=event=>{if(!allowed&&controls.includes(event.target)){event.preventDefault();event.stopImmediatePropagation();}};
+  const block=event=>{if(!allowed&&controls.some(control=>control===event.target||(control.id==='voice-panel'&&control.contains(event.target)))){event.preventDefault();event.stopImmediatePropagation();}};
   for(const type of ['click','change'])document.addEventListener(type,block,true);
   const original=controls.slice(0,2).map(control=>control.disabled);
   return {

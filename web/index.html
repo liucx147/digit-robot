@@ -7,6 +7,19 @@
   <section class="workspace">
     <div class="stage"><canvas id="avatar" aria-label="三维数字人头部"></canvas><span id="avatar-name">资源加载中</span></div>
     <section class="controls" aria-label="音频控制">
+      <fieldset id="voice-panel" disabled>
+        <legend>本地情感对话</legend>
+        <label for="voice-base">语音服务地址<input id="voice-base" type="url" placeholder="留空使用当前页面服务"></label>
+        <div class="voice-buttons"><button id="voice-connect">连接语音服务</button><button id="voice-reset" disabled>重置对话</button></div>
+        <p id="voice-status" role="status" aria-label="语音服务状态" aria-live="polite">尚未连接，可继续使用下方本地音频。</p>
+        <label for="voice-text">对话文本<textarea id="voice-text" maxlength="2000" rows="3" placeholder="说说你现在的感受"></textarea></label>
+        <button id="voice-send" disabled>发送文本</button>
+        <label for="voice-wav">发送 WAV 录音<input id="voice-wav" type="file" accept="audio/wav,.wav" disabled></label>
+        <div class="voice-buttons"><button id="voice-record" disabled>开始录音</button><button id="voice-record-end" disabled>结束并发送</button></div>
+        <p class="note">单次录音最多30秒，到时自动结束并发送。服务逐阶段运行模型，生成期间可按下方“停止”。</p>
+        <dl class="voice-result"><dt>转写 / 输入</dt><dd id="voice-transcript">—</dd><dt>回复</dt><dd id="voice-reply">—</dd><dt>用户情绪</dt><dd id="voice-emotion">—</dd><dt>表达意图</dt><dd id="voice-intent">—</dd></dl>
+        <p id="voice-expression-note" class="note">当前资产仅提供微笑：cheerful 映射微笑，其余意图使用中性面部。</p>
+      </fieldset>
       <p id="status" role="status" aria-label="播放状态" aria-live="polite">加载三维资源中…</p>
       <label class="file-label" for="audio-file">选择本地音频<input id="audio-file" type="file" accept="audio/*"></label>
       <button id="sample" disabled>载入中文录音示例</button><p id="audio-name">尚未选择音频</p>

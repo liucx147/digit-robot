@@ -1,17 +1,20 @@
 """HTTP boundary used by B's browser; model runtimes live behind VoicePipeline."""
 
 from typing import Any
+from pathlib import Path
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
 from starlette.concurrency import run_in_threadpool
 
 from .dialogue import load_json
 from .voice import VoiceError, VoicePipeline
 
 
-def create_app(pipeline: VoicePipeline, origins: list[str] | None = None) -> FastAPI:
+def create_app(pipeline: VoicePipeline, origins: list[str] | None = None,
+               web_dir: Path | None = None) -> FastAPI:
     app = FastAPI(title="Digit Robot A/B Voice API", version="0.2.0", docs_url=None, redoc_url=None)
     app.add_middleware(CORSMiddleware, allow_origins=origins or [],
                        allow_methods=["GET", "POST"], allow_headers=["Content-Type", "X-Session-Epoch"])
@@ -81,6 +84,8 @@ def create_app(pipeline: VoicePipeline, origins: list[str] | None = None) -> Fas
         return FileResponse(pipeline.audio_file(session_id, utterance_id), media_type="audio/wav",
                             headers={"Cache-Control": "no-store"})
 
+    if web_dir is not None:
+        app.mount("/", StaticFiles(directory=web_dir, html=True), name="browser")
     return app
 
 
@@ -97,7 +102,6 @@ async def read_body(request: Request, limit: int) -> bytes:
 
 def main() -> None:
     import argparse
-    from pathlib import Path
     import uvicorn
     from .process_models import ProcessModels, RuntimeConfig
 
@@ -108,7 +112,9 @@ def main() -> None:
     parser.add_argument("--allow-origin", action="append", default=[])
     args = parser.parse_args()
     models = ProcessModels(RuntimeConfig.from_file(args.config))
-    app = create_app(VoicePipeline(models, args.output_dir), args.allow_origin)
+    web_dir = models.config.project_root / "web"
+    app = create_app(VoicePipeline(models, args.output_dir), args.allow_origin,
+                     web_dir=web_dir if web_dir.is_dir() else None)
     uvicorn.run(app, host="127.0.0.1", port=args.port)
 
 

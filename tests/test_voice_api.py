@@ -193,3 +193,17 @@ def test_stop_during_tts_rejects_late_audio_and_single_gpu_is_exclusive(tmp_path
         assert pending.result(timeout=5).status_code == 409
     assert client.get(f"/v1/sessions/{sid}/turns/{uid}/audio").status_code == 404
     assert client.post(f"/v1/sessions/{other}/text", json={"text": "你好", "session_epoch": 0}).status_code == 200
+
+
+def test_browser_and_api_share_origin_without_exposing_runtime_files(tmp_path: Path) -> None:
+    web = tmp_path / "web"
+    web.mkdir()
+    (web / "index.html").write_text("<h1>数字人</h1>", encoding="utf-8")
+    (web / "measurement.html").write_text("measurement", encoding="utf-8")
+    (tmp_path / "secret.txt").write_text("private", encoding="utf-8")
+    client = TestClient(create_app(VoicePipeline(ModelFixture(), tmp_path / "runs"), web_dir=web))
+    assert "数字人" in client.get("/").text
+    assert client.get("/measurement.html").text == "measurement"
+    assert client.get("/v1/health").json()["api_version"] == "0.2.0"
+    assert client.post("/v1/sessions").json()["session_epoch"] == 0
+    assert client.get("/%2e%2e/secret.txt").status_code == 404

@@ -1,8 +1,9 @@
 import { attachGazeControls } from './gaze.js';
+import { attachVoiceControls } from './voice.js';
 const $ = selector => document.querySelector(selector);
 const status = $('#status'), audio = $('#audio');
 let gaze = { x: 0, y: 0 }, gazeControls;
-let avatar, manifest, powerSamples, sampleRate, objectURL, audioContext;
+let avatar, manifest, powerSamples, sampleRate, objectURL, audioContext, voiceControls, remotePlayback;
 let sessionEpoch = 0, resourceToken = 0, utteranceId = null, frameId = 0, playing = false;
 let record = { version: 1, frames: [], events: [] };
 const MAX_FRAMES = 120000;
@@ -55,7 +56,7 @@ function loadFailed(error, token) {
   $('#stop').disabled = true;
   setStatus(`音频加载失败：${error.message}。请选择有效音频。`, true);
 }
-async function loadAudio(file, token) {
+async function loadAudio(file, token, response = null) {
   if (!avatar) return;
   token ??= beginLoad();
   try {
@@ -73,14 +74,22 @@ async function loadAudio(file, token) {
     objectURL = URL.createObjectURL(file);
     audio.src = objectURL;
     audio.load();
+    remotePlayback = response;
+    if (response) {
+      sessionEpoch = response.session_epoch;
+      utteranceId = response.utterance_id;
+      $('#expression').value = response.expression_intent.style === 'cheerful' ? response.expression_intent.intensity : 0;
+    }
     $('#audio-name').textContent = `${file.name} · ${decoded.duration.toFixed(2)} 秒`;
     $('#play').disabled = false;
     $('#stop').disabled = true;
     setStatus('音频已就绪，点击播放。');
-  } catch (error) { loadFailed(error, token); }
+    return true;
+  } catch (error) { loadFailed(error, token); if (response) throw error; }
 }
-$('#audio-file').addEventListener('change', () => { const file = $('#audio-file').files[0]; if (file) loadAudio(file); });
+$('#audio-file').addEventListener('change', () => { const file = $('#audio-file').files[0]; if (file) { voiceControls?.localInput(); loadAudio(file); } });
 $('#sample').addEventListener('click', async () => {
+  voiceControls?.localInput();
   const token = beginLoad();
   try {
     const response = await fetch('./assets/nihao-cc0.wav');
@@ -90,13 +99,13 @@ $('#sample').addEventListener('click', async () => {
     await loadAudio(new File([blob], '你好 · CC0 录音.wav', { type: 'audio/wav' }), token);
   } catch (error) { loadFailed(error, token); }
 });
-$('#play').addEventListener('click', async () => {
+async function playAudio() {
   if (!powerSamples || playing) return;
   ++resourceToken;
   const epoch = sessionEpoch;
-  const id = utteranceId = crypto.randomUUID();
+  const id = utteranceId = remotePlayback?.utterance_id || crypto.randomUUID();
   frameId = 0;
-  record = { version: 1, avatar: { name: manifest.name, version: manifest.version, sha256: manifest.sha256 }, audio: { name: $('#audio-name').textContent, duration_ms: Math.round(powerSamples.length / sampleRate * 1000) }, frames: [], events: [] };
+  record = { version: 1, session_id: remotePlayback?.session_id, expression_intent: remotePlayback?.expression_intent, avatar: { name: manifest.name, version: manifest.version, sha256: manifest.sha256 }, audio: { name: $('#audio-name').textContent, duration_ms: Math.round(powerSamples.length / sampleRate * 1000) }, frames: [], events: [] };
   audio.currentTime = 0;
   playing = true;
   $('#play').disabled = true;
@@ -108,9 +117,10 @@ $('#play').addEventListener('click', async () => {
     tick(epoch, id);
     await acknowledgement;
     // A stale acknowledgement must not pause a newer playback on this shared media element.
-    if (!isCurrent(epoch, id)) return;
+    if (!isCurrent(epoch, id)) return false;
     setStatus('正在播放，嘴部跟随音频节奏。');
     event('play');
+    return true;
   } catch (error) {
     if (!isCurrent(epoch, id)) return;
     playing = false;
@@ -118,8 +128,10 @@ $('#play').addEventListener('click', async () => {
     $('#stop').disabled = true;
     frame(0);
     setStatus(`音频播放失败：${error.message}`, true);
+    return false;
   }
-});
+}
+$('#play').addEventListener('click', playAudio);
 audio.addEventListener('ended', () => {
   if (!playing) return;
   playing = false;
@@ -128,6 +140,7 @@ audio.addEventListener('ended', () => {
   $('#play').disabled = !powerSamples;
   $('#stop').disabled = true;
   setStatus('播放完成，嘴部已闭合。');
+  voiceControls?.ended();
 });
 audio.addEventListener('error', () => {
   if (!playing) return;
@@ -138,7 +151,7 @@ audio.addEventListener('error', () => {
   $('#stop').disabled = true;
   setStatus(`音频播放失败：浏览器媒体错误 ${audio.error?.code || '未知'}。`, true);
 });
-$('#stop').addEventListener('click', () => {
+function stopPlayback(clear = false) {
   gazeControls?.stop('已停止注视，旧代次输入已失效。', true);
   sessionEpoch++;
   resourceToken++;
@@ -147,9 +160,20 @@ $('#stop').addEventListener('click', () => {
   event('stop');
   audio.currentTime = 0;
   frame(0);
+  if (clear || remotePlayback) {
+    powerSamples = null;
+    remotePlayback = null;
+    audio.removeAttribute('src');
+    audio.load();
+    if (objectURL) { URL.revokeObjectURL(objectURL); objectURL = null; }
+  }
   $('#play').disabled = !powerSamples;
   $('#stop').disabled = true;
   setStatus('已停止，旧代次动画已失效。');
+}
+$('#stop').addEventListener('click', () => {
+  stopPlayback();
+  voiceControls?.stop(true);
 });
 $('#expression').addEventListener('input', () => { if (avatar && !playing) frame(0); });
 $('#download').addEventListener('click', () => {
@@ -167,5 +191,17 @@ try {
   $('#avatar-name').textContent = `${manifest.name} · ${manifest.version}`;
   gazeControls = attachGazeControls(value => { gaze = value; if (!playing) frame(0); });
   $('#sample').disabled = false;
+  voiceControls = attachVoiceControls({
+    audio,
+    inputLocked: () => $('#sample').disabled && $('#audio-file').disabled,
+    stopPlayback,
+    allowStop: () => { $('#stop').disabled = false; },
+    async prepareReply(response, blob) {
+      const token = beginLoad();
+      const loaded = await loadAudio(new File([blob], `回复-${response.utterance_id}.wav`, { type: 'audio/wav' }), token, response);
+      if (!loaded || token !== resourceToken) return false;
+      return playAudio();
+    },
+  });
   setStatus('三维头部已就绪，可载入中文录音示例或选择本地音频。');
 } catch (error) { setStatus(`资源加载失败：${error.message}。请检查本地资源后重新加载。`, true); }
