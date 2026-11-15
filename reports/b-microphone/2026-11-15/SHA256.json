@@ -1,5 +1,5 @@
 {
-  ".gitattributes": "8b9c3028d6467ff3be7c793141927841d70f47f52d0590677438f488ca154992",
+  ".gitattributes": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
   "attempt01-runner-failure/failure-notes.md": "130122d069355854c3613bf790d294c1111ddda16e705df22f53c68135549979",
   "attempt02-context-failure/api-response.json": "50250b62bcf3a27de5b8bdcd2df1d3291297bec84cfb78de6f36a736bee280a9",
   "attempt02-context-failure/microphone-turn-page.png": "3b59a79171d41cff3bbd61517ea89b8f5efccfafb7ffaf942f0450daad708f72",
@@ -24,5 +24,5 @@
   "final-microphone-scope/session.json": "2f16029e4fff10a321617a4f4131aef9019883fa2053d4123cf5fa31dc6eadf0",
   "final-microphone-scope/speaking.png": "f209a30890cbbd5be860e56b376b71a7a644156d8d62b854d305aa9434f0d0e7",
   "final-microphone-scope/submitted-pcm16.wav": "2bdb22144f6ede0fb73db2928bc53bd86788891e1487371ca86c6d09d5df878e",
-  "README.md": "32e5dfaad76067cf95c701f299b144d6ded69910985b2d4a3acbc53997fd33bf"
+  "README.md": "c06cda08e45900a1e442a440ebca831139fd79e8b32165c0e5b5060ae6bbcd3d"
 }
