@@ -30,19 +30,36 @@ async function setup(handlers={}) {
 }
 async function connect(page){await page.getByRole('button',{name:'连接本地服务',exact:true}).click();await page.getByRole('status',{name:'对话状态'}).filter({hasText:/已连接/}).waitFor();}
 async function send(page){await page.getByLabel('输入中文').fill('我今天考试没考好，很难过。');await page.getByRole('button',{name:'发送并播放回复'}).click();}
-before(async()=>{({browser,baseURL,close}=await publicBrowser(path.resolve(__dirname,'..')));await fs.mkdir(path.resolve(__dirname,'../../artifacts'),{recursive:true});});
+before(async()=>{({browser,baseURL,close}=await publicBrowser(path.resolve(__dirname,'..')));await fs.mkdir(path.resolve(__dirname,'../../artifacts/solid-head'),{recursive:true});});
 after(async()=>{await close?.();});
 test('Chinese text returns readable reply, real audio and visible face with server-linked playback frames',async()=>{
- const page=await setup();await connect(page);await send(page);
+ const page=await setup();
+ // Capture actual rendered pixels synchronously at the documented frame event.
+ // A protocol screenshot may complete after the short fixture has changed phase.
+ await page.evaluate(()=>{
+   window.cadencePixels={};
+   const observe=()=>{
+     const audio=document.querySelector('audio'),canvas=document.querySelector('#avatar'),t=audio.currentTime;
+     const key=t>=.2&&t<=.5?'speaking':t>=.85&&t<=1.15?'pause':null;
+     if(key&&!window.cadencePixels[key]){
+       const image=document.createElement('canvas');image.width=canvas.width;image.height=canvas.height;
+       image.getContext('2d').drawImage(canvas,0,0);
+       window.cadencePixels[key]={audio_time_s:t,png:image.toDataURL('image/png').split(',')[1]};
+     }
+     if(window.cadencePixels.speaking&&window.cadencePixels.pause)document.removeEventListener('digitalhuman:frame',observe);
+   };
+   document.addEventListener('digitalhuman:frame',observe);
+ });
+ await connect(page);await send(page);
  await page.getByRole('status',{name:'对话状态'}).filter({hasText:/正在播放/}).waitFor();
  assert.match(await page.getByLabel('数字人回复').textContent(),/我愿意听你说/);
  assert.match(await page.getByLabel('用户文本情绪').textContent(),/悲伤/);
  assert.match(await page.getByLabel('数字人表达').textContent(),/温和关切/);
- await page.waitForFunction(()=>document.querySelector('audio').currentTime>=.2);
- assert.equal(await page.locator('audio').evaluate(a=>a.paused),false);
- const speaking=await page.getByLabel('三维数字人头部').screenshot();
- await page.waitForFunction(()=>document.querySelector('audio').currentTime>=.85);
- const pause=await page.getByLabel('三维数字人头部').screenshot();assert.notDeepEqual(speaking,pause);
+ await page.waitForFunction(()=>window.cadencePixels.speaking&&window.cadencePixels.pause);
+ const rendered=await page.evaluate(()=>window.cadencePixels);
+ const speaking=Buffer.from(rendered.speaking.png,'base64'),pause=Buffer.from(rendered.pause.png,'base64');
+ assert.notDeepEqual(speaking,pause);
+ await fs.writeFile(path.resolve(__dirname,'../../artifacts/solid-head/frame-pixel-timing.json'),JSON.stringify({speaking_s:rendered.speaking.audio_time_s,pause_s:rendered.pause.audio_time_s},null,2));
  await fs.writeFile(path.resolve(__dirname,'../../artifacts/ticket-03-speaking.png'),speaking);await fs.writeFile(path.resolve(__dirname,'../../artifacts/ticket-03-pause.png'),pause);
  await page.getByRole('status',{name:'对话状态'}).filter({hasText:/回复播放完成/}).waitFor();
  await page.getByText('播放记录',{exact:true}).click();const downloading=page.waitForEvent('download');await page.getByRole('button',{name:'下载播放记录'}).click();const download=await downloading;

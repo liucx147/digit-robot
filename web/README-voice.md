@@ -17,7 +17,7 @@
 
 用户文本情绪七分类只作为识别结果显示，不直接选择表情。TTS 的表达指令由服务端依据独立的 `expression_intent` 生成，当前 A 侧使用原始 Qwen3-TTS-12Hz-1.7B-CustomVoice；型号、固定音色、授权与实机基线以 [A 交接](../docs/development/b-voice-api.md) 和 `reports/voice-chain/` 为准。本次前端测试没有重新调用 GPU、训练 TTS 或证明四种指令的实际听感。
 
-当前许可资产 VRM1_Constraint_Twist_Sample v1.0.1 只有已验证的 jawOpen、smile、blink 和眼球骨骼通道。实际 API 映射如下：
+当前默认资产为原创实体头部 solid-v1，支持 jawOpen、smile、blink 和眼球骨骼通道。历史VRM只保留在固定测量页；新头部没有沿用其物理同步结论。实际 API 映射如下：
 
 | style | 页面名称 / 服务端语气指令 | 进入控制层的微笑贡献 |
 | --- | --- | --- |
@@ -26,7 +26,7 @@
 | calm | 平静清晰 | 0（中性静态表情） |
 | serious | 认真沉稳 | 0（中性静态表情） |
 
-intensity 必须是 0–1 的有限数。calm 和 serious 在当前资产上使用相同中性脸型，不代表四种独立面部表情；gentle 与 cheerful 是同一 Joy 嘴部形变的不同强度。没有新增悲伤、愤怒等形变，也没有宣称七种表情。
+intensity 必须是 0–1 的有限数。calm 和 serious 在当前资产上使用相同中性脸型，不代表四种独立面部表情；gentle 与 cheerful 使用同一 smile 嘴角形变的不同强度。没有新增悲伤、愤怒等形变，也没有宣称七种表情。
 
 嘴部先解码返回的实际 WAV，按全部声道的能量分析幅度；每帧读取真实 HTMLAudio 的 `currentTime`，采样对应 20 ms 窗口，停顿与结束时 jawOpen 为零。它是节奏开合，不是音素唇形。微笑实际权重为上述贡献再乘 `(1 - jawOpen)`，避免完全张嘴时叠加冲突；因此微笑静态姿态本身可能使嘴唇稍分开。表情、嘴部和注视最终都经原 FaceController 混合并实际渲染。
 

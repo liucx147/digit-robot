@@ -337,7 +337,7 @@ $('#download').addEventListener('click', () => {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 });
 try {
-  const manifestURL = new URL('./assets/avatar-manifest.json', import.meta.url);
+  const manifestURL = new URL(new URLSearchParams(location.search).get('measurementFixture') === 'vrm1' ? './assets/avatar-measurement-manifest.json' : './assets/avatar-manifest.json', import.meta.url);
   const response = await fetch(manifestURL);
   if (!response.ok) throw new Error('找不到数字人资源清单');
   manifest = await response.json();

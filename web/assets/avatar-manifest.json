@@ -1,20 +1,21 @@
 {
-  "name": "VRM1_Constraint_Twist_Sample",
-  "version": "v1.0.1",
-  "file": "./avatar.vrm",
-  "sha256": "12c2b97e95e700783a6a550dc0eee2d7880aeedccef9ae67bc4c5a2f0f2631a2",
-  "headBone": "J_Bip_C_Head",
+  "name": "实体三维头部",
+  "version": "solid-v1",
+  "type": "solid-head",
+  "file": "../solid-head.js",
+  "sha256": "5589660f42f67e7d5bd6e13b8248216ecbeaaaa14607da84cecced3a7e5afad6",
+  "headBone": "Head",
   "parameters": {
-    "jawOpen": "Face_Blendshape.Fcl_MTH_A",
-    "smile": "Face_Blendshape.Fcl_MTH_Joy",
-    "blink": "Face_Blendshape.Fcl_EYE_Close"
+    "jawOpen": "jawOpen",
+    "smile": "smile",
+    "blink": "blink"
   },
   "gaze": {
     "eyeBones": [
-      "J_Adj_L_FaceEye",
-      "J_Adj_R_FaceEye"
+      "EyeLeft",
+      "EyeRight"
     ],
-    "maxDegrees": 10,
-    "source": "VRMC_vrm humanoid.leftEye/rightEye; lookAt type bone outputScale 10"
-  }
+    "maxDegrees": 10
+  },
+  "source": "Original procedural project geometry; no external model or portrait"
 }

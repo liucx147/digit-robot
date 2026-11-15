@@ -125,7 +125,7 @@ test('audible opposite-polarity stereo still opens the mouth rather than cancell
 
 test('corrupt avatar bytes produce a visible resource failure without enabling playback', async () => {
   const page = await browser.newPage();
-  await page.route('**/assets/avatar.vrm', route => route.fulfill({ status: 200, body: 'not a valid glTF asset' }));
+  await page.route('**/solid-head.js', route => route.fulfill({ status: 200, body: 'not a valid glTF asset' }));
   await page.goto(baseURL);
   await page.getByRole('status', { name: '播放状态' }).filter({ hasText: /资源加载失败/ }).waitFor();
   assert.equal(await page.getByRole('button', { name: '播放音频', exact: true }).isDisabled(), true);
