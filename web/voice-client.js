@@ -48,7 +48,7 @@ export function createVoiceClient(baseUrl) {
     const stamp = ++generation, sid = session?.session_id, epoch = session?.session_epoch;
     streamAbort?.abort();
     const controller = streamAbort = new AbortController();
-    let reader, uid, metadata, nextSegment = 0, done = false;
+    let reader, uid, metadata, nextSegment = 0, done = false, awaitingAudio = null, spoken = '';
     try {
       const response = await fetch(new URL(route(suffix).replace('/v1/', '/v2/'), base), { ...options, signal: controller.signal, cache: 'no-store' });
       if (!current(stamp, sid, epoch)) return null;
@@ -60,6 +60,7 @@ export function createVoiceClient(baseUrl) {
       const deliver = async line => {
         if (!current(stamp, sid, epoch)) return;
         const value = JSON.parse(line);
+        if (value.type === 'error' && value.session_id === sid && value.session_epoch === epoch) throw new Error(value.message || '分句请求失败');
         if (done || value.session_id !== sid || value.session_epoch !== epoch || !/^[a-zA-Z0-9_-]{1,128}$/.test(value.utterance_id || '')) throw new Error('分句会话或代次无效');
         if (value.type === 'start') { if (uid) throw new Error('重复的分句轮次'); uid = value.utterance_id; }
         else if (!uid || uid !== value.utterance_id) throw new Error('分句发言标识不匹配');
@@ -68,10 +69,12 @@ export function createVoiceClient(baseUrl) {
           if (metadata || !['happiness','sadness','anger','fear','surprise','disgust','neutral'].includes(value.user_emotion) || !['gentle','cheerful','calm','serious'].includes(intent?.style) || typeof intent.intensity !== 'number' || !Number.isFinite(intent.intensity) || intent.intensity < 0 || intent.intensity > 1) throw new Error('分句表达意图无效');
           metadata = value;
         } else if (value.type === 'sentence') {
-          if (!metadata || value.segment_index !== nextSegment || typeof value.text !== 'string' || !value.text.trim() || value.text.length > 36) throw new Error('回复分句无效');
+          if (!metadata || awaitingAudio !== null || nextSegment >= 3 || value.segment_index !== nextSegment || typeof value.text !== 'string' || !value.text.trim() || value.text.length > (nextSegment === 0 ? 24 : 36) || spoken.length + value.text.length > 80) throw new Error('回复分句无效');
+          awaitingAudio = value.text; spoken += value.text;
         } else if (value.type === 'audio_ready') {
           const audio = value.audio, expected = `/v2/sessions/${sid}/turns/${uid}/segments/${nextSegment}/audio`;
-          if (!metadata || value.segment_index !== nextSegment || audio?.url !== expected || audio.mime_type !== 'audio/wav' || !Number.isFinite(audio.duration_ms) || audio.duration_ms <= 0 || !Number.isInteger(audio.sample_rate_hz) || audio.sample_rate_hz <= 0 || ![1,2].includes(audio.channels)) throw new Error('分句音频信息无效');
+          if (!metadata || awaitingAudio === null || value.text !== awaitingAudio || nextSegment >= 3 || value.segment_index !== nextSegment || audio?.url !== expected || audio.mime_type !== 'audio/wav' || !Number.isFinite(audio.duration_ms) || audio.duration_ms <= 0 || !Number.isInteger(audio.sample_rate_hz) || audio.sample_rate_hz <= 0 || ![1,2].includes(audio.channels)) throw new Error('分句音频信息无效');
+          awaitingAudio = null;
           nextSegment++;
           // Start prefetch now; playback consumes these promises in segment order.
           value.blob = fetch(new URL(audio.url, base), {signal:controller.signal,cache:'no-store'}).then(async response => {
@@ -82,7 +85,7 @@ export function createVoiceClient(baseUrl) {
           value.blob.catch(() => {}); // Queue consumption owns the visible error.
           Object.assign(value, {user_emotion:metadata.user_emotion,expression_intent:metadata.expression_intent});
         } else if (value.type === 'done') {
-          if (!nextSegment || value.status !== 'ok' || typeof value.reply !== 'string' || value.reply.length > 80) throw new Error('分句回复未完整结束');
+          if (!nextSegment || awaitingAudio !== null || value.status !== 'ok' || value.reply !== spoken) throw new Error('分句回复未完整结束');
           done = true;
         } else if (value.type === 'error') throw new Error(value.message || '分句回复失败');
         else if (!['start','transcript','meta'].includes(value.type)) throw new Error('未知的分句事件');

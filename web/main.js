@@ -188,6 +188,11 @@ async function playAudio() {
 }
 $('#play').addEventListener('click', playAudio);
 audio.addEventListener('playing', () => {
+  if (sentencePlayback && playing && !audio.paused && sentencePlayback.startedSegment !== loadedTurn?.segment_index) {
+    const now = performance.now();
+    if (sentencePlayback.lastEnded !== undefined) sentencePlayback.gaps.push(now - sentencePlayback.lastEnded);
+    sentencePlayback.startedSegment = loadedTurn?.segment_index;
+  }
   if (!playing || audio.paused || audio.ended || !loadedTurn || !turnObservation || turnObservation.audio_started_at_ms !== null) return;
   turnObservation.audio_started_at_ms = performance.now();
   turnObservation.speech_end_to_audio_start_ms = Math.round(turnObservation.audio_started_at_ms - turnObservation.speech_ended_at_ms);
@@ -200,6 +205,7 @@ audio.addEventListener('ended', () => {
   frame(0);
   event('ended');
   if (sentencePlayback) {
+    sentencePlayback.lastEnded = performance.now();
     $('#play').disabled = true; $('#stop').disabled = false;
     voiceStatus('本句播放完成，等待后续分句…');
     sentencePlayback.resolveSegment?.(true);
@@ -319,11 +325,9 @@ async function pumpSentences(turn) {
       const ready = await loadAudio(new File([blob], `数字人回复-${segment.segment_index + 1}.wav`, {type:'audio/wav'}), resourceToken, response);
       if (turn !== sentencePlayback || turn.cancelled) return;
       if (!ready) throw new Error('分句语音无法解码');
-      if (turn.lastEnded !== undefined) turn.gaps.push(performance.now() - turn.lastEnded);
       const ended = new Promise((resolve,reject) => { turn.resolveSegment = resolve; turn.rejectSegment = reject; });
       await playAudio();
       if (!await ended || turn !== sentencePlayback) return;
-      turn.lastEnded = performance.now();
     }
     if (turn.done && turn === sentencePlayback) {
       const origin = turnObservation.speech_ended_at_ms;
@@ -332,7 +336,7 @@ async function pumpSentences(turn) {
       record.server_timings_ms = turn.done.timings_ms;
       record.client_timings_ms = {first_audio_start_ms:turnObservation.speech_end_to_audio_start_ms,
         first_reply_activity_ms:turnObservation.speech_end_to_reply_activity_ms,
-        generation_done_observed_ms:turn.doneObserved-origin,total_playback_ms:performance.now()-origin,
+        generation_done_observed_ms:turn.doneObserved-origin,total_playback_ms:turn.lastEnded-origin,
         segment_gaps_ms:turn.gaps};
       event('turn-ended');
       sentencePlayback = null; voiceBusy = false;

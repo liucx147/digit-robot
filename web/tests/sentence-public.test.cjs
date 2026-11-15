@@ -9,8 +9,9 @@ before(async()=>{app=await publicBrowser(path.resolve(__dirname,'..'));});
 after(async()=>{await app?.close();});
 function deferred(){let resolve;const promise=new Promise(r=>resolve=r);return {promise,resolve};}
 function wav(){const rate=16000,n=rate*1.1,b=Buffer.alloc(44+n*2);b.write('RIFF');b.writeUInt32LE(b.length-8,4);b.write('WAVEfmt ',8);b.writeUInt32LE(16,16);b.writeUInt16LE(1,20);b.writeUInt16LE(1,22);b.writeUInt32LE(rate,24);b.writeUInt32LE(rate*2,28);b.writeUInt16LE(2,32);b.writeUInt16LE(16,34);b.write('data',36);b.writeUInt32LE(n*2,40);for(let i=0;i<n;i++)b.writeInt16LE(Math.round(8000*Math.sin(i/rate*2*Math.PI*220)),44+i*2);return b;}
-async function setup({delayedGeneration=true,delayedAudio=false,badAudio=false}={}){
- const release=deferred(),requests=[],completed=[];let epoch=0,streamEnded=false;
+async function setup({delayedGeneration=true,delayedAudio=false,badAudio=false,delayedDone=false,tooMany=false,mismatch=false}={}){
+ const release=deferred(),doneRelease=deferred(),requests=[],completed=[];let epoch=0,streamEnded=false;
+ if(!delayedDone)doneRelease.resolve();
  const api=http.createServer(async(req,res)=>{
   res.setHeader('Access-Control-Allow-Origin',app.baseURL);res.setHeader('Access-Control-Allow-Headers','Content-Type,X-Session-Epoch');res.setHeader('Access-Control-Allow-Methods','GET,POST,OPTIONS');
   if(req.method==='OPTIONS'){res.writeHead(204);return res.end();}
@@ -27,7 +28,7 @@ async function setup({delayedGeneration=true,delayedAudio=false,badAudio=false}=
    const emit=(type,extra={})=>res.write(JSON.stringify({type,session_id:'sentence-session',session_epoch:initial,utterance_id:'sentence-turn',...extra})+'\n');
    emit('start');emit('meta',{user_emotion:'sadness',expression_intent:{style:'gentle',intensity:.5}});
    const segment=i=>{emit('sentence',{segment_index:i,text:i?'我们可以一起想办法。':'听起来你很难过。'});emit('audio_ready',{segment_index:i,text:i?'我们可以一起想办法。':'听起来你很难过。',user_emotion:'sadness',expression_intent:{style:'gentle',intensity:.5},audio:{url:badAudio?'https://external.invalid/audio':`/v2/sessions/sentence-session/turns/sentence-turn/segments/${i}/audio`,mime_type:'audio/wav',duration_ms:1100,sample_rate_hz:16000,channels:1}});};
-   segment(0);if(delayedGeneration)await release.promise;segment(1);emit('done',{reply:'听起来你很难过。我们可以一起想办法。',status:'ok',timings_ms:{first_audio_ready_ms:100,total_ms:200}});streamEnded=true;return res.end();
+   segment(0);if(delayedGeneration)await release.promise;segment(1);if(tooMany)for(let i=2;i<7;i++)segment(i);await doneRelease.promise;emit('done',{reply:mismatch?'你好。':'听起来你很难过。我们可以一起想办法。',status:'ok',timings_ms:{first_audio_ready_ms:100,total_ms:200}});streamEnded=true;return res.end();
   }
   if(p.endsWith('/audio')){
    const index=Number(p.split('/').at(-2));if(delayedAudio&&index===0)await new Promise(r=>setTimeout(r,700));completed.push(index);res.setHeader('Content-Type','audio/wav');return res.end(wav());
@@ -40,8 +41,8 @@ async function setup({delayedGeneration=true,delayedAudio=false,badAudio=false}=
  await page.getByText('本地服务连接',{exact:true}).click();await page.getByLabel('本地服务地址').fill(base);
  await page.getByRole('button',{name:'连接本地服务',exact:true}).click();await page.getByRole('status',{name:'对话状态'}).filter({hasText:'已连接'}).waitFor();
  const send=async()=>{await page.getByLabel('输入中文').fill('今天很难过');await page.getByRole('button',{name:'发送并播放回复'}).click();};
- const close=async()=>{release.resolve();await page.close();api.closeAllConnections();await new Promise(r=>api.close(r));};
- return {page,release,requests,completed,send,close,get streamEnded(){return streamEnded;}};
+ const close=async()=>{release.resolve();doneRelease.resolve();await page.close();api.closeAllConnections();await new Promise(r=>api.close(r));};
+ return {page,release,doneRelease,requests,completed,send,close,get streamEnded(){return streamEnded;}};
 }
 test('first sentence plays while generation is unfinished; full queue exports correlated frames and separate timing',async()=>{
  const f=await setup();try{await f.send();await f.page.waitForFunction(()=>!document.querySelector('#audio').paused&&Number(document.querySelector('#mouth-weight').textContent)>.05);assert.equal(f.streamEnded,false);f.release.resolve();await f.page.getByRole('status',{name:'对话状态'}).filter({hasText:'回复播放完成'}).waitFor();
@@ -57,4 +58,18 @@ test('Stop drops the current segment and late future sentences without reviving 
 });
 test('foreign segment audio is a visible failure and is never fetched',async()=>{
  const f=await setup({delayedGeneration:false,badAudio:true});try{const foreign=[];f.page.on('request',r=>{if(r.url().includes('external.invalid'))foreign.push(r.url());});await f.send();await f.page.getByRole('status',{name:'对话状态'}).filter({hasText:'回复失败'}).waitFor();assert.deepEqual(foreign,[]);assert.equal(await f.page.locator('#audio').evaluate(a=>a.paused),true);}finally{await f.close();}
+});
+test('segment gap includes delayed actual second playback',async()=>{
+ const f=await setup({delayedGeneration:false});try{
+ await f.page.evaluate(()=>{const real=HTMLMediaElement.prototype.play;let calls=0;HTMLMediaElement.prototype.play=function(){if(++calls!==2)return real.call(this);return new Promise(resolve=>setTimeout(()=>resolve(real.call(this)),500));};});
+ await f.send();await f.page.getByRole('status',{name:'对话状态'}).filter({hasText:'回复播放完成'}).waitFor();await f.page.getByText('播放记录',{exact:true}).click();const download=f.page.waitForEvent('download');await f.page.locator('#download').click();const record=JSON.parse(await fs.readFile(await (await download).path(),'utf8'));assert(record.client_timings_ms.segment_gaps_ms[0]>=450,'device start delay must be counted');
+ }finally{await f.close();}
+});
+test('late done cannot inflate actual last-ended playback duration',async()=>{
+ const f=await setup({delayedGeneration:false,delayedDone:true});try{
+ await f.page.evaluate(()=>{window.finishedSegments=0;document.querySelector('audio').addEventListener('ended',()=>window.finishedSegments++);});await f.send();await f.page.waitForFunction(()=>window.finishedSegments===2);await f.page.waitForTimeout(700);f.doneRelease.resolve();await f.page.getByRole('status',{name:'对话状态'}).filter({hasText:'回复播放完成'}).waitFor();await f.page.getByText('播放记录',{exact:true}).click();const download=f.page.waitForEvent('download');await f.page.locator('#download').click();const record=JSON.parse(await fs.readFile(await (await download).path(),'utf8'));assert(record.client_timings_ms.generation_done_observed_ms-record.client_timings_ms.total_playback_ms>=650,'done waiting is not playback duration');
+ }finally{await f.close();}
+});
+for(const option of ['tooMany','mismatch'])test(`invalid ${option} stream cannot report successful playback`,async()=>{
+ const f=await setup({delayedGeneration:false,[option]:true});try{await f.send();await f.page.getByRole('status',{name:'对话状态'}).filter({hasText:'回复失败'}).waitFor();assert.equal(await f.page.locator('#audio').evaluate(a=>a.paused),true);if(option==='tooMany')assert(!f.requests.some(p=>p.includes('/segments/3/')));}finally{await f.close();}
 });
