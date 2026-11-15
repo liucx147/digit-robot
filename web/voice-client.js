@@ -29,6 +29,21 @@ export function createVoiceClient(baseUrl) {
     if (!session) throw new Error('请先连接本地服务');
     return `/v1/sessions/${encodeURIComponent(session.session_id)}${suffix}`;
   }
+  async function send(suffix, options, requireTranscript = false) {
+    const stamp = ++generation, sid = session?.session_id, epoch = session?.session_epoch;
+    try {
+      const result = await request(route(suffix), options);
+      if (!current(stamp, sid, epoch)) return null;
+      if (result.session_id !== sid || result.session_epoch !== epoch) throw new Error('服务返回了不匹配的会话或代次');
+      validateResult(result);
+      if (requireTranscript && (typeof result.transcript !== 'string' || !result.transcript.trim() || result.transcript.length > 2000)) throw new Error('未得到有效语音转写，未播放回复');
+      const response = await fetch(new URL(result.audio.url, base), { cache: 'no-store' });
+      if (!current(stamp, sid, epoch)) return null;
+      if (!response.ok) throw new Error(`语音获取失败（HTTP ${response.status}）`);
+      const blob = await response.blob();
+      return current(stamp, sid, epoch) ? { result, blob } : null;
+    } catch (error) { if (!current(stamp, sid, epoch)) return null; throw error; }
+  }
   return {
     get connected() { return !!session; },
     invalidate() {
@@ -43,19 +58,19 @@ export function createVoiceClient(baseUrl) {
       if (!validSession(next)) throw new Error('本地服务返回的会话信息无效');
       session = next; return next;
     },
-    async text(text) {
-      const stamp = ++generation, sid = session?.session_id, epoch = session?.session_epoch;
-      try {
-        const result = await request(route('/text'), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text, session_epoch: epoch }) });
-        if (!current(stamp, sid, epoch)) return null;
-        if (result.session_id !== sid || result.session_epoch !== epoch) throw new Error('服务返回了不匹配的会话或代次');
-        validateResult(result);
-        const response = await fetch(new URL(result.audio.url, base), { cache: 'no-store' });
-        if (!current(stamp, sid, epoch)) return null;
-        if (!response.ok) throw new Error(`语音获取失败（HTTP ${response.status}）`);
-        const blob = await response.blob();
-        return current(stamp, sid, epoch) ? { result, blob } : null;
-      } catch (error) { if (!current(stamp, sid, epoch)) return null; throw error; }
+    async status() {
+      // A read never advances the send generation or replaces our confirmed epoch.
+      const stamp = generation, sid = session?.session_id, epoch = session?.session_epoch;
+      const value = await request(route());
+      if (!current(stamp, sid, epoch)) return null;
+      if (value.session_id !== sid || value.session_epoch !== epoch) return null;
+      return value;
+    },
+    text(text) {
+      return send('/text', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text, session_epoch: session?.session_epoch }) });
+    },
+    wav(blob) {
+      return send('/audio', { method: 'POST', headers: { 'Content-Type': 'audio/wav', 'X-Session-Epoch': String(session?.session_epoch) }, body: blob }, true);
     },
     async stop() {
       const path = route('/stop'), sid = session.session_id, stamp = ++generation;
