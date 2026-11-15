@@ -2,6 +2,8 @@
 import json
 import os
 import sys
+import time
+from threading import Thread
 
 print(json.dumps({'event': 'ready', 'pid': os.getpid(), 'load_count': 1}), flush=True)
 for line in sys.stdin:
@@ -9,6 +11,14 @@ for line in sys.stdin:
     if request['op'] == 'shutdown':
         break
     if request['op'] == 'cancel':
+        continue
+    if request['payload'].get('late'):
+        def late(request=request):
+            time.sleep(.25)
+            print(json.dumps({'id':request['id'],'event':'result','value':'old'}),flush=True)
+            print(json.dumps({'id':request['id'],'event':'done'}),flush=True)
+        print(json.dumps({'id':request['id'],'event':'started'}),flush=True)
+        Thread(target=late).start()
         continue
     print(json.dumps({'id': request['id'], 'event': 'result', 'pid': os.getpid(), 'value': request['payload']['value']}), flush=True)
     print(json.dumps({'id': request['id'], 'event': 'done'}), flush=True)

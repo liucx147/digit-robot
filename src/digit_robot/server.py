@@ -3,6 +3,7 @@
 from typing import Any
 from pathlib import Path
 import json
+import asyncio
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -31,12 +32,43 @@ def create_app(pipeline: VoicePipeline, origins: list[str] | None = None,
 
     def streamed(session_id: str, epoch: int, **input: Any) -> StreamingResponse:
         events = getattr(pipeline, 'stream_turn')(session_id, epoch, **input)
-        return StreamingResponse((json.dumps(event, ensure_ascii=False) + '\n' for event in events),
+        async def body():
+            terminal = False
+            owner = None
+            pending = None
+            try:
+                while True:
+                    pending = asyncio.get_running_loop().run_in_executor(None, next, events, None)
+                    value = await asyncio.shield(pending)
+                    if value is None:
+                        break
+                    if value['type'] == 'start':
+                        owner = value['utterance_id']
+                    if value['type'] in ('done', 'error'):
+                        terminal = True
+                    yield json.dumps(value, ensure_ascii=False) + '\n'
+            finally:
+                if not terminal and owner is not None:
+                    with pipeline.lock:
+                        current = pipeline.status(session_id)
+                        if current['session_epoch'] == epoch and current['utterance_id'] == owner:
+                            pipeline.invalidate(session_id, reset=False)
+                # The cooperative model cancellation lets an in-flight next() finish.
+                # Closing only afterward avoids closing a generator running on another thread.
+                async def close_iterator():
+                    if pending is not None:
+                        await pending
+                    events.close()
+                asyncio.create_task(close_iterator())
+        return StreamingResponse(body(),
                                  media_type='application/x-ndjson', headers={'Cache-Control': 'no-store', 'X-Accel-Buffering': 'no'})
 
     @app.post("/v1/sessions")
     def create_session() -> dict[str, Any]:
-        return pipeline.create_session()
+        session = pipeline.create_session()
+        if hasattr(pipeline, 'stream_turn'):
+            session['sentence_streaming'] = True
+        return session
 
     @app.get("/v1/sessions/{session_id}")
     def status(session_id: str) -> dict[str, Any]:

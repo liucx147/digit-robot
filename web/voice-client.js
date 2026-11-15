@@ -2,7 +2,7 @@
 export function createVoiceClient(baseUrl) {
   const base = new URL(baseUrl);
   if (!['127.0.0.1', 'localhost', '[::1]'].includes(base.hostname) || !['http:', 'https:'].includes(base.protocol)) throw new Error('请填写本机服务地址（localhost 或 127.0.0.1）');
-  let session, generation = 0, pendingStop;
+  let session, generation = 0, pendingStop, sentenceStreaming = false, streamAbort;
   const validSession = value => value && typeof value.session_id === 'string' && /^[a-zA-Z0-9_-]{1,128}$/.test(value.session_id) && Number.isInteger(value.session_epoch) && value.session_epoch >= 0;
   function validateResult(value) {
     const intent = value?.expression_intent, sound = value?.audio;
@@ -44,18 +44,80 @@ export function createVoiceClient(baseUrl) {
       return current(stamp, sid, epoch) ? { result, blob } : null;
     } catch (error) { if (!current(stamp, sid, epoch)) return null; throw error; }
   }
+  async function streamSend(suffix, options, onEvent) {
+    const stamp = ++generation, sid = session?.session_id, epoch = session?.session_epoch;
+    streamAbort?.abort();
+    const controller = streamAbort = new AbortController();
+    let reader, uid, metadata, nextSegment = 0, done = false;
+    try {
+      const response = await fetch(new URL(route(suffix).replace('/v1/', '/v2/'), base), { ...options, signal: controller.signal, cache: 'no-store' });
+      if (!current(stamp, sid, epoch)) return null;
+      if (!response.ok) { const error = await response.json(); throw new Error(error.message || '分句请求失败'); }
+      if (!response.body) throw new Error('浏览器不支持流式回复');
+      reader = response.body.getReader();
+      const decoder = new TextDecoder('utf-8', { fatal: true });
+      let pending = '';
+      const deliver = async line => {
+        if (!current(stamp, sid, epoch)) return;
+        const value = JSON.parse(line);
+        if (done || value.session_id !== sid || value.session_epoch !== epoch || !/^[a-zA-Z0-9_-]{1,128}$/.test(value.utterance_id || '')) throw new Error('分句会话或代次无效');
+        if (value.type === 'start') { if (uid) throw new Error('重复的分句轮次'); uid = value.utterance_id; }
+        else if (!uid || uid !== value.utterance_id) throw new Error('分句发言标识不匹配');
+        if (value.type === 'meta') {
+          const intent = value.expression_intent;
+          if (metadata || !['happiness','sadness','anger','fear','surprise','disgust','neutral'].includes(value.user_emotion) || !['gentle','cheerful','calm','serious'].includes(intent?.style) || typeof intent.intensity !== 'number' || !Number.isFinite(intent.intensity) || intent.intensity < 0 || intent.intensity > 1) throw new Error('分句表达意图无效');
+          metadata = value;
+        } else if (value.type === 'sentence') {
+          if (!metadata || value.segment_index !== nextSegment || typeof value.text !== 'string' || !value.text.trim() || value.text.length > 36) throw new Error('回复分句无效');
+        } else if (value.type === 'audio_ready') {
+          const audio = value.audio, expected = `/v2/sessions/${sid}/turns/${uid}/segments/${nextSegment}/audio`;
+          if (!metadata || value.segment_index !== nextSegment || audio?.url !== expected || audio.mime_type !== 'audio/wav' || !Number.isFinite(audio.duration_ms) || audio.duration_ms <= 0 || !Number.isInteger(audio.sample_rate_hz) || audio.sample_rate_hz <= 0 || ![1,2].includes(audio.channels)) throw new Error('分句音频信息无效');
+          nextSegment++;
+          // Start prefetch now; playback consumes these promises in segment order.
+          value.blob = fetch(new URL(audio.url, base), {signal:controller.signal,cache:'no-store'}).then(async response => {
+            if (!response.ok) throw new Error(`分句音频获取失败（HTTP ${response.status}）`);
+            const blob = await response.blob();
+            return current(stamp, sid, epoch) ? blob : null;
+          });
+          value.blob.catch(() => {}); // Queue consumption owns the visible error.
+          Object.assign(value, {user_emotion:metadata.user_emotion,expression_intent:metadata.expression_intent});
+        } else if (value.type === 'done') {
+          if (!nextSegment || value.status !== 'ok' || typeof value.reply !== 'string' || value.reply.length > 80) throw new Error('分句回复未完整结束');
+          done = true;
+        } else if (value.type === 'error') throw new Error(value.message || '分句回复失败');
+        else if (!['start','transcript','meta'].includes(value.type)) throw new Error('未知的分句事件');
+        await onEvent(value);
+      };
+      while (current(stamp, sid, epoch)) {
+        const {value, done:ended} = await reader.read();
+        pending += decoder.decode(value, {stream:!ended});
+        if (pending.length > 65536) throw new Error('分句事件过长');
+        let end;
+        while ((end = pending.indexOf('\n')) >= 0) { const line = pending.slice(0,end); pending = pending.slice(end+1); if (line.trim()) await deliver(line); }
+        if (ended) { if (pending.trim()) await deliver(pending); break; }
+      }
+      if (!current(stamp, sid, epoch)) return null;
+      if (!done) throw new Error('分句回复连接提前结束');
+      return true;
+    } catch (error) { if (!current(stamp, sid, epoch)) return null; throw error; }
+    finally { reader?.releaseLock(); }
+  }
   return {
+    get sentenceStreaming() { return sentenceStreaming; },
     get connected() { return !!session; },
     invalidate() {
       generation++;
+      streamAbort?.abort();
       // Discarding a Stop acknowledgement also discards our only confirmed server epoch.
       if (pendingStop !== undefined) session = undefined;
     },
     async open() {
+      streamAbort?.abort();
       const stamp = ++generation; session = undefined;
       const next = await request('/v1/sessions', { method: 'POST' });
       if (stamp !== generation) return null;
       if (!validSession(next)) throw new Error('本地服务返回的会话信息无效');
+      sentenceStreaming = next.sentence_streaming === true;
       session = next; return next;
     },
     async status() {
@@ -72,8 +134,11 @@ export function createVoiceClient(baseUrl) {
     wav(blob) {
       return send('/audio', { method: 'POST', headers: { 'Content-Type': 'audio/wav', 'X-Session-Epoch': String(session?.session_epoch) }, body: blob }, true);
     },
+    streamText(text, onEvent) { return streamSend('/text', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text,session_epoch:session?.session_epoch})}, onEvent); },
+    streamWav(blob, onEvent) { return streamSend('/audio', {method:'POST',headers:{'Content-Type':'audio/wav','X-Session-Epoch':String(session?.session_epoch)},body:blob}, onEvent); },
     async stop() {
       const path = route('/stop'), sid = session.session_id, stamp = ++generation;
+      streamAbort?.abort();
       pendingStop = stamp;
       try {
         const next = await request(path, { method: 'POST' });

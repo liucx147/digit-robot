@@ -26,6 +26,7 @@ async function setup(handlers={}) {
   return json({session_id:sid,session_epoch:0,state:'generating'});
  });
  await page.goto(baseURL);await page.getByRole('status',{name:'播放状态'}).filter({hasText:/三维头部已就绪/}).waitFor();
+ await page.evaluate(()=>document.addEventListener('digitalhuman:frame',event=>{const audio=document.querySelector('audio');if(!audio.paused&&event.detail.weights.jawOpen>0)window.observedVoiceFrame=event.detail;if(audio.currentTime>=.85&&audio.currentTime<1.2)window.observedPauseFrame=event.detail;}));
  return page;
 }
 async function connect(page){await page.getByRole('button',{name:'连接本地服务',exact:true}).click();await page.getByRole('status',{name:'对话状态'}).filter({hasText:/已连接/}).waitFor();}
@@ -85,10 +86,10 @@ test('silent service WAV is an audio failure rather than a completed reply',asyn
 test('late rejected device acknowledgement cannot fail replay of the same server utterance',async()=>{
  const page=await setup();await page.addInitScript(()=>{});
  // The only replacement is the external media-device acknowledgement. Real audio still plays.
- await page.evaluate(()=>{const real=HTMLMediaElement.prototype.play;let first=true;HTMLMediaElement.prototype.play=function(){const ack=real.call(this);if(!first)return ack;first=false;return ack.then(()=>new Promise((_,reject)=>setTimeout(()=>reject(Error('late device error')),3500)));};});
+ await page.evaluate(()=>{const real=HTMLMediaElement.prototype.play;let first=true;HTMLMediaElement.prototype.play=function(){const ack=real.call(this);if(!first)return ack;first=false;return ack.then(()=>new Promise((_,reject)=>setTimeout(()=>{window.lateRejected=true;reject(Error('late device error'));},3500)));};document.addEventListener('digitalhuman:frame',event=>{const audio=document.querySelector('audio');if(window.lateRejected&&audio.currentTime>=1.4&&audio.currentTime<2&&!audio.paused)window.replayObservation={status:document.querySelector('#voice-status').textContent,mouth:event.detail.weights.jawOpen};});});
  await connect(page);await send(page);await page.getByRole('status',{name:'对话状态'}).filter({hasText:/回复播放完成/}).waitFor();
- await page.getByRole('button',{name:'播放音频',exact:true}).click();await page.waitForFunction(()=>document.querySelector('audio').currentTime>=1.4);
- assert.match(await page.getByRole('status',{name:'对话状态'}).textContent(),/正在播放/);assert.ok(Number(await page.getByLabel('嘴部开合').textContent())>.4);
+ await page.getByRole('button',{name:'播放音频',exact:true}).click();await page.waitForFunction(()=>window.replayObservation);
+ const observed=await page.evaluate(()=>window.replayObservation);assert.match(observed.status,/正在播放/);assert.ok(observed.mouth>.4);
  await page.close();
 });
 for (const boundary of ['text','audio']) for (const lateStatus of [200,502]) {
@@ -103,7 +104,7 @@ for (const boundary of ['text','audio']) for (const lateStatus of [200,502]) {
   await connect(page);await send(page);await requested;
   await page.getByRole('button',{name:'停止',exact:true}).click();await page.getByRole('status',{name:'对话状态'}).filter({hasText:/旧结果已失效/}).waitFor();
   release();await page.waitForTimeout(250);assert.equal(await page.locator('audio').evaluate(a=>a.paused),true);assert.match(await page.getByRole('status',{name:'对话状态'}).textContent(),/已停止/);
-  await send(page);await page.getByRole('status',{name:'对话状态'}).filter({hasText:/正在播放/}).waitFor();
+  await send(page);await page.waitForFunction(({uid,epoch})=>{try{const frame=JSON.parse(document.querySelector('#frame').textContent);return frame.utterance_id===uid&&frame.session_epoch===epoch&&frame.frame_id>0;}catch{return false;}},{uid,epoch:1});
   const frame=JSON.parse(await page.locator('#frame').textContent());assert.equal(frame.session_epoch,1);assert.equal(frame.utterance_id,uid);await page.close();
  });
 }
@@ -121,8 +122,7 @@ for (const source of ['sample','file']) {
    }
   }});
   try {
-   await connect(page);await send(page);await page.getByRole('status',{name:'对话状态'}).filter({hasText:/正在播放/}).waitFor();
-   await page.getByRole('button',{name:'停止',exact:true}).click();await requested;
+   await connect(page);await page.evaluate(()=>document.querySelector('audio').addEventListener('playing',()=>document.querySelector('#stop').click(),{once:true}));await send(page);await requested;
    if(source==='sample')await page.getByRole('button',{name:'载入中文录音示例'}).click();
    else await page.getByLabel('选择本地音频').setInputFiles({name:'local.wav',mimeType:'audio/wav',buffer:wav()});
    await page.getByRole('status',{name:'播放状态'}).filter({hasText:/音频已就绪/}).waitFor();
@@ -133,9 +133,10 @@ for (const source of ['sample','file']) {
    assert.equal(await page.getByRole('button',{name:'发送并播放回复'}).isDisabled(),true);
    assert.match(await page.getByRole('status',{name:'对话状态'}).textContent(),/重新连接/);
    assert.equal(await page.locator('audio').evaluate(a=>a.paused),true);
-   await page.getByRole('button',{name:'播放音频',exact:true}).click();await page.waitForFunction(()=>document.querySelector('audio').currentTime>=.1);
-   assert.equal(await page.locator('audio').evaluate(a=>a.paused),false);
-   await connect(page);await send(page);await page.getByRole('status',{name:'对话状态'}).filter({hasText:/正在播放/}).waitFor();
+   await page.evaluate(()=>{window.localReplayObserved=false;const audio=document.querySelector('audio');audio.addEventListener('timeupdate',()=>{if(audio.currentTime>=.1&&!audio.paused)window.localReplayObserved=true;});});
+   await page.getByRole('button',{name:'播放音频',exact:true}).click();await page.waitForFunction(()=>window.localReplayObserved);
+   assert.equal(await page.evaluate(()=>window.localReplayObserved),true);
+   await connect(page);await send(page);await page.waitForFunction(uid=>window.observedVoiceFrame?.utterance_id===uid,uid);
    assert.match(await page.getByLabel('数字人回复').textContent(),/我愿意听你说/);
   } finally { release();await page.close(); }
  });
@@ -151,7 +152,7 @@ test('Invalid reconnect address disables the old session until a valid reconnect
   assert.equal(await page.getByRole('button',{name:'发送并播放回复'}).isDisabled(),true);
   assert.equal(await page.locator('audio').evaluate(a=>a.paused),true);
   await page.getByLabel('本地服务地址').fill(api);await connect(page);await send(page);
-  await page.getByRole('status',{name:'对话状态'}).filter({hasText:/正在播放/}).waitFor();
+  await page.waitForFunction(uid=>window.observedVoiceFrame?.utterance_id===uid,uid);
   assert.match(await page.getByLabel('数字人回复').textContent(),/我愿意听你说/);
  } finally { await page.close(); }
 });
@@ -182,8 +183,8 @@ for (const failure of ['gpu_busy','model_failure','corrupt_audio','missing_audio
 
 for(const style of ['cheerful','calm','serious']){
  test(`${style} uses the documented real face channels independently of sadness`,async()=>{
-  const page=await setup({style});await connect(page);await send(page);await page.waitForFunction(()=>document.querySelector('audio').currentTime>=.85);
-  const frame=JSON.parse(await page.locator('#frame').textContent());assert.equal(frame.weights.jawOpen,0);assert.equal(frame.weights.smile,style==='cheerful'?.68:0);
+  const page=await setup({style});await connect(page);await send(page);await page.waitForFunction(()=>window.observedPauseFrame);
+  const frame=await page.evaluate(()=>window.observedPauseFrame);assert.equal(frame.weights.jawOpen,0);assert.equal(frame.weights.smile,style==='cheerful'?.68:0);
   assert.match(await page.getByLabel('用户文本情绪').textContent(),/悲伤/);assert.match(await page.getByLabel('数字人表达').textContent(),style==='cheerful'?/轻快友善/:style==='calm'?/平静清晰/:/认真沉稳/);
   await page.getByLabel('三维数字人头部').screenshot({path:path.resolve(__dirname,`../../artifacts/ticket-03-${style}.png`)});await page.close();
  });

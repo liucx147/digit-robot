@@ -9,6 +9,7 @@ let replyActivityOffsetMs = null, playbackAcknowledgedToken = null;
 const REPLY_ACTIVITY_RMS = .008;
 let sessionEpoch = 0, resourceToken = 0, utteranceId = null, frameId = 0, playing = false;
 let voiceClient, voiceGeneration = 0, voiceBusy = false, loadedTurn = null, microphonePhase = null, turnObservation = null;
+let sentencePlayback = null;
 const styleLabels = { gentle: '温和关切', cheerful: '轻快友善', calm: '平静清晰', serious: '认真沉稳' };
 const emotionLabels = { happiness: '高兴', sadness: '悲伤', anger: '愤怒', fear: '恐惧', surprise: '惊讶', disgust: '厌恶', neutral: '中性' };
 // The licensed asset has Joy, jaw and blink morphs; calm/serious use the neutral rest pose.
@@ -25,6 +26,7 @@ function refreshVoiceControls() {
   $('#microphone-end').disabled = microphonePhase !== 'recording';
 }
 function abandonVoice() {
+  cancelSentencePlayback();
   voiceGeneration++; microphone.cancel(); microphonePhase = null; voiceClient?.invalidate(); voiceBusy = false;
   if (loadedTurn && avatar) { playing = false; audio.pause(); frame(0); utteranceId = null; }
   loadedTurn = null;
@@ -38,12 +40,12 @@ function setStatus(message, failed = false) {
   refreshVoiceControls();
 }
 function event(type) {
-  record.events.push({ type, utterance_id: utteranceId, session_epoch: sessionEpoch, audio_time_ms: Math.round(audio.currentTime * 1000), observed_at_ms: performance.now() });
+  record.events.push({ type, utterance_id: utteranceId, session_epoch: sessionEpoch, segment_index: loadedTurn?.segment_index, audio_time_ms: Math.round(audio.currentTime * 1000), observed_at_ms: performance.now() });
 }
 function frame(mouth = 0) {
   const weights = avatar.face.apply({ mouth, expression: loadedTurn ? smiles[loadedTurn.expression_intent.style] * loadedTurn.expression_intent.intensity : Number($('#expression').value), gaze });
   avatar.render();
-  const value = { utterance_id: utteranceId, session_epoch: sessionEpoch, frame_id: frameId++, audio_time_ms: Math.max(0, Math.round(audio.currentTime * 1000)), weights };
+  const value = { utterance_id: utteranceId, session_epoch: sessionEpoch, segment_index: loadedTurn?.segment_index, frame_id: frameId++, audio_time_ms: Math.max(0, Math.round(audio.currentTime * 1000)), weights };
   if (utteranceId) {
     if (record.frames.length < MAX_FRAMES) record.frames.push(value);
     else record.truncated = true;
@@ -152,7 +154,11 @@ async function playAudio() {
   const epoch = loadedTurn ? (sessionEpoch = loadedTurn.session_epoch) : sessionEpoch;
   const id = utteranceId = loadedTurn?.utterance_id || crypto.randomUUID();
   frameId = 0;
-  record = { version: 1, avatar: { name: manifest.name, version: manifest.version, sha256: manifest.sha256 }, audio: { name: $('#audio-name').textContent, duration_ms: Math.round(powerSamples.length / sampleRate * 1000) }, frames: [], events: [], ...(turnObservation && loadedTurn ? { input: turnObservation } : {}), ...(loadedTurn ? { session_id: loadedTurn.session_id, response: loadedTurn } : {}) };
+  if (!sentencePlayback?.recordStarted) {
+    record = { version: 1, avatar: { name: manifest.name, version: manifest.version, sha256: manifest.sha256 }, audio: { name: $('#audio-name').textContent, duration_ms: Math.round(powerSamples.length / sampleRate * 1000) }, frames: [], events: [], ...(turnObservation && loadedTurn ? { input: turnObservation } : {}), ...(loadedTurn ? { session_id: loadedTurn.session_id, response: loadedTurn } : {}) };
+    if (sentencePlayback) { sentencePlayback.recordStarted = true; record.segments = []; }
+  }
+  if (sentencePlayback) record.segments.push({segment_index:loadedTurn.segment_index,text:loadedTurn.text,audio:loadedTurn.audio,synth_ms:loadedTurn.synth_ms});
   audio.currentTime = 0;
   playing = true;
   $('#play').disabled = true;
@@ -177,6 +183,7 @@ async function playAudio() {
     frame(0);
     setStatus(`音频播放失败：${error.message}`, true);
     if (loadedTurn) { voiceBusy = false; voiceStatus(`音频播放失败：${error.message}。可点击播放音频重试。`, true); }
+    sentencePlayback?.rejectSegment?.(error);
   }
 }
 $('#play').addEventListener('click', playAudio);
@@ -192,6 +199,12 @@ audio.addEventListener('ended', () => {
   playing = false;
   frame(0);
   event('ended');
+  if (sentencePlayback) {
+    $('#play').disabled = true; $('#stop').disabled = false;
+    voiceStatus('本句播放完成，等待后续分句…');
+    sentencePlayback.resolveSegment?.(true);
+    return;
+  }
   if (loadedTurn && turnObservation && turnObservation.reply_activity_started_at_ms === null) $('#voice-latency').textContent = '播放已结束，未观测到达到能量阈值的回复语音活动；响应活动计时未完成。';
   $('#play').disabled = !powerSamples;
   $('#stop').disabled = true;
@@ -207,6 +220,7 @@ audio.addEventListener('error', () => {
   $('#stop').disabled = true;
   setStatus(`音频播放失败：浏览器媒体错误 ${audio.error?.code || '未知'}。`, true);
   if (loadedTurn) { voiceBusy = false; voiceStatus('回复播放失败：浏览器无法播放语音。', true); }
+  sentencePlayback?.rejectSegment?.(new Error('浏览器无法播放分句语音'));
 });
 function stopLocal() {
   gazeControls?.stop('已停止注视，旧代次输入已失效。', true);
@@ -224,6 +238,7 @@ function stopLocal() {
 $('#stop').addEventListener('click', async () => {
   const wasVoice = voiceBusy || !!loadedTurn;
   const stamp = ++voiceGeneration;
+  cancelSentencePlayback();
   microphone.cancel(); microphonePhase = null;
   stopLocal();
   if (!wasVoice) return;
@@ -240,6 +255,7 @@ $('#stop').addEventListener('click', async () => {
 });
 $('#voice-connect').addEventListener('click', async () => {
   const stamp = ++voiceGeneration;
+  cancelSentencePlayback();
   microphone.cancel(); microphonePhase = null;
   voiceClient?.invalidate(); voiceClient = undefined; stopLocal(); loadedTurn = null; utteranceId = null; powerSamples = null; $('#play').disabled = true;
   voiceBusy = true; voiceStatus('正在连接本地模型服务…');
@@ -272,6 +288,84 @@ function turnFailed(error, stamp, token) {
   microphone.cancel(); microphonePhase = null;
   voiceBusy = false; $('#stop').disabled = true;
   setStatus(`回复失败：${error.message}`, true); voiceStatus(`回复失败：${error.message}`, true);
+}
+
+function cancelSentencePlayback() {
+  const previous = sentencePlayback;
+  sentencePlayback = null;
+  if (previous) { previous.cancelled = true; previous.resolveSegment?.(false); }
+}
+
+function failSentencePlayback(error, turn) {
+  if (turn !== sentencePlayback || turn.stamp !== voiceGeneration) return;
+  cancelSentencePlayback();
+  stopLocal(); powerSamples = null; loadedTurn = null; $('#play').disabled = true;
+  turnFailed(error, turn.stamp, resourceToken);
+  voiceBusy = true; refreshVoiceControls();
+  voiceClient.stop().catch(() => {}).finally(() => {
+    if (turn.stamp === voiceGeneration) { voiceBusy = false; refreshVoiceControls(); }
+  });
+}
+
+async function pumpSentences(turn) {
+  if (turn.pumping || turn !== sentencePlayback) return;
+  turn.pumping = true;
+  try {
+    while (turn.queue.length && turn === sentencePlayback && !turn.cancelled) {
+      const segment = turn.queue.shift(), blob = await segment.blob;
+      if (turn !== sentencePlayback || turn.cancelled) return;
+      if (!blob) throw new Error('分句音频已经失效');
+      const response = {...segment, blob:undefined, reply:turn.reply};
+      const ready = await loadAudio(new File([blob], `数字人回复-${segment.segment_index + 1}.wav`, {type:'audio/wav'}), resourceToken, response);
+      if (turn !== sentencePlayback || turn.cancelled) return;
+      if (!ready) throw new Error('分句语音无法解码');
+      if (turn.lastEnded !== undefined) turn.gaps.push(performance.now() - turn.lastEnded);
+      const ended = new Promise((resolve,reject) => { turn.resolveSegment = resolve; turn.rejectSegment = reject; });
+      await playAudio();
+      if (!await ended || turn !== sentencePlayback) return;
+      turn.lastEnded = performance.now();
+    }
+    if (turn.done && turn === sentencePlayback) {
+      const origin = turnObservation.speech_ended_at_ms;
+      record.response = turn.done;
+      record.audio.duration_ms = record.segments.reduce((sum,segment)=>sum+segment.audio.duration_ms,0);
+      record.server_timings_ms = turn.done.timings_ms;
+      record.client_timings_ms = {first_audio_start_ms:turnObservation.speech_end_to_audio_start_ms,
+        first_reply_activity_ms:turnObservation.speech_end_to_reply_activity_ms,
+        generation_done_observed_ms:turn.doneObserved-origin,total_playback_ms:performance.now()-origin,
+        segment_gaps_ms:turn.gaps};
+      event('turn-ended');
+      sentencePlayback = null; voiceBusy = false;
+      $('#play').disabled = true; $('#stop').disabled = true;
+      setStatus('分句播放完成，嘴部已闭合。');
+      const first = record.client_timings_ms.first_reply_activity_ms;
+      $('#voice-latency').textContent = `首句语音活动 ${first === null ? '未观测到' : Math.round(first) + ' 毫秒'}；整轮播放结束 ${Math.round(record.client_timings_ms.total_playback_ms)} 毫秒（软件观测）。`;
+      voiceStatus('回复播放完成，可以输入下一轮中文。');
+    }
+  } catch (error) { failSentencePlayback(error, turn); }
+  finally { turn.pumping = false; }
+}
+
+async function receiveSentenceTurn(kind, input, stamp) {
+  const turn = sentencePlayback = {stamp,queue:[],reply:'',gaps:[],pumping:false,recordStarted:false,done:null,cancelled:false};
+  if (!turnObservation) turnObservation = {source:'text',speech_ended_at_ms:performance.now(),audio_started_at_ms:null,speech_end_to_audio_start_ms:null,reply_activity_started_at_ms:null,speech_end_to_reply_activity_ms:null};
+  const onEvent = value => {
+    if (turn !== sentencePlayback || stamp !== voiceGeneration) return;
+    if (value.type === 'transcript') $('#voice-transcript').textContent = value.transcript;
+    if (value.type === 'meta') {
+      $('#user-emotion').textContent = emotionLabels[value.user_emotion];
+      $('#voice-expression').textContent = styleLabels[value.expression_intent.style];
+    }
+    if (value.type === 'sentence') {
+      turn.reply += value.text; $('#voice-reply').textContent = turn.reply;
+      if (!playing) voiceStatus('首句已生成，正在合成语音，可随时停止…');
+    }
+    if (value.type === 'audio_ready') { turn.queue.push(value); pumpSentences(turn); }
+    if (value.type === 'done') { turn.done = value; turn.doneObserved = performance.now(); pumpSentences(turn); }
+  };
+  try {
+    await (kind === 'text' ? voiceClient.streamText(input,onEvent) : voiceClient.streamWav(input,onEvent));
+  } catch (error) { failSentencePlayback(error,turn); }
 }
 async function receiveAnswer(answer, stamp, token) {
   if (!answer || stamp !== voiceGeneration || token !== resourceToken) return;
@@ -315,6 +409,7 @@ $('#microphone-end').addEventListener('click', async () => {
     const wav = await microphone.finish();
     if (!wav || stamp !== voiceGeneration || token !== resourceToken) return;
     microphonePhase = null; voiceStatus('正在转写中文发言，可随时停止…');
+    if (voiceClient.sentenceStreaming) { await receiveSentenceTurn('audio',wav,stamp); return; }
     const pending = voiceClient.wav(wav);
     watchVoiceStages(stamp, token);
     await receiveAnswer(await pending, stamp, token);
@@ -326,10 +421,11 @@ $('#voice-send').addEventListener('click', async () => {
   if (!text || text.length > 2000) { voiceStatus('请输入 1 至 2000 字中文。', true); return; }
   const { stamp, token } = beginVoiceTurn();
   voiceStatus('正在生成回复与语音，可随时停止…');
+  if (voiceClient.sentenceStreaming) { await receiveSentenceTurn('text',text,stamp); return; }
   try { const pending = voiceClient.text(text); watchVoiceStages(stamp, token); await receiveAnswer(await pending, stamp, token); }
   catch (error) { turnFailed(error, stamp, token); }
 });
-window.addEventListener('pagehide', () => { microphone.cancel(); voiceGeneration++; voiceClient?.invalidate(); });
+window.addEventListener('pagehide', () => { cancelSentencePlayback(); microphone.cancel(); voiceGeneration++; voiceClient?.invalidate(); });
 $('#expression').addEventListener('input', () => { if (avatar && !playing) frame(0); });
 $('#download').addEventListener('click', () => {
   const url = URL.createObjectURL(new Blob([JSON.stringify(record, null, 2)], { type: 'application/json' }));

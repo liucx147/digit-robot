@@ -1,0 +1,17 @@
+# 常驻模型与分句语音接口
+
+原服务不变；新服务在独立发布目录使用 `python -m digit_robot.server --resident --config config/voice-4090.json --output-dir runs/resident --port 8003`。三个Python环境分别常驻ASR、LLM、Qwen3-TTS，通过JSONL进程协议通信。模型在本机既有目录读取，采用离线加载，不上传权重。启动加载一次，推理请求复用进程；`runs/resident/workers/ready.json`记录PID、加载次数和显存。
+
+`POST /v1/sessions` 的新增字段 `sentence_streaming:true` 表示支持分句模式。缺少该字段时页面继续使用旧v1整段流程。v1接口保留；resident模式下v1回复限80字，仍整段返回，可供阶段对照。
+
+`POST /v2/sessions/{session_id}/text` 请求体与v1一致；`POST /v2/sessions/{session_id}/audio`使用PCM WAV和`X-Session-Epoch`。响应为 `application/x-ndjson`，UTF-8逐行JSON：`start → transcript → meta → sentence → audio_ready → … → done`。失败为显式`error`事件，可能发生在HTTP200之后；连接结束但缺少done同样按失败处理。已经说出的片段不能撤回，部分播放后的失败不算整轮成功。
+
+所有事件携带session_id、utterance_id、session_epoch和server_elapsed_ms。sentence/audio_ready另含从0递增的segment_index；audio_ready含已校验的text、user_emotion、expression_intent及audio元信息。URL为 `/v2/sessions/{session_id}/turns/{utterance_id}/segments/{segment_index}/audio`。停止/重置沿用v1接口，推进epoch，旧音频返回410；浏览器立即停播并清空队列，断开未完成流也会取消该轮。
+
+LLM先返回完整可校验的meta记录，再流式返回1至3句完整中文，总长度<=80字，首句<=24字，后续每句<=36字。队列最多暂存两条记录；TTS单进程顺序合成，LLM后续生成、TTS与浏览器播放可重叠。Qwen3-TTS仍是整句WAV返回，这不是模型内部PCM流式生成。取消后的TTS输出被丢弃；底层不支持合作取消时，当前短句可能继续计算到完成，但不允许恢复播放。
+
+done.timings_ms分开记录first_token_ms、first_sentence_ms、first_audio_ready_ms、llm_done_ms、all_audio_ready_ms/total_ms、asr_ms、llm_ms和累计tts_ms。并行阶段耗时不能简单相加当总延迟。首音频ready是服务器时间，不能当作用户已听到。
+
+页面播放记录增加segments、每帧segment_index、server_timings_ms和client_timings_ms；后者含first_audio_start_ms、first_reply_activity_ms、generation_done_observed_ms、total_playback_ms和segment_gaps_ms。浏览器使用自身单调时钟和实际媒体播放位置；首句语音活动是能量观测，不是物理扬声器测量。只有最后一段实际播放结束，才显示整轮播放完成。
+
+新旧服务不应同时执行GPU推理。回退时先停止新服务及其拥有的三个常驻进程，释放显存，再使用原8002服务；无需改动旧部署。新发布不修改原服务的配置、代码或模型文件。

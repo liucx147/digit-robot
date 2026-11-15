@@ -53,6 +53,7 @@ def test_first_segment_crosses_real_http_before_llm_finishes_and_stop_expires_it
     with serve(create_app(SentencePipeline(models, tmp_path))) as base, httpx.Client(base_url=base, timeout=5) as client:
         assert client.get('/v1/health').json()['sentence_streaming'] is True
         session = client.post('/v1/sessions').json()
+        assert session['sentence_streaming'] is True
         sid = session['session_id']
         try:
             with client.stream('POST', f'/v2/sessions/{sid}/audio', content=wav_bytes(),
@@ -93,3 +94,24 @@ def test_complete_reply_contains_ordered_segments_and_separate_first_and_total_t
         assert 0 <= timing['first_audio_ready_ms'] <= timing['all_audio_ready_ms']
         assert timing['first_token_ms'] <= timing['first_sentence_ms']
         assert len(list(tmp_path.rglob('result.json'))) == 1
+
+
+def test_disconnect_cancels_only_its_own_turn_and_releases_admission(tmp_path: Path):
+    models = StreamingFixture()
+    with serve(create_app(SentencePipeline(models, tmp_path))) as base, httpx.Client(base_url=base, timeout=5) as client:
+        sid = client.post('/v1/sessions').json()['session_id']
+        try:
+            with client.stream('POST', f'/v2/sessions/{sid}/text', json={'text':'难过', 'session_epoch':0}) as response:
+                for line in response.iter_lines():
+                    if json.loads(line)['type'] == 'audio_ready':
+                        break
+            deadline = time.monotonic() + 2
+            while time.monotonic() < deadline:
+                status = client.get(f'/v1/sessions/{sid}').json()
+                if status['state'] == 'stopped':
+                    break
+                time.sleep(.02)
+            assert status['state'] == 'stopped'
+            assert status['session_epoch'] == 1
+        finally:
+            models.release.set()
