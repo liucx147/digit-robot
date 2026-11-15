@@ -1,0 +1,33 @@
+{
+  "type": "response",
+  "utterance_id": "0c04b9fc-8336-4eef-9e6c-1d1bed19303a",
+  "session_epoch": 0,
+  "user_emotion": "sadness",
+  "reply": "考试没发挥好确实让人失落，但一次成绩不代表全部，给自己一点时间调整，下次一定会更好的。",
+  "expression_intent": {
+    "style": "gentle",
+    "intensity": 0.6
+  },
+  "status": "ok",
+  "attempts": [
+    {
+      "raw_output": "{\n  \"user_emotion\": \"sadness\",\n  \"reply\": \"考试没发挥好确实让人失落，但一次成绩不代表全部，给自己一点时间调整，下次一定会更好的。\",\n  \"expression_intent\": {\n    \"style\": \"gentle\",\n    \"intensity\": 0.6\n  }\n}",
+      "error": null
+    }
+  ],
+  "session_id": "7c1c269e-e7df-48eb-a0d8-1ccef2d5144a",
+  "state": "ready",
+  "transcript": "我今天考试没发挥好，有点失落。请用一句简短中文回应。",
+  "audio": {
+    "mime_type": "audio/wav",
+    "sample_rate_hz": 24000,
+    "channels": 1,
+    "duration_ms": 10880,
+    "url": "/v1/sessions/7c1c269e-e7df-48eb-a0d8-1ccef2d5144a/turns/0c04b9fc-8336-4eef-9e6c-1d1bed19303a/audio"
+  },
+  "timings_ms": {
+    "llm_ms": 10529.2983725667,
+    "tts_ms": 20984.0856641531,
+    "total_ms": 31514.75553587079
+  }
+}

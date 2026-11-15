@@ -139,23 +139,27 @@ test('capture reloads the frozen Mandarin from the beginning after the embedded 
 });
 
 
-test('recording locks audio replacement and replay controls while keeping expression and gaze available', async t=>{
+test('recording locks audio replacement, replay and dialogue controls while keeping expression and gaze available', async t=>{
   const page=await browser.newPage({viewport:{width:1280,height:1000},acceptDownloads:true});t.after(()=>page.close());
+  const apiRequests=[];
+  page.on('request',request=>{if(new URL(request.url()).pathname.startsWith('/v1/'))apiRequests.push(request.url());});
   await page.goto(baseURL+'/measurement.html');
   await page.getByRole('button',{name:'准备固定40事件'}).click();
   await page.getByRole('status',{name:'测量状态'}).filter({hasText:/40 个固定事件已就绪/}).waitFor();
   await page.getByRole('button',{name:'录制画布与声音',exact:true}).click();
   await page.getByRole('status',{name:'测量状态'}).filter({hasText:/正在录制/}).waitFor();
   const product=page.frameLocator('#product');
-  for(const selector of ['#audio-file','#sample','#play','#stop']) assert.equal(await product.locator(selector).isDisabled(),true,selector+' is locked during fixed capture');
+  for(const selector of ['#audio-file','#sample','#play','#stop','#voice-connect','#voice-send','#microphone-start','#microphone-end','#text-input','#api-base']) assert.equal(await product.locator(selector).isDisabled(),true,selector+' is locked during fixed capture');
   assert.equal(await product.getByLabel('微笑强度').isEnabled(),true);
   assert.equal(await product.getByLabel('选择固定人脸图片或视频',{exact:true}).isEnabled(),true);
   await product.getByLabel('微笑强度').fill('0.5');
   // Dispatching through a disabled input must not replace the real measured source either.
   await product.getByLabel('选择本地音频',{exact:true}).setInputFiles(path.resolve(webRoot,'assets/nihao-cc0.wav'));
   await product.locator('#sample').dispatchEvent('click');
+  await product.locator('#voice-connect').dispatchEvent('click');
   await page.waitForTimeout(250);
   assert.ok(await product.locator('audio').evaluate(audio=>audio.duration>30&&!audio.paused));
+  assert.deepEqual(apiRequests,[],'dialogue cannot start or replace the frozen playback during capture');
   await page.getByRole('button',{name:'停止录制',exact:true}).click();
   await page.waitForFunction(()=>!document.querySelector('#download-manifest').disabled);
   assert.equal(await product.locator('#audio-file').isEnabled(),true,'the input is available after capture');

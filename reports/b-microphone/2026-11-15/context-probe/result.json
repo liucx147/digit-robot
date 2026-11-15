@@ -1,0 +1,62 @@
+{
+  "scope": "Engineering context regression only; not distillation or holdout evaluation",
+  "input_sha256": "8b6d949189c08c19c4cfe8b601e6e890f2a6881be604c3e5ab8f131262404860",
+  "cases": [
+    {
+      "case": "original_prompt",
+      "messages": [
+        {
+          "role": "system",
+          "content": "你是温和、简洁的中文共情对话助手。理解用户的文本情绪并回应，\n不要把用户的情绪直接当作自己的表情。仅输出一个 JSON 对象，禁止 Markdown。\n字段为 user_emotion、reply、expression_intent。\nuser_emotion 只能是 happiness、sadness、anger、fear、surprise、disgust、neutral。\nreply 是 1 至 500 字的中文回复。expression_intent 含 style 和 intensity；\nstyle 只能是 gentle、cheerful、calm、serious，intensity 为 0 至 1 的数。\n例如理解悲伤可采用 gentle 关切回应，而不是机械复制悲伤表情。"
+        },
+        {
+          "role": "user",
+          "content": "我叫小林，今天考试没考好，我很难过。"
+        },
+        {
+          "role": "assistant",
+          "content": "{\"user_emotion\": \"sadness\", \"reply\": \"小林，听到你因为考试没考好而感到难过，我真的很想给你一个拥抱。考试只是学习过程中的一部分，它并不能定义你的全部价值。感到失落是很正常的反应，这说明你在乎自己的进步。请给自己一点时间和空间去平复心情，不要过于苛责自己。无论结果如何，你都已经尽力了，这本身就是一种成长。\", \"expression_intent\": {\"style\": \"gentle\", \"intensity\": 0.75}}"
+        },
+        {
+          "role": "user",
+          "content": "我刚才告诉你的名字是什么？请用一句简短中文回答。"
+        }
+      ],
+      "rendered_prompt": "<|im_start|>system\n你是温和、简洁的中文共情对话助手。理解用户的文本情绪并回应，\n不要把用户的情绪直接当作自己的表情。仅输出一个 JSON 对象，禁止 Markdown。\n字段为 user_emotion、reply、expression_intent。\nuser_emotion 只能是 happiness、sadness、anger、fear、surprise、disgust、neutral。\nreply 是 1 至 500 字的中文回复。expression_intent 含 style 和 intensity；\nstyle 只能是 gentle、cheerful、calm、serious，intensity 为 0 至 1 的数。\n例如理解悲伤可采用 gentle 关切回应，而不是机械复制悲伤表情。<|im_end|>\n<|im_start|>user\n我叫小林，今天考试没考好，我很难过。<|im_end|>\n<|im_start|>assistant\n{\"user_emotion\": \"sadness\", \"reply\": \"小林，听到你因为考试没考好而感到难过，我真的很想给你一个拥抱。考试只是学习过程中的一部分，它并不能定义你的全部价值。感到失落是很正常的反应，这说明你在乎自己的进步。请给自己一点时间和空间去平复心情，不要过于苛责自己。无论结果如何，你都已经尽力了，这本身就是一种成长。\", \"expression_intent\": {\"style\": \"gentle\", \"intensity\": 0.75}}<|im_end|>\n<|im_start|>user\n我刚才告诉你的名字是什么？请用一句简短中文回答。<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "prompt_sha256": "39f57d86c68a0b1d8ebf41d5a2d9d9b865bc382c7682636ff713e0513d67a802",
+      "prompt_tokens": 305,
+      "raw_output": "{\"user_emotion\": \"neutral\", \"reply\": \"抱歉，作为一个人工智能助手，我没有记忆功能，无法记住之前的对话内容。\", \"expression_intent\": {\"style\": \"calm\", \"intensity\": 0.5}}",
+      "elapsed_ms": 2215.513076633215,
+      "reply": "抱歉，作为一个人工智能助手，我没有记忆功能，无法记住之前的对话内容。",
+      "recalls_explicit_name": false
+    },
+    {
+      "case": "engineering_context_prompt_v1",
+      "messages": [
+        {
+          "role": "system",
+          "content": "你是温和、简洁的中文共情对话助手。理解用户的文本情绪并回应，\n不要把用户的情绪直接当作自己的表情。仅输出一个 JSON 对象，禁止 Markdown。\n字段为 user_emotion、reply、expression_intent。\nuser_emotion 只能是 happiness、sadness、anger、fear、surprise、disgust、neutral。\nreply 是 1 至 500 字的中文回复。expression_intent 含 style 和 intensity；\nstyle 只能是 gentle、cheerful、calm、serious，intensity 为 0 至 1 的数。\n例如理解悲伤可采用 gentle 关切回应，而不是机械复制悲伤表情。\n当前消息包含本次会话已经提供的历史。请据这些历史回答此前明确提到的信息；不要在历史可见时声称无法读取之前的对话。本次会话上下文不等于跨会话长期记忆；历史没有依据时不要编造。"
+        },
+        {
+          "role": "user",
+          "content": "我叫小林，今天考试没考好，我很难过。"
+        },
+        {
+          "role": "assistant",
+          "content": "{\"user_emotion\": \"sadness\", \"reply\": \"小林，听到你因为考试没考好而感到难过，我真的很想给你一个拥抱。考试只是学习过程中的一部分，它并不能定义你的全部价值。感到失落是很正常的反应，这说明你在乎自己的进步。请给自己一点时间和空间去平复心情，不要过于苛责自己。无论结果如何，你都已经尽力了，这本身就是一种成长。\", \"expression_intent\": {\"style\": \"gentle\", \"intensity\": 0.75}}"
+        },
+        {
+          "role": "user",
+          "content": "我刚才告诉你的名字是什么？请用一句简短中文回答。"
+        }
+      ],
+      "rendered_prompt": "<|im_start|>system\n你是温和、简洁的中文共情对话助手。理解用户的文本情绪并回应，\n不要把用户的情绪直接当作自己的表情。仅输出一个 JSON 对象，禁止 Markdown。\n字段为 user_emotion、reply、expression_intent。\nuser_emotion 只能是 happiness、sadness、anger、fear、surprise、disgust、neutral。\nreply 是 1 至 500 字的中文回复。expression_intent 含 style 和 intensity；\nstyle 只能是 gentle、cheerful、calm、serious，intensity 为 0 至 1 的数。\n例如理解悲伤可采用 gentle 关切回应，而不是机械复制悲伤表情。\n当前消息包含本次会话已经提供的历史。请据这些历史回答此前明确提到的信息；不要在历史可见时声称无法读取之前的对话。本次会话上下文不等于跨会话长期记忆；历史没有依据时不要编造。<|im_end|>\n<|im_start|>user\n我叫小林，今天考试没考好，我很难过。<|im_end|>\n<|im_start|>assistant\n{\"user_emotion\": \"sadness\", \"reply\": \"小林，听到你因为考试没考好而感到难过，我真的很想给你一个拥抱。考试只是学习过程中的一部分，它并不能定义你的全部价值。感到失落是很正常的反应，这说明你在乎自己的进步。请给自己一点时间和空间去平复心情，不要过于苛责自己。无论结果如何，你都已经尽力了，这本身就是一种成长。\", \"expression_intent\": {\"style\": \"gentle\", \"intensity\": 0.75}}<|im_end|>\n<|im_start|>user\n我刚才告诉你的名字是什么？请用一句简短中文回答。<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "prompt_sha256": "cffedc021fb54d18d47b0d13ed80d1107027b26c23ac51aa6f88510079ac9daa",
+      "prompt_tokens": 352,
+      "raw_output": "{\"user_emotion\": \"neutral\", \"reply\": \"我没有名字，我是一个助手。\", \"expression_intent\": {\"style\": \"calm\", \"intensity\": 0.5}}",
+      "elapsed_ms": 1434.7096495330334,
+      "reply": "我没有名字，我是一个助手。",
+      "recalls_explicit_name": false
+    }
+  ]
+}

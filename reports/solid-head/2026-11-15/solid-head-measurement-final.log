@@ -1,0 +1,16 @@
+✔ a user freezes the Mandarin ledger then records actual canvas pixels and audible graph output (41689.9239ms)
+✔ permission denial and capture without an audio track are visible failures without silent fallback (3076.2684ms)
+✔ a missing frozen fixture is explained and recording remains unavailable (851.1584ms)
+✔ capture reloads the frozen Mandarin from the beginning after the embedded page changes or plays another input (3283.0884ms)
+✔ recording locks audio replacement and replay controls while keeping expression and gaze available (2680.9732ms)
+✔ a changed media source, seek, replay, pause or rate invalidates capture and retains the original evidence (15744.9136ms)
+✔ a solid head can be viewed from side and back, then reset to the identical initial view (3715.8517ms)
+✔ turning the model during real audio preserves playback and Stop still closes the mouth (4637.2671ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 77006.8488

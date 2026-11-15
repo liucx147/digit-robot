@@ -1,0 +1,32 @@
+✔ a solid head can be viewed from side and back, then reset to the identical initial view (3119.5249ms)
+✔ turning the model during real audio preserves playback and Stop still closes the mouth (3627.2645ms)
+✔ Chinese text returns readable reply, real audio and visible face with server-linked playback frames (6411.595ms)
+✔ invalid model output cannot become a successful spoken reply (1361.583ms)
+✔ silent service WAV is an audio failure rather than a completed reply (1405.3115ms)
+✔ late rejected device acknowledgement cannot fail replay of the same server utterance (5748.0577ms)
+✔ Stop discards late text HTTP 200 and permits a new server epoch (1980.1282ms)
+✔ Stop discards late text HTTP 502 and permits a new server epoch (1995.0571ms)
+✔ Stop discards late audio HTTP 200 and permits a new server epoch (2105.1506ms)
+✔ Stop discards late audio HTTP 502 and permits a new server epoch (2097.8131ms)
+✔ Local sample during an unconfirmed Stop requires reconnect and cannot revive old audio (3108.9616ms)
+✔ Local file during an unconfirmed Stop requires reconnect and cannot revive old audio (2968.2133ms)
+✔ Invalid reconnect address disables the old session until a valid reconnect succeeds (2074.2589ms)
+✔ Stop failure leaves actual audio stopped and requires reconnect before a new turn (2817.2546ms)
+✔ gpu_busy is visible and never enables a successful reply (1563.7134ms)
+✔ model_failure is visible and never enables a successful reply (1445.4343ms)
+✔ corrupt_audio is visible and never enables a successful reply (1475.6149ms)
+✔ missing_audio is visible and never enables a successful reply (1340.1206ms)
+✔ foreign_audio is visible and never enables a successful reply (1368.8228ms)
+✔ wrong_epoch is visible and never enables a successful reply (1308.7761ms)
+✔ fallback is visible and never enables a successful reply (1355.6004ms)
+✔ cheerful uses the documented real face channels independently of sadness (4830.4942ms)
+✔ calm uses the documented real face channels independently of sadness (3111.5241ms)
+✔ serious uses the documented real face channels independently of sadness (3015.6622ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 24
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 62855.2113

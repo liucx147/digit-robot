@@ -1,0 +1,143 @@
+✔ real CPU face inference on fixed photographs visibly moves the actual eyes left and right with local resources only (5270.0366ms)
+✔ fixed up/down faces and empty input have explicit visible behavior, and Stop releases gaze while preserving audio (7417.7758ms)
+✔ camera permission denial is explained and remains neutral without affecting audio controls (1150.1723ms)
+✔ camera pixels drive mirrored gaze through the shared mixer while real audio keeps its mouth/pause/expression, and both Stops release input (10397.1396ms)
+✔ a fixed local video of real face pixels follows both sides then returns neutral on completion (9196.0445ms)
+✔ a local model load failure is visible, closes input, and can be retried from the same page (1706.5126ms)
+✔ Stop cancels a late camera grant and prevents old input from restoring gaze (2700.9979ms)
+✔ a busy camera explains competing use and can be retried after the device becomes available (3132.3887ms)
+✔ a microphone turn posts mono PCM16 WAV and displays ASR text before actual reply playback (7807.9289ms)
+✔ ASR, generation and synthesis remain visible while waiting; recorded latency starts at End and ends at real media start (4022.3185ms)
+✔ the head keeps a bounded height and active Stop remains visible at 1100px (1528.656ms)
+✔ the head keeps a bounded height and active Stop remains visible at 390px (1516.2716ms)
+✔ permission denied is explained without a fabricated successful audio turn (1460.1759ms)
+✔ unsupported browser is explained without a fabricated successful audio turn (1335.1126ms)
+✔ empty recorder data is explained without a fabricated successful audio turn (3116.4708ms)
+✔ silent microphone is explained without a fabricated successful audio turn (1927.812ms)
+✔ corrupt recorder format is explained without a fabricated successful audio turn (1948.4715ms)
+✔ oversized recorder data is explained without a fabricated successful audio turn (1808.7883ms)
+✔ the 30-second recording deadline visibly cancels and releases the microphone without upload (1547.3258ms)
+✔ global Stop during permission discards late device work, releases tracks and permits a new microphone epoch (4053.1487ms)
+✔ global Stop during onstop discards late device work, releases tracks and permits a new microphone epoch (4317.0651ms)
+✔ global Stop during decode discards late device work, releases tracks and permits a new microphone epoch (4271.5891ms)
+✔ global Stop during recording cancels rather than submitting the collected speech (1631.8957ms)
+✔ Stop discards microphone POST HTTP 200 and its old status while a new recording is active (4753.2162ms)
+✔ Stop discards microphone POST HTTP 502 and its old status while a new recording is active (4648.151ms)
+✔ ASR empty_transcript stays an explicit failure instead of a spoken success (2034.6535ms)
+✔ ASR stage_timeout stays an explicit failure instead of a spoken success (2003.3143ms)
+✔ ASR unsupported_media_type stays an explicit failure instead of a spoken success (2013.409ms)
+✔ a nominally successful response with blank ASR text cannot fetch or play the reply audio (1996.8961ms)
+✔ local audio playback offers no concurrent microphone turn and enables it again after completion (4549.1451ms)
+✔ a microphone recording failure releases only audio tracks and leaves camera-only gaze available (1688.5524ms)
+✔ a later text turn clears the microphone input timing instead of reusing the previous speech end (6039.0437ms)
+✔ 1000 ms leading silence keeps reply activity timing pending until real playback reaches the signal (4888.7473ms)
+✔ paused media and a rejected play acknowledgement leave reply activity pending until an explicit retry (7662.6918ms)
+✔ Stop before reply activity ignores late device acknowledgement and isolates the next text turn (6098.8965ms)
+✔ Stop before reply activity ignores late device acknowledgement and isolates the next microphone turn (7334.858ms)
+✔ replaying the same reply preserves the first file-start and reply-activity observations (5991.3046ms)
+✔ a missing avatar resource is explained on the public page and playback stays unavailable (600.6898ms)
+✔ the offline page loads its licensed 3D avatar into a visible WebGL canvas (1386.8379ms)
+✔ local audio actually plays, changes the visible mouth around a fixed pause, closes at end, and exports linked frames (6097.7783ms)
+✔ the Stop button pauses real audio and invalidates the current animation epoch within 500 ms (2127.2035ms)
+✔ audible opposite-polarity stereo still opens the mouth rather than cancelling the envelope (1993.8334ms)
+✔ corrupt avatar bytes produce a visible resource failure without enabling playback (574.9059ms)
+✔ invalid audio is explained and the bundled Mandarin recording can recover and play to completion (2657.7262ms)
+✔ Stop is available while the real audio device play acknowledgement is pending and late acknowledgement cannot resume it (2471.9606ms)
+✔ a late sample HTTP 200 cannot replace or fail a newer local audio selection (1363.4061ms)
+✔ a late sample HTTP 404 cannot replace or fail a newer local audio selection (1385.2975ms)
+✔ a late acknowledgement from a stopped utterance does not pause a newer playback (2861.8928ms)
+✖ Chinese text returns readable reply, real audio and visible face with server-linked playback frames (5603.6917ms)
+✔ invalid model output cannot become a successful spoken reply (2171.3403ms)
+✔ silent service WAV is an audio failure rather than a completed reply (1618.7997ms)
+✔ late rejected device acknowledgement cannot fail replay of the same server utterance (6387.9183ms)
+✔ Stop discards late text HTTP 200 and permits a new server epoch (2105.1404ms)
+✔ Stop discards late text HTTP 502 and permits a new server epoch (2160.0894ms)
+✔ Stop discards late audio HTTP 200 and permits a new server epoch (2099.5877ms)
+✔ Stop discards late audio HTTP 502 and permits a new server epoch (2272.2524ms)
+✔ Local sample during an unconfirmed Stop requires reconnect and cannot revive old audio (4083.1083ms)
+✔ Local file during an unconfirmed Stop requires reconnect and cannot revive old audio (3427.7047ms)
+✔ Invalid reconnect address disables the old session until a valid reconnect succeeds (2172.2257ms)
+✔ Stop failure leaves actual audio stopped and requires reconnect before a new turn (2876.4305ms)
+✔ gpu_busy is visible and never enables a successful reply (1588.3921ms)
+✔ model_failure is visible and never enables a successful reply (1460.3778ms)
+✔ corrupt_audio is visible and never enables a successful reply (1505.6709ms)
+✔ missing_audio is visible and never enables a successful reply (1420.1035ms)
+✔ foreign_audio is visible and never enables a successful reply (1435.5904ms)
+✔ wrong_epoch is visible and never enables a successful reply (1459.9275ms)
+✔ fallback is visible and never enables a successful reply (1448.884ms)
+✔ cheerful uses the documented real face channels independently of sadness (5068.7924ms)
+✔ calm uses the documented real face channels independently of sadness (3226.9077ms)
+✔ serious uses the documented real face channels independently of sadness (3177.9558ms)
+ℹ tests 70
+ℹ suites 0
+ℹ pass 69
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 229907.3771
+
+✖ failing tests:
+
+test at web\tests\voice-public.test.cjs:35:1
+✖ Chinese text returns readable reply, real audio and visible face with server-linked playback frames (5603.6917ms)
+  AssertionError [ERR_ASSERTION]: Expected "actual" not to be strictly deep-equal to:
+  
+  Buffer(71985) [Uint8Array] [
+    137,
+    80,
+    78,
+    71,
+    13,
+    10,
+    26,
+    10,
+    0,
+    0,
+    0,
+    13,
+    73,
+    72,
+    68,
+    82,
+    0,
+    0,
+    2,
+    72,
+    0,
+    0,
+    2,
+    7,
+    8,
+    2,
+    0,
+    0,
+    0,
+    235,
+    114,
+    52,
+    65,
+    0,
+    0,
+    16,
+    0,
+    73,
+    68,
+    65,
+    84,
+    120,
+    156,
+    236,
+    253,
+  ...
+  
+      at TestContext.<anonymous> (E:\digital robot\.worktrees\b-voice-integration\web\tests\voice-public.test.cjs:45:67)
+      at async Test.run (node:internal/test_runner/test:1332:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: <Buffer 89 50 4e 47 0d 0a 1a 0a 00 00 00 0d 49 48 44 52 00 00 02 48 00 00 02 07 08 02 00 00 00 eb 72 34 41 00 00 10 00 49 44 41 54 78 9c ec fd 07 90 64 59 76 ... 71935 more bytes>,
+    expected: <Buffer 89 50 4e 47 0d 0a 1a 0a 00 00 00 0d 49 48 44 52 00 00 02 48 00 00 02 07 08 02 00 00 00 eb 72 34 41 00 00 10 00 49 44 41 54 78 9c ec fd 07 90 64 59 76 ... 71935 more bytes>,
+    operator: 'notDeepStrictEqual',
+    diff: 'simple'
+  }

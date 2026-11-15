@@ -38,3 +38,8 @@ The file's VRM preset `aa` binds morph 36. `jawOpen` is our semantic alias; it i
 - Only `three.module.js`, `three.core.js`, `GLTFLoader.js`, `BufferGeometryUtils.js` and the original [MIT license](../vendor/three/LICENSE) are bundled. Original source files retained.
 - npm package shasum: `d54a8c8b4a409e346cbc60fed58244f1b382d6ea`.
 - No npm install or remote import is needed to run the page. Playwright is a development-only browser test tool and is not shipped in this frontend.
+
+
+## Default solid head (2026-11-15)
+
+The default `solid-v1` model is original procedural project geometry in `web/solid-head.js`. It uses no external portrait, character mesh, texture, mechanical drawing or downloaded model. Its source hash is in avatar-manifest.json. The existing Three.js notices still apply. The VRM notices above apply to the retained historical measurement model, whose original manifest is avatar-measurement-manifest.json.

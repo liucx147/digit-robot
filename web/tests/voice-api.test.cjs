@@ -3,256 +3,59 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs/promises');
 const path = require('node:path');
 const { publicBrowser } = require('./browser-fixture.cjs');
-let app, wav;
+let app, wav, duration;
 before(async () => {
   app = await publicBrowser(path.resolve(__dirname, '..'));
   wav = await fs.readFile(path.resolve(__dirname, '../assets/nihao-cc0.wav'));
+  duration = (wav.length - 44) / wav.readUInt32LE(28) * 1000;
 });
 after(async () => { await app?.close(); });
 
-async function setup(page, turn) {
-  await page.route('**/v1/**', async route => {
-    const url = new URL(route.request().url());
-    if (url.pathname.endsWith('/audio') && route.request().method() === 'GET')
-      return route.fulfill({ contentType: 'audio/wav', body: wav });
-    let body = { session_id: 'test-session', session_epoch: 0, state: 'idle' };
-    if (/\/(text|audio)$/.test(url.pathname)) {
-      body = await turn(route.request());
-      if (body === null) return route.abort();
-    } else if (/\/(stop|reset)$/.test(url.pathname)) body.session_epoch = 1;
-    await route.fulfill({ contentType: 'application/json', body: JSON.stringify(body) });
-  });
-  await page.goto(app.baseURL);
-  await page.getByRole('status', { name: '播放状态' }).filter({ hasText: '三维头部已就绪' }).waitFor();
-  await page.getByRole('button', { name: '连接语音服务', exact: true }).click();
-  await page.getByRole('status', { name: '语音服务状态' }).filter({ hasText: '已连接' }).waitFor();
-}
-
-const result = () => ({ type: 'response', state: 'ready', status: 'ok', session_id: 'test-session',
-  session_epoch: 0, utterance_id: 'api-utterance-1', transcript: '今天真开心', user_emotion: 'happiness',
-  reply: '听到这个消息，我也为你高兴。', expression_intent: { style: 'cheerful', intensity: 0.65 },
-  audio: { url: '/v1/sessions/test-session/turns/api-utterance-1/audio', mime_type: 'audio/wav' } });
-
 function deferred() { let resolve; const promise = new Promise(value => { resolve = value; }); return { promise, resolve }; }
 
+// Keep A's late-status regression on B's production UI; the broader text and
+// microphone behavior is exercised by voice-public and microphone-public.
 for (const failed of [false, true]) {
   test(`a late status poll cannot replace the final ${failed ? 'failure' : 'playing'} state`, async () => {
     const page = await app.browser.newPage();
+    page.setDefaultTimeout(6000);
     const turn = deferred(), poll = deferred(), entered = deferred();
-    await setup(page, async () => { await turn.promise; return result(); });
-    if (failed) await page.route('**/v1/sessions/test-session/text', async route => {
-      await turn.promise;
-      await route.fulfill({ status: 502, contentType: 'application/json', body: JSON.stringify({ code: 'dialogue_failed', message: '最终模型失败' }) });
+    const session = { session_id: 'test-session', session_epoch: 0, state: 'idle' };
+    await page.route('**/v1/**', async route => {
+      const request = route.request(), url = new URL(request.url());
+      const json = (body, status = 200) => route.fulfill({ status, contentType: 'application/json', body: JSON.stringify(body) });
+      if (url.pathname.endsWith('/audio')) return route.fulfill({ contentType: 'audio/wav', body: wav });
+      if (url.pathname.endsWith('/text')) {
+        await turn.promise;
+        if (failed) return json({ code: 'dialogue_failed', message: '最终模型失败' }, 502);
+        return json({ ...session, type: 'response', state: 'ready', status: 'ok', utterance_id: 'api-utterance-1',
+          user_emotion: 'happiness', reply: '听到这个消息，我也为你高兴。', expression_intent: { style: 'cheerful', intensity: .65 },
+          audio: { url: '/v1/sessions/test-session/turns/api-utterance-1/audio', mime_type: 'audio/wav',
+            sample_rate_hz: wav.readUInt32LE(24), channels: wav.readUInt16LE(22), duration_ms: duration } });
+      }
+      if (request.method() === 'GET') {
+        entered.resolve();
+        await poll.promise;
+        return json({ ...session, state: 'generating' });
+      }
+      return json(session);
     });
-    await page.route('**/v1/sessions/test-session', async route => {
-      entered.resolve();
-      await poll.promise;
-      await route.fulfill({ contentType: 'application/json', body: JSON.stringify({ session_id: 'test-session', session_epoch: 0, state: 'generating' }) });
-    });
-    await page.locator('#voice-text').fill('延迟状态');
-    await page.locator('#voice-send').click();
-    await entered.promise;
-    turn.resolve();
-    const finalState = failed ? '最终模型失败' : '正在播放服务回复';
-    await page.locator('#voice-status').filter({ hasText: finalState }).waitFor();
-    const delivered = page.waitForResponse(response => new URL(response.url()).pathname === '/v1/sessions/test-session');
-    poll.resolve();
-    await (await delivered).finished();
-    await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
-    assert.match(await page.locator('#voice-status').textContent(), new RegExp(finalState));
-    await page.close();
+    try {
+      await page.goto(app.baseURL);
+      await page.getByRole('status', { name: '播放状态' }).filter({ hasText: '三维头部已就绪' }).waitFor();
+      await page.getByRole('button', { name: '连接本地服务', exact: true }).click();
+      await page.getByRole('status', { name: '对话状态' }).filter({ hasText: '已连接' }).waitFor();
+      await page.getByLabel('输入中文').fill('延迟状态');
+      await page.locator('#voice-send').click();
+      await entered.promise;
+      turn.resolve();
+      const finalState = failed ? '最终模型失败' : '正在播放数字人的回复';
+      await page.locator('#voice-status').filter({ hasText: finalState }).waitFor();
+      const delivered = page.waitForResponse(response => new URL(response.url()).pathname === '/v1/sessions/test-session');
+      poll.resolve();
+      await (await delivered).finished();
+      await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+      assert.match(await page.locator('#voice-status').textContent(), new RegExp(finalState));
+    } finally { turn.resolve(); poll.resolve(); await page.close(); }
   });
 }
-
-test('the public page sends text, plays actual WAV and exports API identifiers with visible intent', async () => {
-  const page = await app.browser.newPage({ acceptDownloads: true });
-  let sent;
-  await setup(page, async request => { sent = request.postDataJSON(); return result(); });
-  assert.equal(await page.getByRole('button', { name: '停止回复', exact: true }).count(), 1);
-  await page.getByLabel('对话文本', { exact: true }).fill('今天真开心');
-  await page.getByRole('button', { name: '发送文本', exact: true }).click();
-  await page.waitForFunction(() => !document.querySelector('audio').paused && Number(document.querySelector('#mouth-weight').textContent) > 0);
-  assert.equal(sent.text, '今天真开心');
-  assert.equal(sent.session_epoch, 0);
-  assert.match(await page.locator('#voice-reply').textContent(), /为你高兴/);
-  assert.match(await page.locator('#voice-intent').textContent(), /cheerful/);
-  await page.getByRole('button', { name: '停止回复', exact: true }).click();
-  assert.equal(await page.locator('#play').isDisabled(), true);
-  assert.equal(await page.locator('audio').evaluate(a => a.paused && !a.getAttribute('src')), true);
-  await page.getByText('播放记录', { exact: true }).click();
-  const download = page.waitForEvent('download');
-  await page.getByRole('button', { name: '下载播放记录', exact: true }).click();
-  const record = JSON.parse(await fs.readFile(await (await download).path(), 'utf8'));
-  assert(record.frames.some(frame => frame.utterance_id === 'api-utterance-1' && frame.session_epoch === 0 && frame.weights.jawOpen > 0));
-  assert.equal(record.session_id, 'test-session');
-  await page.close();
-});
-
-test('uploading WAV uses the audio endpoint and shows the returned transcript', async () => {
-  const page = await app.browser.newPage();
-  let mediaType, epoch, bytes;
-  await setup(page, async request => {
-    mediaType = request.headers()['content-type']; epoch = request.headers()['x-session-epoch'];
-    bytes = request.postDataBuffer(); return result();
-  });
-  await page.locator('#voice-wav').setInputFiles(path.resolve(__dirname, '../assets/nihao-cc0.wav'));
-  await page.locator('#voice-transcript').filter({ hasText: '今天真开心' }).waitFor();
-  assert.equal(mediaType, 'audio/wav'); assert.equal(epoch, '0'); assert.equal(bytes.subarray(0, 4).toString(), 'RIFF');
-  await page.close();
-});
-
-test('Stop fences a late model result and does not download or play it', async () => {
-  const page = await app.browser.newPage();
-  const gate = deferred(), entered = deferred();
-  let downloads = 0;
-  await setup(page, async () => { entered.resolve(); await gate.promise; return result(); });
-  await page.route('**/v1/sessions/test-session/turns/**/audio', route => { downloads++; return route.fulfill({ contentType: 'audio/wav', body: wav }); });
-  await page.locator('#voice-text').fill('等一下'); await page.locator('#voice-send').click();
-  await entered.promise;
-  await page.getByRole('button', { name: '停止回复', exact: true }).click();
-  gate.resolve();
-  await page.getByRole('status', { name: '语音服务状态' }).filter({ hasText: '旧回复和音频已失效' }).waitFor();
-  await page.waitForTimeout(150);
-  assert.equal(downloads, 0);
-  assert.equal(await page.locator('audio').evaluate(a => a.paused && !a.getAttribute('src')), true);
-  assert.equal(await page.locator('#play').isDisabled(), true);
-  await page.close();
-});
-
-test('the nearby reply Stop is disabled until a voice session is connected', async () => {
-  const page = await app.browser.newPage();
-  await page.goto(app.baseURL);
-  await page.getByRole('status', { name: '播放状态' }).filter({ hasText: '三维头部已就绪' }).waitFor();
-  assert.equal(await page.getByRole('button', { name: '停止回复', exact: true }).isDisabled(), true);
-  await page.close();
-});
-
-test('a late audio download cannot replace a newer local file after Stop', async () => {
-  const page = await app.browser.newPage();
-  const gate = deferred(), entered = deferred();
-  await setup(page, async () => result());
-  await page.route('**/v1/sessions/test-session/turns/**/audio', async route => { entered.resolve(); await gate.promise; await route.fulfill({ contentType: 'audio/wav', body: wav }); });
-  await page.locator('#voice-text').fill('晚到音频'); await page.locator('#voice-send').click();
-  await entered.promise;
-  await page.getByRole('button', { name: '停止', exact: true }).click();
-  await page.locator('#audio-file').setInputFiles(path.resolve(__dirname, '../assets/nihao-cc0.wav'));
-  await page.getByRole('button', { name: '播放音频', exact: true }).waitFor({ state: 'visible' });
-  await page.waitForFunction(() => !document.querySelector('#play').disabled);
-  const source = await page.locator('audio').evaluate(a => a.src);
-  gate.resolve(); await page.waitForTimeout(200);
-  assert.equal(await page.locator('audio').evaluate(a => a.src), source);
-  assert.match(await page.locator('#audio-name').textContent(), /nihao-cc0/);
-  await page.close();
-});
-
-test('an API error and corrupt returned audio stay visible instead of fake success', async () => {
-  const page = await app.browser.newPage();
-  await setup(page, async () => result());
-  await page.route('**/v1/sessions/test-session/turns/**/audio', route => route.fulfill({ contentType: 'audio/wav', body: Buffer.from('bad audio') }));
-  await page.locator('#voice-text').fill('错误音频'); await page.locator('#voice-send').click();
-  await page.getByRole('status', { name: '语音服务状态' }).filter({ hasText: '本轮失败' }).waitFor();
-  assert.equal(await page.locator('#play').isDisabled(), true);
-  await page.route('**/v1/sessions/test-session/text', route => route.fulfill({ status: 502, contentType: 'application/json', body: JSON.stringify({ code: 'dialogue_failed', message: '模型阶段失败' }) }));
-  await page.locator('#voice-send').click();
-  await page.getByRole('status', { name: '语音服务状态' }).filter({ hasText: '模型阶段失败' }).waitFor();
-  assert.equal(await page.locator('audio').evaluate(a => a.paused), true);
-  await page.close();
-});
-
-test('microphone permission denial is visible without uploading fake audio', async () => {
-  const page = await app.browser.newPage();
-  await page.addInitScript(() => { navigator.mediaDevices.getUserMedia = async () => { throw new DOMException('permission denied', 'NotAllowedError'); }; });
-  let requests = 0;
-  await setup(page, async () => { requests++; return result(); });
-  await page.locator('#voice-record').click();
-  await page.getByRole('status', { name: '语音服务状态' }).filter({ hasText: '录音失败' }).waitFor();
-  assert.equal(requests, 0);
-  assert.equal(await page.locator('#voice-record').isDisabled(), false);
-  await page.close();
-});
-
-test('new turns wait for Stop acknowledgement and reset clears old results', async () => {
-  const page = await app.browser.newPage();
-  const gate = deferred(), entered = deferred();
-  await setup(page, async () => result());
-  await page.locator('#voice-text').fill('完成一轮'); await page.locator('#voice-send').click();
-  await page.locator('#voice-reply').filter({ hasText: '为你高兴' }).waitFor();
-  await page.route('**/v1/sessions/test-session/stop', async route => {
-    entered.resolve(); await gate.promise;
-    await route.fulfill({ contentType: 'application/json', body: JSON.stringify({ session_id: 'test-session', session_epoch: 1 }) });
-  });
-  await page.getByRole('button', { name: '停止', exact: true }).click();
-  await entered.promise;
-  try { assert.equal(await page.locator('#voice-send').isDisabled(), true); }
-  finally { gate.resolve(); }
-  await page.getByRole('status', { name: '语音服务状态' }).filter({ hasText: '旧回复和音频已失效' }).waitFor();
-  await page.locator('#voice-reset').click();
-  await page.getByRole('status', { name: '语音服务状态' }).filter({ hasText: '对话已重置' }).waitFor();
-  assert.equal(await page.locator('#voice-reply').textContent(), '—');
-  assert.equal(await page.locator('#play').isDisabled(), true);
-  await page.close();
-});
-
-test('reconnecting while an old turn is pending cannot publish old audio', async () => {
-  const page = await app.browser.newPage();
-  const gate = deferred(), entered = deferred();
-  await setup(page, async () => { entered.resolve(); await gate.promise; return result(); });
-  await page.locator('#voice-text').fill('旧会话'); await page.locator('#voice-send').click();
-  await entered.promise;
-  await page.locator('#voice-connect').click();
-  await page.getByRole('status', { name: '语音服务状态' }).filter({ hasText: '已连接' }).waitFor();
-  gate.resolve(); await page.waitForTimeout(200);
-  assert.equal(await page.locator('#voice-reply').textContent(), '—');
-  assert.equal(await page.locator('audio').evaluate(a => a.paused && !a.getAttribute('src')), true);
-  await page.close();
-});
-
-async function microphoneBrowser() {
-  const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
-  return chromium.launch({ executablePath: process.env.CHROME_PATH, headless: true,
-    args: ['--no-sandbox', '--autoplay-policy=no-user-gesture-required', '--use-angle=swiftshader', '--enable-unsafe-swiftshader',
-           '--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream'] });
-}
-
-test('a browser synthetic microphone is encoded as nonempty PCM WAV and submitted through the public UI', async () => {
-  const browser = await microphoneBrowser();
-  try {
-    const page = await browser.newPage();
-    let bytes;
-    await setup(page, async request => { bytes = request.postDataBuffer(); return result(); });
-    await page.locator('#voice-record').click();
-    await page.getByRole('status', { name: '语音服务状态' }).filter({ hasText: '正在录音' }).waitFor();
-    await page.waitForTimeout(800);
-    await page.locator('#voice-record-end').click();
-    await page.locator('#voice-transcript').filter({ hasText: '今天真开心' }).waitFor();
-    assert.equal(bytes.subarray(0, 4).toString(), 'RIFF');
-    assert.equal(bytes.readUInt16LE(20), 1); assert.equal(bytes.readUInt16LE(22), 1);
-    assert.equal(bytes.readUInt32LE(24), 16000); assert.equal(bytes.readUInt16LE(34), 16);
-    assert(bytes.length > 44 && bytes.subarray(44).some(value => value !== 0));
-  } finally { await browser.close(); }
-});
-
-test('Stop during microphone permission wait releases the late device without sending a turn', async () => {
-  const browser = await microphoneBrowser();
-  try {
-    const page = await browser.newPage();
-    await page.addInitScript(() => {
-      const getUserMedia = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);
-      navigator.mediaDevices.getUserMedia = constraints => new Promise(resolve => {
-        window.grantLateMicrophone = async () => {
-          window.lateMicrophoneStream = await getUserMedia(constraints);
-          resolve(window.lateMicrophoneStream);
-        };
-      });
-    });
-    let requests = 0;
-    await setup(page, async () => { requests++; return result(); });
-    await page.locator('#voice-record').click();
-    await page.waitForFunction(() => typeof window.grantLateMicrophone === 'function');
-    await page.getByRole('button', { name: '停止', exact: true }).click();
-    await page.evaluate(() => window.grantLateMicrophone());
-    await page.waitForFunction(() => window.lateMicrophoneStream?.getTracks().every(track => track.readyState === 'ended'));
-    assert.equal(requests, 0);
-    assert.match(await page.locator('#voice-status').textContent(), /已停止/);
-  } finally { await browser.close(); }
-});

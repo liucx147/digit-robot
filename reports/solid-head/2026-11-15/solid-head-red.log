@@ -1,0 +1,28 @@
+✖ a solid head can be viewed from side and back, then reset to the identical initial view (1645.1989ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2982.3016
+
+✖ failing tests:
+
+test at web\tests\solid-head-public.test.cjs:8:1
+✖ a solid head can be viewed from side and back, then reset to the identical initial view (1645.1989ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /实体三维头部/. Input:
+  
+  'VRM1_Constraint_Twist_Sample · v1.0.1'
+  
+      at TestContext.<anonymous> (E:\digital robot\.worktrees\b-voice-integration\web\tests\solid-head-public.test.cjs:12:10)
+      at async Test.run (node:internal/test_runner/test:1332:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'VRM1_Constraint_Twist_Sample · v1.0.1',
+    expected: /实体三维头部/,
+    operator: 'match',
+    diff: 'simple'
+  }

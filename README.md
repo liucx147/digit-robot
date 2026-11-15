@@ -9,14 +9,14 @@
 - [OpenAPI 契约](docs/api/voice-openapi.json)
 - [真实语音链路验证](reports/voice-chain/chain-report.json)
 
-服务默认监听服务器 `127.0.0.1:8000`；B 通过 SSH `-L 18000:127.0.0.1:8000` 访问。输入支持文本和 PCM WAV，提供状态、停止、重置及音频下载。安装 API 依赖使用 `pip install -e '.[api,dev]'`。三维页面及实际播放/动画仍由 B 接入。
+服务默认监听服务器 `127.0.0.1:8000` 并在根路径提供 `web/` 页面；通过 SSH `-L 18000:127.0.0.1:8000` 后可打开本机18000端口。输入支持文本和 PCM WAV，提供状态、停止、重置及音频下载。安装 API 依赖使用 `pip install -e '.[api,dev]'`。B 的文本、麦克风和三维播放已接入，使用方法见 [页面语音说明](web/README-voice.md)。
 
 ## 安装与检查
 
 ```bash
 python -m venv --system-site-packages .venv
 source .venv/bin/activate
-pip install -e '.[dev]'
+pip install -e '.[api,dev]'
 pytest
 mypy src
 ```
@@ -54,9 +54,9 @@ ASR 和 TTS 的官方依赖锁定不同 Transformers 版本，各用独立环境
 
 ## 开发者 B：浏览器说话头与同步测量
 
-共同仓库为 [liucx147/digit-robot](https://github.com/liucx147/digit-robot)。A 的文本对话入口和模型代码保持在 `src/digit_robot/`；B 的浏览器页面位于 `web/`，独立测量工具位于 `src/digital_human/`。当前两个入口尚未连成完整 ASR → LLM → TTS → 数字人交互链路。接入契约见 [A 交接说明](docs/development/developer-a-m1.md)，B 的运行与实际状态见 [B 运行指南](docs/development/developer-b.md)。
+共同仓库为 [liucx147/digit-robot](https://github.com/liucx147/digit-robot)。A 的文本对话入口和模型代码保持在 `src/digit_robot/`；B 的浏览器页面位于 `web/`，独立测量工具位于 `src/digital_human/`。文本和固定中文录音已贯通 ASR → LLM → TTS → 数字人链路，实际麦克风和最终整机指标仍待验收。默认外观已改为可旋转/缩放的中性实体头部。接入契约见 [A 交接说明](docs/development/developer-a-m1.md)，B 的运行与实际状态见 [B 运行指南](docs/development/developer-b.md)。
 
-本次共享导入来自 B 候选 `8db032c`；该候选的 25 项浏览器测试和 9 项测量 CLI 测试已由 B 修复分支验证。共同分支的独立完整浏览器回归与最终阶段记录尚未完成，当前提交供 A 接入测试。09 的物理声画校准和实际同步验收继续待办。
+B的历史导入与后续集成记录分别保留在任务文件。`codex/b-voice-integration` 已合入 `main`；实际中文录音、模型上下文问答失败和软件计时详见 `reports/b-microphone/2026-11-15/`。新实体头部的物理声画同步、完整停止、离线整机和持续运行继续按票验证。
 
 从项目根目录启动本地页面：
 
