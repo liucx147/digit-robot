@@ -1,0 +1,80 @@
+TAP version 13
+# Subtest: segment gap includes delayed actual second playback
+not ok 1 - segment gap includes delayed actual second playback
+  ---
+  duration_ms: 5656.4941
+  type: 'test'
+  location: 'C:\\Users\\13953\\.codex\\worktrees\\resident-sentence-voice\\digital robot\\web\\tests\\sentence-public.test.cjs:62:1'
+  failureType: 'testCodeFailure'
+  error: 'device start delay must be counted'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (C:\Users\13953\.codex\worktrees\resident-sentence-voice\digital robot\web\tests\sentence-public.test.cjs:65:323)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: late done cannot inflate actual last-ended playback duration
+not ok 2 - late done cannot inflate actual last-ended playback duration
+  ---
+  duration_ms: 4897.0702
+  type: 'test'
+  location: 'C:\\Users\\13953\\.codex\\worktrees\\resident-sentence-voice\\digital robot\\web\\tests\\sentence-public.test.cjs:68:1'
+  failureType: 'testCodeFailure'
+  error: 'done waiting is not playback duration'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (C:\Users\13953\.codex\worktrees\resident-sentence-voice\digital robot\web\tests\sentence-public.test.cjs:70:586)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: invalid tooMany stream cannot report successful playback
+not ok 3 - invalid tooMany stream cannot report successful playback
+  ---
+  duration_ms: 7975.9485
+  type: 'test'
+  location: 'C:\\Users\\13953\\.codex\\worktrees\\resident-sentence-voice\\digital robot\\web\\tests\\sentence-public.test.cjs:73:44'
+  failureType: 'testCodeFailure'
+  error: |-
+    locator.waitFor: Timeout 7000ms exceeded.
+    Call log:
+    [2m  - waiting for getByRole('status', { name: '对话状态' }).filter({ hasText: '回复失败' }) to be visible[22m
+    
+  code: 'ERR_TEST_FAILURE'
+  name: 'TimeoutError'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\13953\.codex\worktrees\resident-sentence-voice\digital robot\web\tests\sentence-public.test.cjs:74:154)
+  ...
+# Subtest: invalid mismatch stream cannot report successful playback
+not ok 4 - invalid mismatch stream cannot report successful playback
+  ---
+  duration_ms: 8100.5421
+  type: 'test'
+  location: 'C:\\Users\\13953\\.codex\\worktrees\\resident-sentence-voice\\digital robot\\web\\tests\\sentence-public.test.cjs:73:44'
+  failureType: 'testCodeFailure'
+  error: |-
+    locator.waitFor: Timeout 7000ms exceeded.
+    Call log:
+    [2m  - waiting for getByRole('status', { name: '对话状态' }).filter({ hasText: '回复失败' }) to be visible[22m
+    
+  code: 'ERR_TEST_FAILURE'
+  name: 'TimeoutError'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\13953\.codex\worktrees\resident-sentence-voice\digital robot\web\tests\sentence-public.test.cjs:74:154)
+  ...
+1..4
+# tests 4
+# suites 0
+# pass 0
+# fail 4
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 28453.4725

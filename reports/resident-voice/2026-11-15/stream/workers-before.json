@@ -1,0 +1,57 @@
+{
+  "ready": {
+    "asr": {
+      "event": "ready",
+      "role": "asr",
+      "pid": 338310,
+      "load_count": 1,
+      "model_load_ms": 8708.254761993885,
+      "gpu": "NVIDIA GeForce RTX 4090 D",
+      "allocated_bytes": 1571201024,
+      "reserved_bytes": 1885339648
+    },
+    "llm": {
+      "event": "ready",
+      "role": "llm",
+      "pid": 338610,
+      "load_count": 1,
+      "model_load_ms": 6578.650183975697,
+      "gpu": "NVIDIA GeForce RTX 4090 D",
+      "allocated_bytes": 9180272640,
+      "reserved_bytes": 9219080192
+    },
+    "tts": {
+      "event": "ready",
+      "role": "tts",
+      "pid": 338686,
+      "load_count": 1,
+      "model_load_ms": 7264.874219894409,
+      "gpu": "NVIDIA GeForce RTX 4090 D",
+      "allocated_bytes": 4178577920,
+      "reserved_bytes": 4311744512
+    }
+  },
+  "deployment": {
+    "pid": 338308,
+    "release": "/root/autodl-tmp/digit-robot-releases/resident-voice",
+    "port": 8003,
+    "command": [
+      "/root/autodl-tmp/digit-robot-envs/api/bin/python",
+      "-m",
+      "digit_robot.server",
+      "--resident",
+      "--config",
+      "/root/autodl-tmp/digit-robot-releases/resident-voice/config/voice-4090.json",
+      "--output-dir",
+      "/root/autodl-tmp/digit-robot-releases/resident-voice/runs/resident",
+      "--port",
+      "8003"
+    ],
+    "initial_commit": "f9252ed6959e3551075ee9211dbbebc879882901",
+    "started_at_utc": "2026-11-15T12:58:30Z",
+    "commit": "733ba10516670bdec21767542e76a82c263bc82e",
+    "updated_at_utc": "2026-11-15T13:25:41Z"
+  },
+  "head": "733ba10516670bdec21767542e76a82c263bc82e",
+  "gpu": "name, memory.used [MiB], memory.total [MiB]\nNVIDIA GeForce RTX 4090 D, 15821 MiB, 24564 MiB\n"
+}

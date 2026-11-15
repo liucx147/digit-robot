@@ -1,0 +1,56 @@
+{
+  "verified_at_utc": "2026-11-15T13:45:04Z",
+  "ready": {
+    "asr": {
+      "event": "ready",
+      "role": "asr",
+      "pid": 338310,
+      "load_count": 1,
+      "model_load_ms": 8708.254761993885,
+      "gpu": "NVIDIA GeForce RTX 4090 D",
+      "allocated_bytes": 1571201024,
+      "reserved_bytes": 1885339648
+    },
+    "llm": {
+      "event": "ready",
+      "role": "llm",
+      "pid": 338610,
+      "load_count": 1,
+      "model_load_ms": 6578.650183975697,
+      "gpu": "NVIDIA GeForce RTX 4090 D",
+      "allocated_bytes": 9180272640,
+      "reserved_bytes": 9219080192
+    },
+    "tts": {
+      "event": "ready",
+      "role": "tts",
+      "pid": 338686,
+      "load_count": 1,
+      "model_load_ms": 7264.874219894409,
+      "gpu": "NVIDIA GeForce RTX 4090 D",
+      "allocated_bytes": 4178577920,
+      "reserved_bytes": 4311744512
+    }
+  },
+  "health": {
+    "8002": {
+      "status": "ok",
+      "api_version": "0.2.0",
+      "model_policy": "serial_local_subprocesses"
+    },
+    "8003": {
+      "status": "ok",
+      "api_version": "0.2.0",
+      "model_policy": "resident_sentence_pipeline",
+      "sentence_streaming": true
+    }
+  },
+  "git_head": "733ba10516670bdec21767542e76a82c263bc82e",
+  "git_status": "",
+  "gpu": "name, memory.total [MiB], memory.used [MiB], utilization.gpu [%]\nNVIDIA GeForce RTX 4090 D, 24564 MiB, 16175 MiB, 0 %\n",
+  "old_services_present": {
+    "3115": true,
+    "5216": true,
+    "309430": true
+  }
+}

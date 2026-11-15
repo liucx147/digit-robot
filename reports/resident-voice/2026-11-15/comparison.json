@@ -1,0 +1,103 @@
+{
+  "implementation_commit": "733ba10516670bdec21767542e76a82c263bc82e",
+  "baseline_commit": "7251b708c6a5539525208780761126787af63c5c",
+  "baseline_samples": 1,
+  "warm_samples": 30,
+  "cold_inference_samples": 1,
+  "warm_successes": 30,
+  "baseline": {
+    "first_speech_ms": 79143,
+    "server_generation_ms": 72193.69841739535,
+    "playback_total_ms": 115029.10000000149,
+    "reply_characters": 133,
+    "audio_duration_ms": 35920.0
+  },
+  "warm_browser_ms": {
+    "first_audio_start_ms": {
+      "p50": 8703,
+      "p95": 8974
+    },
+    "first_reply_activity_ms": {
+      "p50": 8870,
+      "p95": 9157
+    },
+    "total_playback_ms": {
+      "p50": 17317.60000000149,
+      "p95": 17554.89999999851
+    },
+    "generation_done_observed_ms": {
+      "p50": 14023.60000000149,
+      "p95": 14303.39999999851
+    }
+  },
+  "warm_server_ms": {
+    "asr_ms": {
+      "p50": 334.20658484101295,
+      "p95": 418.1864447891712,
+      "min": 315.9702271223068,
+      "max": 616.8854869902134
+    },
+    "llm_ms": {
+      "p50": 2583.168935030699,
+      "p95": 2638.632331043482,
+      "min": 2546.07655107975,
+      "max": 2652.04468742013
+    },
+    "first_sentence_ms": {
+      "p50": 1846.376,
+      "p95": 1960.73,
+      "min": 1791.004,
+      "max": 2139.15
+    },
+    "first_audio_ready_ms": {
+      "p50": 5602.712,
+      "p95": 5773.004,
+      "min": 5466.672,
+      "max": 5783.911
+    },
+    "all_audio_ready_ms": {
+      "p50": 11238.225,
+      "p95": 11488.448,
+      "min": 11004.507,
+      "max": 11571.739
+    },
+    "tts_ms": {
+      "p50": 9411.034490913153,
+      "p95": 9640.983168035746,
+      "min": 9102.579724043608,
+      "max": 9668.792456388474
+    }
+  },
+  "segment_gaps_ms": {
+    "p50": 39,
+    "p95": 361.5,
+    "min": 23.200000002980232,
+    "max": 682
+  },
+  "segment_pipeline_rtf": {
+    "p50": 1.1637207528110594,
+    "p95": 1.2000206217635423,
+    "min": 1.1121807870670006,
+    "max": 1.2233797905289314
+  },
+  "stop": {
+    "requested": 768613.6000000015,
+    "paused": 768615.6000000015,
+    "software_stop_ms": 2.0,
+    "expired_audio_http": 410,
+    "remained_stopped": true
+  },
+  "unchanged_resident_pids": {
+    "asr": 338310,
+    "llm": 338610,
+    "tts": 338686
+  },
+  "per_worker_load_count": {
+    "asr": 1,
+    "llm": 1,
+    "tts": 1
+  },
+  "first_speech_reduction_pct": 88.79243900281767,
+  "playback_total_reduction_pct": 84.94502695404792,
+  "scope": "One identical fixed synthetic speech recording, fresh session each round; end-to-end combined optimization, not an isolated concurrency ablation; software audio observation, not physical speaker timing."
+}

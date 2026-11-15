@@ -1,0 +1,58 @@
+TAP version 13
+# Subtest: first sentence plays while generation is unfinished; full queue exports correlated frames and separate timing
+ok 1 - first sentence plays while generation is unfinished; full queue exports correlated frames and separate timing
+  ---
+  duration_ms: 4765.2837
+  type: 'test'
+  ...
+# Subtest: prefetched audio can finish out of order but playback stays in sentence order
+ok 2 - prefetched audio can finish out of order but playback stays in sentence order
+  ---
+  duration_ms: 4256.1092
+  type: 'test'
+  ...
+# Subtest: Stop drops the current segment and late future sentences without reviving audio
+ok 3 - Stop drops the current segment and late future sentences without reviving audio
+  ---
+  duration_ms: 1398.8069
+  type: 'test'
+  ...
+# Subtest: foreign segment audio is a visible failure and is never fetched
+ok 4 - foreign segment audio is a visible failure and is never fetched
+  ---
+  duration_ms: 815.4674
+  type: 'test'
+  ...
+# Subtest: segment gap includes delayed actual second playback
+ok 5 - segment gap includes delayed actual second playback
+  ---
+  duration_ms: 4411.1136
+  type: 'test'
+  ...
+# Subtest: late done cannot inflate actual last-ended playback duration
+ok 6 - late done cannot inflate actual last-ended playback duration
+  ---
+  duration_ms: 4082.4106
+  type: 'test'
+  ...
+# Subtest: invalid tooMany stream cannot report successful playback
+ok 7 - invalid tooMany stream cannot report successful playback
+  ---
+  duration_ms: 818.6324
+  type: 'test'
+  ...
+# Subtest: invalid mismatch stream cannot report successful playback
+ok 8 - invalid mismatch stream cannot report successful playback
+  ---
+  duration_ms: 926.3678
+  type: 'test'
+  ...
+1..8
+# tests 8
+# suites 0
+# pass 8
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 22660.0456
