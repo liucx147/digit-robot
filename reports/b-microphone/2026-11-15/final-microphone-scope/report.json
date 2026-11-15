@@ -1,0 +1,102 @@
+{
+  "date": "2026-11-15",
+  "browser": "157.0.4341.46",
+  "page": "http://127.0.0.1:5173/",
+  "api": "http://127.0.0.1:18000/",
+  "errors": [],
+  "external": [],
+  "statuses": [
+    {
+      "ms": 64,
+      "text": "录音结束，正在转换 PCM WAV，可随时停止…"
+    },
+    {
+      "ms": 330,
+      "text": "正在转写中文发言，可随时停止…"
+    },
+    {
+      "ms": 12211,
+      "text": "正在生成回复，可随时停止…"
+    },
+    {
+      "ms": 24411,
+      "text": "正在合成语音，可随时停止…"
+    },
+    {
+      "ms": 73226,
+      "text": "正在播放数字人的回复。"
+    }
+  ],
+  "checks": {
+    "fixed_speech_to_visible_avatar": true
+  },
+  "input_scope": "Fixed A synthetic Chinese recording at getUserMedia boundary. MediaRecorder, WAV conversion, ASR/LLM/TTS API, playback and visible rendering are real. Physical microphone remains a separate human check.",
+  "session": {
+    "session_id": "b2698c15-dbd2-4dc9-a4dc-c0638a3df081",
+    "session_epoch": 0,
+    "state": "idle",
+    "utterance_id": null,
+    "error": null
+  },
+  "upload": {
+    "bytes": 145964,
+    "format": "RIFF",
+    "channels": 1,
+    "rate": 16000,
+    "bits": 16,
+    "epoch": "0"
+  },
+  "response": {
+    "type": "response",
+    "utterance_id": "77d0e5a8-15de-4e5a-9b80-842a0e621271",
+    "session_epoch": 0,
+    "user_emotion": "sadness",
+    "reply": "小林，听到你因为考试没考好而感到难过，我真的很想给你一个拥抱。考试只是学习过程中的一部分，它并不能定义你的全部价值。感到失落是很正常的反应，这说明你在乎自己的进步。请给自己一点时间和空间去平复心情，不要过于苛责自己。无论结果如何，你都已经尽力了，这本身就是一种成长。",
+    "expression_intent": {
+      "style": "gentle",
+      "intensity": 0.75
+    },
+    "status": "ok",
+    "attempts": [
+      {
+        "raw_output": "{\n  \"user_emotion\": \"sadness\",\n  \"reply\": \"小林，听到你因为考试没考好而感到难过，我真的很想给你一个拥抱。考试只是学习过程中的一部分，它并不能定义你的全部价值。感到失落是很正常的反应，这说明你在乎自己的进步。请给自己一点时间和空间去平复心情，不要过于苛责自己。无论结果如何，你都已经尽力了，这本身就是一种成长。\",\n  \"expression_intent\": {\n    \"style\": \"gentle\",\n    \"intensity\": 0.75\n  }\n}",
+        "error": null
+      }
+    ],
+    "session_id": "b2698c15-dbd2-4dc9-a4dc-c0638a3df081",
+    "state": "ready",
+    "transcript": "我叫小林，今天考试没考好，我很难过。",
+    "audio": {
+      "mime_type": "audio/wav",
+      "sample_rate_hz": 24000,
+      "channels": 1,
+      "duration_ms": 35920,
+      "url": "/v1/sessions/b2698c15-dbd2-4dc9-a4dc-c0638a3df081/turns/77d0e5a8-15de-4e5a-9b80-842a0e621271/audio"
+    },
+    "timings_ms": {
+      "asr_ms": 11534.074768424034,
+      "llm_ms": 12464.281540364027,
+      "tts_ms": 48297.15297743678,
+      "total_ms": 72296.834718436
+    }
+  },
+  "end_to_playback_observed_ms": 73780,
+  "transcript_display": "我叫小林，今天考试没考好，我很难过。",
+  "timing_display": "发言结束至回复语音活动：软件观测 73810 毫秒；文件起播 73151 毫秒（能量活动检测，回复意义仍需人工核对；不是物理出声测量）。",
+  "frame_count": 929,
+  "input_timing": {
+    "source": "microphone",
+    "timing_basis": "browser-performance-and-media-current-time-energy",
+    "speech_ended_at_ms": 8515.600000000093,
+    "audio_started_at_ms": 81666.30000000005,
+    "speech_end_to_audio_start_ms": 73151,
+    "reply_activity_offset_ms": 98.02083333333333,
+    "reply_activity_started_at_ms": 82325.1000000001,
+    "reply_activity_audio_time_ms": 103,
+    "speech_end_to_reply_activity_ms": 73810
+  },
+  "device_tracks_ended": true,
+  "passed": true,
+  "passed_scope": "This run validates the changed microphone/timing/visible-avatar path only. It is not a complete engineering or context-quality pass.",
+  "followup_not_repeated": "Known failure preserved in real-69710e1-ticket04-attempt02 and context-prompt-probe-20261115; model and server code are unchanged."
+}

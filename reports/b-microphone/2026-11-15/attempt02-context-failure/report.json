@@ -1,0 +1,127 @@
+{
+  "date": "2026-11-15",
+  "browser": "157.0.4341.46",
+  "page": "http://127.0.0.1:5173/",
+  "api": "http://127.0.0.1:18000/",
+  "errors": [],
+  "external": [],
+  "statuses": [
+    {
+      "ms": 59,
+      "text": "录音结束，正在转换 PCM WAV，可随时停止…"
+    },
+    {
+      "ms": 335,
+      "text": "正在转写中文发言，可随时停止…"
+    },
+    {
+      "ms": 11466,
+      "text": "正在生成回复，可随时停止…"
+    },
+    {
+      "ms": 23601,
+      "text": "正在合成语音，可随时停止…"
+    },
+    {
+      "ms": 75308,
+      "text": "正在播放数字人的回复。"
+    }
+  ],
+  "input_scope": "Fixed A synthetic Chinese recording at getUserMedia boundary. MediaRecorder, WAV conversion, ASR/LLM/TTS API, playback and visible rendering are real. Physical microphone remains a separate human check.",
+  "session": {
+    "session_id": "2f756299-a591-4214-bdc1-cd58a479c912",
+    "session_epoch": 0,
+    "state": "idle",
+    "utterance_id": null,
+    "error": null
+  },
+  "upload": {
+    "bytes": 145964,
+    "format": "RIFF",
+    "channels": 1,
+    "rate": 16000,
+    "bits": 16,
+    "epoch": "0"
+  },
+  "response": {
+    "type": "response",
+    "utterance_id": "34a9ceb9-9cbb-4850-aa02-0cb896d53335",
+    "session_epoch": 0,
+    "user_emotion": "sadness",
+    "reply": "小林，听到你因为考试没考好而感到难过，我真的很想给你一个拥抱。考试只是学习过程中的一部分，它并不能定义你的全部价值。感到失落是很正常的反应，这说明你在乎自己的进步。请给自己一点时间和空间去平复心情，不要过于苛责自己。无论结果如何，你都已经尽力了，这本身就是一种成长。",
+    "expression_intent": {
+      "style": "gentle",
+      "intensity": 0.75
+    },
+    "status": "ok",
+    "attempts": [
+      {
+        "raw_output": "{\n  \"user_emotion\": \"sadness\",\n  \"reply\": \"小林，听到你因为考试没考好而感到难过，我真的很想给你一个拥抱。考试只是学习过程中的一部分，它并不能定义你的全部价值。感到失落是很正常的反应，这说明你在乎自己的进步。请给自己一点时间和空间去平复心情，不要过于苛责自己。无论结果如何，你都已经尽力了，这本身就是一种成长。\",\n  \"expression_intent\": {\n    \"style\": \"gentle\",\n    \"intensity\": 0.75\n  }\n}",
+        "error": null
+      }
+    ],
+    "session_id": "2f756299-a591-4214-bdc1-cd58a479c912",
+    "state": "ready",
+    "transcript": "我叫小林，今天考试没考好，我很难过。",
+    "audio": {
+      "mime_type": "audio/wav",
+      "sample_rate_hz": 24000,
+      "channels": 1,
+      "duration_ms": 35920,
+      "url": "/v1/sessions/2f756299-a591-4214-bdc1-cd58a479c912/turns/34a9ceb9-9cbb-4850-aa02-0cb896d53335/audio"
+    },
+    "timings_ms": {
+      "asr_ms": 10960.8762152493,
+      "llm_ms": 12287.60189190507,
+      "tts_ms": 48739.06518518925,
+      "total_ms": 71988.89111727476
+    }
+  },
+  "end_to_playback_observed_ms": 75608,
+  "transcript_display": "我叫小林，今天考试没考好，我很难过。",
+  "timing_display": "发言结束至音频开始：软件观测 75064 毫秒（浏览器录音结束至媒体播放事件，不是物理出声测量）。",
+  "frame_count": 927,
+  "input_timing": {
+    "source": "microphone",
+    "timing_basis": "browser-performance-and-media-playing",
+    "speech_ended_at_ms": 17651.69999999553,
+    "audio_started_at_ms": 92715.69999999553,
+    "speech_end_to_audio_start_ms": 75064
+  },
+  "device_tracks_ended": true,
+  "followup_response": {
+    "type": "response",
+    "utterance_id": "a01006a3-cdde-45ea-8d10-36de349671f8",
+    "session_epoch": 0,
+    "user_emotion": "neutral",
+    "reply": "抱歉，作为一个人工智能助手，我没有记忆功能，无法记住之前的对话内容。",
+    "expression_intent": {
+      "style": "calm",
+      "intensity": 0.5
+    },
+    "status": "ok",
+    "attempts": [
+      {
+        "raw_output": "{\"user_emotion\": \"neutral\", \"reply\": \"抱歉，作为一个人工智能助手，我没有记忆功能，无法记住之前的对话内容。\", \"expression_intent\": {\"style\": \"calm\", \"intensity\": 0.5}}",
+        "error": null
+      }
+    ],
+    "session_id": "2f756299-a591-4214-bdc1-cd58a479c912",
+    "state": "ready",
+    "transcript": "我刚才告诉你的名字是什么？请用一句简短中文回答。",
+    "audio": {
+      "mime_type": "audio/wav",
+      "sample_rate_hz": 24000,
+      "channels": 1,
+      "duration_ms": 7680,
+      "url": "/v1/sessions/2f756299-a591-4214-bdc1-cd58a479c912/turns/a01006a3-cdde-45ea-8d10-36de349671f8/audio"
+    },
+    "timings_ms": {
+      "llm_ms": 10003.83472442627,
+      "tts_ms": 17585.620187222958,
+      "total_ms": 27589.74862843752
+    }
+  },
+  "failure": "AssertionError [ERR_ASSERTION]: a later text turn retains the name from actual ASR\n    at C:\\Users\\30415\\.codex\\worktrees\\digital-human-ticket-09\\digital robot\\_work\\real_ticket04.cjs:111:10",
+  "cleanup_http": 200
+}

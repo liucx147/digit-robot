@@ -1,0 +1,19 @@
+{
+  "source": "E:\\digital robot\\_work\\voice-integration\\real-69710e1-ticket04-attempt02",
+  "history": [
+    {
+      "role": "user",
+      "content": "我叫小林，今天考试没考好，我很难过。"
+    },
+    {
+      "role": "assistant",
+      "content": "{\"user_emotion\": \"sadness\", \"reply\": \"小林，听到你因为考试没考好而感到难过，我真的很想给你一个拥抱。考试只是学习过程中的一部分，它并不能定义你的全部价值。感到失落是很正常的反应，这说明你在乎自己的进步。请给自己一点时间和空间去平复心情，不要过于苛责自己。无论结果如何，你都已经尽力了，这本身就是一种成长。\", \"expression_intent\": {\"style\": \"gentle\", \"intensity\": 0.75}}"
+    }
+  ],
+  "question": {
+    "role": "user",
+    "content": "我刚才告诉你的名字是什么？请用一句简短中文回答。"
+  },
+  "candidate_instruction": "\n当前消息包含本次会话已经提供的历史。请据这些历史回答此前明确提到的信息；不要在历史可见时声称无法读取之前的对话。本次会话上下文不等于跨会话长期记忆；历史没有依据时不要编造。",
+  "freeze": "Two cases fixed before this probe; preserve both results; no prompt search or question substitution."
+}
