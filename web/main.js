@@ -1,11 +1,12 @@
 import { attachGazeControls } from './gaze.js';
 import { createVoiceClient } from './voice-client.js';
+import { createMicrophoneRecorder } from './microphone.js';
 const $ = selector => document.querySelector(selector);
 const status = $('#status'), audio = $('#audio');
 let gaze = { x: 0, y: 0 }, gazeControls;
 let avatar, manifest, powerSamples, sampleRate, objectURL, audioContext;
 let sessionEpoch = 0, resourceToken = 0, utteranceId = null, frameId = 0, playing = false;
-let voiceClient, voiceGeneration = 0, voiceBusy = false, loadedTurn = null;
+let voiceClient, voiceGeneration = 0, voiceBusy = false, loadedTurn = null, microphonePhase = null, turnObservation = null;
 const styleLabels = { gentle: '温和关切', cheerful: '轻快友善', calm: '平静清晰', serious: '认真沉稳' };
 const emotionLabels = { happiness: '高兴', sadness: '悲伤', anger: '愤怒', fear: '恐惧', surprise: '惊讶', disgust: '厌恶', neutral: '中性' };
 // The licensed asset has Joy, jaw and blink morphs; calm/serious use the neutral rest pose.
@@ -13,11 +14,16 @@ const smiles = { gentle: .25, cheerful: .85, calm: 0, serious: 0 };
 function voiceStatus(message, failed = false) {
   $('#voice-status').textContent = message;
   $('#voice-status').classList.toggle('error', failed);
-  $('#voice-send').disabled = !avatar || !voiceClient?.connected || voiceBusy;
+  refreshVoiceControls();
+}
+function refreshVoiceControls() {
+  $('#voice-send').disabled = !avatar || !voiceClient?.connected || voiceBusy || playing;
   $('#voice-connect').disabled = !avatar || voiceBusy;
+  $('#microphone-start').disabled = !avatar || !voiceClient?.connected || voiceBusy || playing;
+  $('#microphone-end').disabled = microphonePhase !== 'recording';
 }
 function abandonVoice() {
-  voiceGeneration++; voiceClient?.invalidate(); voiceBusy = false;
+  voiceGeneration++; microphone.cancel(); microphonePhase = null; voiceClient?.invalidate(); voiceBusy = false;
   if (loadedTurn && avatar) { playing = false; audio.pause(); frame(0); utteranceId = null; }
   loadedTurn = null;
   voiceStatus(voiceClient?.connected ? '已切换到本地音频，可继续发送新的中文。' : '已切换到本地音频；请重新连接本地服务后发送中文。');
@@ -27,6 +33,7 @@ const MAX_FRAMES = 120000;
 function setStatus(message, failed = false) {
   status.textContent = message;
   status.classList.toggle('error', failed);
+  refreshVoiceControls();
 }
 function event(type) {
   record.events.push({ type, utterance_id: utteranceId, session_epoch: sessionEpoch, audio_time_ms: Math.round(audio.currentTime * 1000), observed_at_ms: performance.now() });
@@ -122,7 +129,7 @@ async function playAudio() {
   const epoch = loadedTurn ? (sessionEpoch = loadedTurn.session_epoch) : sessionEpoch;
   const id = utteranceId = loadedTurn?.utterance_id || crypto.randomUUID();
   frameId = 0;
-  record = { version: 1, avatar: { name: manifest.name, version: manifest.version, sha256: manifest.sha256 }, audio: { name: $('#audio-name').textContent, duration_ms: Math.round(powerSamples.length / sampleRate * 1000) }, frames: [], events: [], ...(loadedTurn ? { session_id: loadedTurn.session_id, response: loadedTurn } : {}) };
+  record = { version: 1, avatar: { name: manifest.name, version: manifest.version, sha256: manifest.sha256 }, audio: { name: $('#audio-name').textContent, duration_ms: Math.round(powerSamples.length / sampleRate * 1000) }, frames: [], events: [], ...(turnObservation && loadedTurn ? { input: turnObservation } : {}), ...(loadedTurn ? { session_id: loadedTurn.session_id, response: loadedTurn } : {}) };
   audio.currentTime = 0;
   playing = true;
   $('#play').disabled = true;
@@ -149,6 +156,13 @@ async function playAudio() {
   }
 }
 $('#play').addEventListener('click', playAudio);
+audio.addEventListener('playing', () => {
+  if (!playing || !loadedTurn || !turnObservation || turnObservation.audio_started_at_ms !== null) return;
+  turnObservation.audio_started_at_ms = performance.now();
+  turnObservation.speech_end_to_audio_start_ms = Math.round(turnObservation.audio_started_at_ms - turnObservation.speech_ended_at_ms);
+  $('#voice-latency').textContent = '发言结束至音频开始：软件观测 ' + turnObservation.speech_end_to_audio_start_ms + ' 毫秒（浏览器录音结束至媒体播放事件，不是物理出声测量）。';
+  event('audio-start');
+});
 audio.addEventListener('ended', () => {
   if (!playing) return;
   playing = false;
@@ -185,6 +199,7 @@ function stopLocal() {
 $('#stop').addEventListener('click', async () => {
   const wasVoice = voiceBusy || !!loadedTurn;
   const stamp = ++voiceGeneration;
+  microphone.cancel(); microphonePhase = null;
   stopLocal();
   if (!wasVoice) return;
   powerSamples = null; loadedTurn = null; utteranceId = null; $('#play').disabled = true;
@@ -200,6 +215,7 @@ $('#stop').addEventListener('click', async () => {
 });
 $('#voice-connect').addEventListener('click', async () => {
   const stamp = ++voiceGeneration;
+  microphone.cancel(); microphonePhase = null;
   voiceClient?.invalidate(); voiceClient = undefined; stopLocal(); loadedTurn = null; utteranceId = null; powerSamples = null; $('#play').disabled = true;
   voiceBusy = true; voiceStatus('正在连接本地模型服务…');
   try {
@@ -212,30 +228,83 @@ $('#voice-connect').addEventListener('click', async () => {
     voiceBusy = false; voiceStatus(`连接失败：${error.message}`, true);
   }
 });
-$('#voice-send').addEventListener('click', async () => {
-  const text = $('#text-input').value.trim();
-  if (!text || text.length > 2000) { voiceStatus('请输入 1 至 2000 字中文。', true); return; }
-  const stamp = ++voiceGeneration;
-  const token = beginLoad();
-  loadedTurn = null; voiceBusy = true; voiceStatus('正在生成回复与语音，可随时停止…');
+function watchVoiceStages(stamp, token) {
+  const labels = { transcribing: '正在转写中文发言', generating: '正在生成回复', synthesizing: '正在合成语音' };
+  const current = () => stamp === voiceGeneration && token === resourceToken && voiceBusy;
+  async function poll() {
+    if (!current()) return;
+    try {
+      const value = await voiceClient.status();
+      if (!current()) return;
+      if (value && labels[value.state]) voiceStatus(labels[value.state] + '，可随时停止…');
+    } catch { /* The pending turn reports its own failure; a status read cannot cancel it. */ }
+    if (current()) setTimeout(poll, 300);
+  }
+  setTimeout(poll, 150);
+}
+function turnFailed(error, stamp, token) {
+  if (stamp !== voiceGeneration || token !== resourceToken) return;
+  microphone.cancel(); microphonePhase = null;
+  voiceBusy = false; $('#stop').disabled = true;
+  setStatus(`回复失败：${error.message}`, true); voiceStatus(`回复失败：${error.message}`, true);
+}
+async function receiveAnswer(answer, stamp, token) {
+  if (!answer || stamp !== voiceGeneration || token !== resourceToken) return;
+  const { result, blob } = answer;
+  const ready = await loadAudio(new File([blob], '数字人回复.wav', { type: 'audio/wav' }), token, result);
+  if (stamp !== voiceGeneration || token !== resourceToken) return;
+  if (!ready) throw new Error('返回的语音无法解码');
+  $('#voice-reply').textContent = result.reply;
+  $('#user-emotion').textContent = emotionLabels[result.user_emotion];
+  $('#voice-expression').textContent = styleLabels[result.expression_intent.style];
+  if (result.transcript) $('#voice-transcript').textContent = result.transcript;
+  await playAudio();
+}
+function beginVoiceTurn() {
+  const stamp = ++voiceGeneration, token = beginLoad();
+  loadedTurn = null; turnObservation = null; voiceBusy = true;
+  $('#voice-latency').textContent = '发言响应计时：等待本轮发言。';
   $('#voice-reply').textContent = '等待数字人回复…';
+  $('#voice-transcript').textContent = '语音转写将在这里显示。';
+  return { stamp, token };
+}
+const microphone = createMicrophoneRecorder(error => turnFailed(error, voiceGeneration, resourceToken));
+$('#microphone-start').addEventListener('click', async () => {
+  if (voiceBusy || !voiceClient?.connected || playing) return;
+  const { stamp, token } = beginVoiceTurn();
+  microphonePhase = 'permission'; voiceStatus('请求麦克风权限中，可随时停止…');
   try {
-    const answer = await voiceClient.text(text);
-    if (!answer || stamp !== voiceGeneration || token !== resourceToken) return;
-    const { result, blob } = answer;
-    const ready = await loadAudio(new File([blob], '数字人回复.wav', { type: 'audio/wav' }), token, result);
-    if (stamp !== voiceGeneration || token !== resourceToken) return;
-    if (!ready) throw new Error('返回的语音无法解码');
-    $('#voice-reply').textContent = result.reply;
-    $('#user-emotion').textContent = emotionLabels[result.user_emotion];
-    $('#voice-expression').textContent = styleLabels[result.expression_intent.style];
-    await playAudio();
+    if (!await microphone.start() || stamp !== voiceGeneration || token !== resourceToken) return;
+    microphonePhase = 'recording'; voiceStatus('正在录音，请说中文；说完点击“结束发言”（最多30秒）。');
   } catch (error) {
-    if (stamp !== voiceGeneration || token !== resourceToken) return;
-    voiceBusy = false; $('#stop').disabled = true;
-    setStatus(`回复失败：${error.message}`, true); voiceStatus(`回复失败：${error.message}`, true);
+    if (error.name === 'NotAllowedError') error = new Error('麦克风权限被拒绝，请在浏览器设置中允许后重试');
+    turnFailed(error, stamp, token);
   }
 });
+$('#microphone-end').addEventListener('click', async () => {
+  if (microphonePhase !== 'recording') return;
+  const stamp = voiceGeneration, token = resourceToken;
+  turnObservation = { source: 'microphone', timing_basis: 'browser-performance-and-media-playing', speech_ended_at_ms: performance.now(), audio_started_at_ms: null, speech_end_to_audio_start_ms: null };
+  microphonePhase = 'converting'; voiceStatus('录音结束，正在转换 PCM WAV，可随时停止…');
+  try {
+    const wav = await microphone.finish();
+    if (!wav || stamp !== voiceGeneration || token !== resourceToken) return;
+    microphonePhase = null; voiceStatus('正在转写中文发言，可随时停止…');
+    const pending = voiceClient.wav(wav);
+    watchVoiceStages(stamp, token);
+    await receiveAnswer(await pending, stamp, token);
+  } catch (error) { turnFailed(error, stamp, token); }
+});
+$('#voice-send').addEventListener('click', async () => {
+  if (voiceBusy || !voiceClient?.connected) return;
+  const text = $('#text-input').value.trim();
+  if (!text || text.length > 2000) { voiceStatus('请输入 1 至 2000 字中文。', true); return; }
+  const { stamp, token } = beginVoiceTurn();
+  voiceStatus('正在生成回复与语音，可随时停止…');
+  try { const pending = voiceClient.text(text); watchVoiceStages(stamp, token); await receiveAnswer(await pending, stamp, token); }
+  catch (error) { turnFailed(error, stamp, token); }
+});
+window.addEventListener('pagehide', () => { microphone.cancel(); voiceGeneration++; voiceClient?.invalidate(); });
 $('#expression').addEventListener('input', () => { if (avatar && !playing) frame(0); });
 $('#download').addEventListener('click', () => {
   const url = URL.createObjectURL(new Blob([JSON.stringify(record, null, 2)], { type: 'application/json' }));
