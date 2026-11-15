@@ -7,13 +7,13 @@ const { publicBrowser } = require('./browser-fixture.cjs');
 // Device input is a labelled oscillator, never evidence of real speech/ASR quality.
 let browser, baseURL, close;
 const api = 'http://127.0.0.1:18000', sid = 'microphone-session', uid = 'microphone-utterance';
-function wav() {
- const rate=16000, length=rate*2.3, b=Buffer.alloc(44+length*2);
+function wav(leadingSilence=0) {
+ const rate=16000, length=Math.round(rate*(2.3+leadingSilence)), b=Buffer.alloc(44+length*2);
  b.write('RIFF');b.writeUInt32LE(b.length-8,4);b.write('WAVEfmt ',8);b.writeUInt32LE(16,16);b.writeUInt16LE(1,20);b.writeUInt16LE(1,22);b.writeUInt32LE(rate,24);b.writeUInt32LE(rate*2,28);b.writeUInt16LE(2,32);b.writeUInt16LE(16,34);b.write('data',36);b.writeUInt32LE(length*2,40);
- for(let i=0;i<length;i++){const t=i/rate;b.writeInt16LE(t<.6||t>=1.4&&t<2?Math.round(9000*Math.sin(2*Math.PI*220*t)):0,44+i*2);}
+ for(let i=0;i<length;i++){const t=i/rate-leadingSilence;b.writeInt16LE(t>=0&&(t<.6||t>=1.4&&t<2)?Math.round(9000*Math.sin(2*Math.PI*220*t)):0,44+i*2);}
  return b;
 }
-function result(epoch=0) {return {type:'response',state:'ready',status:'ok',session_id:sid,session_epoch:epoch,utterance_id:uid,transcript:'我今天考试没考好，很难过。',user_emotion:'sadness',reply:'听起来你很失落，我愿意听你说。',expression_intent:{style:'gentle',intensity:.8},audio:{url:`/v1/sessions/${sid}/turns/${uid}/audio`,mime_type:'audio/wav',sample_rate_hz:16000,channels:1,duration_ms:2300}};}
+function result(epoch=0,leadingSilence=0) {return {type:'response',state:'ready',status:'ok',session_id:sid,session_epoch:epoch,utterance_id:uid,transcript:'我今天考试没考好，很难过。',user_emotion:'sadness',reply:'听起来你很失落，我愿意听你说。',expression_intent:{style:'gentle',intensity:.8},audio:{url:`/v1/sessions/${sid}/turns/${uid}/audio`,mime_type:'audio/wav',sample_rate_hz:16000,channels:1,duration_ms:Math.round((2.3+leadingSilence)*1000)}};}
 async function setup(options={}) {
  const page=await browser.newPage({viewport:options.viewport||{width:1100,height:800},acceptDownloads:true});page.setDefaultTimeout(5000);
  const submitted=[];let epoch=0;
@@ -44,9 +44,9 @@ async function setup(options={}) {
   if(options.handle&&await options.handle(route,json,p,submitted))return;
   if(p==='/v1/sessions')return json({session_id:sid,session_epoch:epoch,state:'idle'});
   if(p.endsWith('/stop'))return json({session_id:sid,session_epoch:++epoch,state:'stopped'});
-  if(p.endsWith('/audio')&&request.method()==='POST'){submitted.push({headers:request.headers(),body:request.postDataBuffer()});return json(result(epoch));}
-  if(p.endsWith('/text'))return json(result(epoch));
-  if(p.endsWith('/audio'))return route.fulfill({status:200,contentType:'audio/wav',body:wav()});
+  if(p.endsWith('/audio')&&request.method()==='POST'){submitted.push({headers:request.headers(),body:request.postDataBuffer()});return json(result(epoch,options.leadingSilence));}
+  if(p.endsWith('/text'))return json(result(epoch,options.leadingSilence));
+  if(p.endsWith('/audio'))return route.fulfill({status:200,contentType:'audio/wav',body:wav(options.leadingSilence)});
   return json({session_id:sid,session_epoch:epoch,state:'generating',utterance_id:uid});
  });
  await page.goto(baseURL);await page.getByRole('status',{name:'播放状态'}).filter({hasText:/三维头部已就绪/}).waitFor();
@@ -98,7 +98,7 @@ test('ASR, generation and synthesis remain visible while waiting; recorded laten
   await page.getByText('播放记录',{exact:true}).click();const downloading=page.waitForEvent('download');await page.getByRole('button',{name:'下载播放记录'}).click();
   const download=await downloading, record=JSON.parse(await fs.readFile(await download.path(),'utf8'));
   await fs.writeFile(path.resolve(__dirname,'../../artifacts/ticket-04-timing.json'),JSON.stringify(record,null,2));
-  assert.equal(record.input.source,'microphone');assert.equal(record.input.timing_basis,'browser-performance-and-media-playing');
+  assert.equal(record.input.source,'microphone');assert.equal(record.input.timing_basis,'browser-performance-and-media-current-time-energy');
   assert.ok(record.input.speech_ended_at_ms>0);assert.ok(record.input.audio_started_at_ms>record.input.speech_ended_at_ms);
   assert.ok(record.input.speech_end_to_audio_start_ms>=400);
   assert.equal(record.response.transcript,'我今天考试没考好，很难过。');
@@ -226,12 +226,109 @@ test('a microphone recording failure releases only audio tracks and leaves camer
 test('a later text turn clears the microphone input timing instead of reusing the previous speech end',async()=>{
  const {page}=await setup();
  try {
-  await connect(page);await start(page);await finish(page);await page.getByRole('status',{name:'对话状态'}).filter({hasText:/回复播放完成/}).waitFor();
+  await connect(page);await start(page);await finish(page);
+  await page.waitForFunction(()=>document.querySelector('audio').currentTime>=.15);
+  await page.getByRole('status',{name:'对话状态'}).filter({hasText:/回复播放完成/}).waitFor();
   assert.match(await page.getByLabel('发言响应计时').textContent(),/软件观测/);
   await page.getByLabel('输入中文').fill('谢谢你，我好一点了。');await page.getByRole('button',{name:'发送并播放回复'}).click();
   await page.getByRole('status',{name:'对话状态'}).filter({hasText:/正在播放/}).waitFor();
   assert.match(await page.getByLabel('发言响应计时').textContent(),/等待本轮发言/);
   await page.getByText('播放记录',{exact:true}).click();const downloading=page.waitForEvent('download');await page.getByRole('button',{name:'下载播放记录'}).click();const download=await downloading,record=JSON.parse(await fs.readFile(await download.path(),'utf8'));
   assert.equal('input' in record,false);assert.equal(record.response.transcript,'我今天考试没考好，很难过。');
+ }finally{await page.close();}
+});
+
+async function timingRecord(page, name) {
+ await page.getByText('播放记录',{exact:true}).evaluate(e=>e.parentElement.open=true);
+ const downloading=page.waitForEvent('download');await page.getByRole('button',{name:'下载播放记录'}).click();
+ const download=await downloading,record=JSON.parse(await fs.readFile(await download.path(),'utf8'));
+ await fs.writeFile(path.resolve(__dirname,`../../artifacts/ticket-04-review-${process.env.TIMING_EVIDENCE||'green'}-${name}.json`),JSON.stringify(record,null,2));
+ return record;
+}
+
+test('1000 ms leading silence keeps reply activity timing pending until real playback reaches the signal',async()=>{
+ const {page}=await setup({leadingSilence:1});
+ try {
+  await connect(page);await start(page);await finish(page);
+  // Freeze the silent media position while comparing the UI and downloaded snapshot.
+  await page.waitForFunction(()=>{const audio=document.querySelector('audio');if(audio.currentTime<.15)return false;audio.pause();return true;});
+  const silent=await timingRecord(page,'leading-silence-pending');
+  assert.equal(silent.input.reply_activity_started_at_ms,null,'file playing must not complete reply activity timing during leading silence');
+  assert.equal(silent.input.speech_end_to_reply_activity_ms,null);
+  assert.match(await page.getByLabel('发言响应计时').textContent(),/等待回复语音活动/);
+  assert.ok(silent.input.audio_started_at_ms>silent.input.speech_ended_at_ms,'raw file-start timing remains available');
+  await page.locator('audio').evaluate(a=>a.play());
+  await page.waitForFunction(()=>document.querySelector('audio').currentTime>=1.15);
+  const active=await timingRecord(page,'leading-silence-active');
+  assert.ok(active.input.reply_activity_offset_ms>=1000&&active.input.reply_activity_offset_ms<1020);
+  assert.ok(active.input.reply_activity_audio_time_ms>=1000);
+  assert.ok(active.input.reply_activity_started_at_ms-active.input.audio_started_at_ms>=900,'real leading silence belongs in response latency');
+  assert.ok(active.input.speech_end_to_reply_activity_ms-active.input.speech_end_to_audio_start_ms>=900);
+  assert.match(await page.getByLabel('发言响应计时').textContent(),/回复语音活动.*软件观测.*毫秒/);
+ }finally{await page.close();}
+});
+
+test('paused media and a rejected play acknowledgement leave reply activity pending until an explicit retry',async()=>{
+ const {page}=await setup({leadingSilence:1});
+ try {
+  // Delay/reject only the external device acknowledgement; real playback still runs.
+  await page.evaluate(()=>{const play=HTMLMediaElement.prototype.play;let first=true;HTMLMediaElement.prototype.play=function(){const ack=play.call(this);if(!first)return ack;first=false;return ack.then(()=>new Promise((resolve,reject)=>{window.mediaBoundary.rejectPlayback=()=>reject(Error('device did not acknowledge playback'));}));};window.mediaBoundary.resumePlayback=()=>play.call(document.querySelector('audio'));});
+  await connect(page);await start(page);await finish(page);
+  await page.waitForFunction(()=>document.querySelector('audio').currentTime>=.15);
+  await page.locator('audio').evaluate(a=>a.pause());
+  await page.waitForTimeout(1150);
+  const paused=await timingRecord(page,'paused');assert.equal(paused.input.reply_activity_started_at_ms,null);
+  assert.ok(await page.locator('audio').evaluate(a=>a.currentTime<1));
+  await page.evaluate(()=>window.mediaBoundary.resumePlayback());
+  await page.waitForFunction(()=>document.querySelector('audio').currentTime>=1.15);
+  // Keep this same attempt alive while saving evidence; an already ended attempt correctly ignores a late rejection.
+  await page.locator('audio').evaluate(a=>a.pause());
+  const unacknowledged=await timingRecord(page,'unacknowledged');assert.equal(unacknowledged.input.reply_activity_started_at_ms,null);
+  await page.evaluate(()=>window.mediaBoundary.rejectPlayback());
+  await page.getByRole('status',{name:'对话状态'}).filter({hasText:/音频播放失败/}).waitFor();
+  const failed=await timingRecord(page,'play-failed');assert.equal(failed.input.reply_activity_started_at_ms,null);
+  await page.getByRole('button',{name:'播放音频',exact:true}).click();
+  await page.waitForFunction(()=>document.querySelector('audio').currentTime>=1.15);
+  const retry=await timingRecord(page,'play-retry');assert.ok(retry.input.reply_activity_started_at_ms>failed.input.audio_started_at_ms);
+ }finally{await page.close();}
+});
+
+for(const next of ['text','microphone']) {
+ test(`Stop before reply activity ignores late device acknowledgement and isolates the next ${next} turn`,async()=>{
+  const {page}=await setup({leadingSilence:1});
+  try {
+   await page.evaluate(()=>{const play=HTMLMediaElement.prototype.play;let first=true;HTMLMediaElement.prototype.play=function(){const ack=play.call(this);if(!first)return ack;first=false;return ack.then(()=>new Promise(resolve=>window.mediaBoundary.acknowledgeOldPlayback=resolve));};});
+   await connect(page);await start(page);await finish(page);
+   await page.waitForFunction(()=>document.querySelector('audio').currentTime>=.15);
+   await page.getByRole('button',{name:'停止',exact:true}).click();
+   await page.getByRole('status',{name:'对话状态'}).filter({hasText:/旧结果已失效/}).waitFor();
+   await page.waitForTimeout(1100);
+   const stopped=await timingRecord(page,`cancelled-before-${next}`);assert.equal(stopped.input.reply_activity_started_at_ms,null);
+   if(next==='text'){await page.getByLabel('输入中文').fill('谢谢你。');await page.getByRole('button',{name:'发送并播放回复'}).click();}
+   else {await start(page);await finish(page);}
+   await page.waitForFunction(()=>document.querySelector('audio').currentTime>=.15);
+   await page.evaluate(()=>window.mediaBoundary.acknowledgeOldPlayback());
+   const pending=await timingRecord(page,`next-${next}-pending`);
+   if(next==='microphone'){assert.equal(pending.input.reply_activity_started_at_ms,null);assert.ok(pending.input.speech_ended_at_ms>stopped.input.speech_ended_at_ms);}
+   else assert.equal('input' in pending,false);
+   await page.waitForFunction(()=>document.querySelector('audio').currentTime>=1.15);
+   const current=await timingRecord(page,`next-${next}-active`);assert.equal(current.response.session_epoch,1);
+   if(next==='microphone'){assert.ok(current.input.speech_end_to_reply_activity_ms-current.input.speech_end_to_audio_start_ms>=900);assert.equal(current.events.filter(e=>e.type==='reply-activity-start').length,1);}
+   else {assert.equal('input' in current,false);assert.match(await page.getByLabel('发言响应计时').textContent(),/等待本轮发言/);}
+  }finally{await page.close();}
+ });
+}
+
+test('replaying the same reply preserves the first file-start and reply-activity observations',async()=>{
+ const {page}=await setup();
+ try {
+  await connect(page);await start(page);await finish(page);
+  await page.waitForFunction(()=>document.querySelector('audio').currentTime>=.15);
+  await page.getByRole('status',{name:'对话状态'}).filter({hasText:/回复播放完成/}).waitFor();
+  const first=await timingRecord(page,'first-complete');assert.ok(first.input.reply_activity_started_at_ms>0);
+  await page.getByRole('button',{name:'播放音频',exact:true}).click();
+  await page.waitForFunction(()=>document.querySelector('audio').currentTime>=.2);
+  const replay=await timingRecord(page,'replay');assert.deepEqual(replay.input,first.input);
+  assert.equal(replay.events.filter(e=>e.type==='reply-activity-start').length,0);
  }finally{await page.close();}
 });
