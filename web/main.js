@@ -5,6 +5,8 @@ const $ = selector => document.querySelector(selector);
 const status = $('#status'), audio = $('#audio');
 let gaze = { x: 0, y: 0 }, gazeControls;
 let avatar, manifest, powerSamples, sampleRate, objectURL, audioContext;
+let replyActivityOffsetMs = null, playbackAcknowledgedToken = null;
+const REPLY_ACTIVITY_RMS = .008;
 let sessionEpoch = 0, resourceToken = 0, utteranceId = null, frameId = 0, playing = false;
 let voiceClient, voiceGeneration = 0, voiceBusy = false, loadedTurn = null, microphonePhase = null, turnObservation = null;
 const styleLabels = { gentle: '温和关切', cheerful: '轻快友善', calm: '平静清晰', serious: '认真沉稳' };
@@ -60,6 +62,13 @@ function tick(epoch, id, token) {
   let energy = 0;
   if (!audio.paused) for (let i = start; i < end; i++) energy += powerSamples[i];
   const rms = end > start ? Math.sqrt(energy / (end - start)) : 0;
+  if (!audio.paused && !audio.ended && playbackAcknowledgedToken === token && loadedTurn && turnObservation && turnObservation.reply_activity_started_at_ms === null && replyActivityOffsetMs !== null && audio.currentTime * 1000 >= replyActivityOffsetMs) {
+    turnObservation.reply_activity_started_at_ms = performance.now();
+    turnObservation.reply_activity_audio_time_ms = Math.round(audio.currentTime * 1000);
+    turnObservation.speech_end_to_reply_activity_ms = Math.round(turnObservation.reply_activity_started_at_ms - turnObservation.speech_ended_at_ms);
+    $('#voice-latency').textContent = '发言结束至回复语音活动：软件观测 ' + turnObservation.speech_end_to_reply_activity_ms + ' 毫秒；文件起播 ' + turnObservation.speech_end_to_audio_start_ms + ' 毫秒（能量活动检测，回复意义仍需人工核对；不是物理出声测量）。';
+    event('reply-activity-start');
+  }
   frame(Math.max(0, Math.min(1, (rms - .008) * 6)));
   requestAnimationFrame(() => tick(epoch, id, token));
 }
@@ -72,7 +81,7 @@ function beginLoad() {
   utteranceId = null;
   $('#play').disabled = true;
   $('#stop').disabled = false;
-  powerSamples = null;
+  powerSamples = null; replyActivityOffsetMs = null;
   setStatus('加载和分析音频中…');
   return token;
 }
@@ -99,6 +108,19 @@ async function loadAudio(file, token, turn = null) {
       if (Math.abs(decoded.duration * 1000 - turn.audio.duration_ms) > 50) throw new Error('实际语音时长与服务元数据不一致');
     }
     sampleRate = decoded.sampleRate;
+    replyActivityOffsetMs = null;
+    if (turn) {
+      // A trailing 20 ms RMS window cannot label leading silence as already active.
+      // This detects signal energy, not semantic speech or physical speaker output.
+      const windowSamples = Math.ceil(sampleRate * .02);
+      let power = 0;
+      for (let i = 0; i < powerSamples.length; i++) {
+        power += powerSamples[i];
+        if (i >= windowSamples) power -= powerSamples[i - windowSamples];
+        if (power / windowSamples > REPLY_ACTIVITY_RMS ** 2) { replyActivityOffsetMs = (i + 1) / sampleRate * 1000; break; }
+      }
+      if (turnObservation) turnObservation.reply_activity_offset_ms = replyActivityOffsetMs;
+    }
     loadedTurn = turn;
     if (objectURL) URL.revokeObjectURL(objectURL);
     objectURL = URL.createObjectURL(file);
@@ -126,6 +148,7 @@ $('#sample').addEventListener('click', async () => {
 async function playAudio() {
   if (!powerSamples || playing) return;
   const token = ++resourceToken;
+  playbackAcknowledgedToken = null;
   const epoch = loadedTurn ? (sessionEpoch = loadedTurn.session_epoch) : sessionEpoch;
   const id = utteranceId = loadedTurn?.utterance_id || crypto.randomUUID();
   frameId = 0;
@@ -142,6 +165,7 @@ async function playAudio() {
     await acknowledgement;
     // A stale acknowledgement must not pause a newer playback on this shared media element.
     if (!isCurrent(epoch, id, token)) return;
+    playbackAcknowledgedToken = token;
     setStatus('正在播放，嘴部跟随音频节奏。');
     event('play');
     if (loadedTurn) { voiceBusy = true; voiceStatus('正在播放数字人的回复。'); }
@@ -157,10 +181,10 @@ async function playAudio() {
 }
 $('#play').addEventListener('click', playAudio);
 audio.addEventListener('playing', () => {
-  if (!playing || !loadedTurn || !turnObservation || turnObservation.audio_started_at_ms !== null) return;
+  if (!playing || audio.paused || audio.ended || !loadedTurn || !turnObservation || turnObservation.audio_started_at_ms !== null) return;
   turnObservation.audio_started_at_ms = performance.now();
   turnObservation.speech_end_to_audio_start_ms = Math.round(turnObservation.audio_started_at_ms - turnObservation.speech_ended_at_ms);
-  $('#voice-latency').textContent = '发言结束至音频开始：软件观测 ' + turnObservation.speech_end_to_audio_start_ms + ' 毫秒（浏览器录音结束至媒体播放事件，不是物理出声测量）。';
+  $('#voice-latency').textContent = '回复文件已起播（软件观测 ' + turnObservation.speech_end_to_audio_start_ms + ' 毫秒）；等待回复语音活动开始。';
   event('audio-start');
 });
 audio.addEventListener('ended', () => {
@@ -168,6 +192,7 @@ audio.addEventListener('ended', () => {
   playing = false;
   frame(0);
   event('ended');
+  if (loadedTurn && turnObservation && turnObservation.reply_activity_started_at_ms === null) $('#voice-latency').textContent = '播放已结束，未观测到达到能量阈值的回复语音活动；响应活动计时未完成。';
   $('#play').disabled = !powerSamples;
   $('#stop').disabled = true;
   setStatus('播放完成，嘴部已闭合。');
@@ -284,7 +309,7 @@ $('#microphone-start').addEventListener('click', async () => {
 $('#microphone-end').addEventListener('click', async () => {
   if (microphonePhase !== 'recording') return;
   const stamp = voiceGeneration, token = resourceToken;
-  turnObservation = { source: 'microphone', timing_basis: 'browser-performance-and-media-playing', speech_ended_at_ms: performance.now(), audio_started_at_ms: null, speech_end_to_audio_start_ms: null };
+  turnObservation = { source: 'microphone', timing_basis: 'browser-performance-and-media-current-time-energy', speech_ended_at_ms: performance.now(), audio_started_at_ms: null, speech_end_to_audio_start_ms: null, reply_activity_offset_ms: null, reply_activity_started_at_ms: null, reply_activity_audio_time_ms: null, speech_end_to_reply_activity_ms: null };
   microphonePhase = 'converting'; voiceStatus('录音结束，正在转换 PCM WAV，可随时停止…');
   try {
     const wav = await microphone.finish();
