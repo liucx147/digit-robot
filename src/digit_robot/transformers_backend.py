@@ -1,5 +1,8 @@
 from pathlib import Path
 from typing import Any, cast
+from collections.abc import Iterator
+from queue import Empty
+from threading import Event, Thread
 
 
 class TransformersBackend:
@@ -37,3 +40,44 @@ class TransformersBackend:
             )
         new_tokens = outputs[0, inputs["input_ids"].shape[1]:]
         return str(self.tokenizer.decode(new_tokens, skip_special_tokens=True)).strip()
+
+    def stream(self, messages: list[dict[str, str]], cancel: Event) -> Iterator[str]:
+        from transformers import TextIteratorStreamer, StoppingCriteria, StoppingCriteriaList
+
+        class Cancelled(StoppingCriteria):
+            def __call__(self, *args: Any, **kwargs: Any) -> bool:
+                return cancel.is_set()
+
+        prompt = self.tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True, enable_thinking=False)
+        inputs = self.tokenizer(prompt, return_tensors='pt', add_special_tokens=False).to(self.model.device)
+        streamer = TextIteratorStreamer(self.tokenizer, skip_prompt=True, skip_special_tokens=True, timeout=.1)
+        failures: list[Exception] = []
+
+        def produce() -> None:
+            try:
+                with self.torch.inference_mode():
+                    self.model.generate(**inputs, max_new_tokens=self.max_new_tokens, do_sample=False,
+                        pad_token_id=self.tokenizer.eos_token_id, streamer=streamer,
+                        stopping_criteria=StoppingCriteriaList([Cancelled()]))
+            except Exception as error:
+                failures.append(error)
+
+        thread = Thread(target=produce)
+        thread.start()
+        try:
+            while True:
+                try:
+                    text = next(streamer)
+                except Empty:
+                    if not thread.is_alive():
+                        break
+                    continue
+                except StopIteration:
+                    break
+                if text:
+                    yield text
+            if failures:
+                raise failures[0]
+        finally:
+            cancel.set()
+            thread.join()

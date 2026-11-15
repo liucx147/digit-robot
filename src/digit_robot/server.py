@@ -2,10 +2,11 @@
 
 from typing import Any
 from pathlib import Path
+import json
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.concurrency import run_in_threadpool
 
@@ -25,7 +26,13 @@ def create_app(pipeline: VoicePipeline, origins: list[str] | None = None,
 
     @app.get("/v1/health")
     def health() -> dict[str, Any]:
-        return {"status": "ok", "api_version": "0.2.0", "model_policy": "serial_local_subprocesses"}
+        return {"status": "ok", "api_version": "0.2.0", "model_policy": "resident_sentence_pipeline" if hasattr(pipeline, 'stream_turn') else "serial_local_subprocesses",
+                "sentence_streaming": hasattr(pipeline, 'stream_turn')}
+
+    def streamed(session_id: str, epoch: int, **input: Any) -> StreamingResponse:
+        events = getattr(pipeline, 'stream_turn')(session_id, epoch, **input)
+        return StreamingResponse((json.dumps(event, ensure_ascii=False) + '\n' for event in events),
+                                 media_type='application/x-ndjson', headers={'Cache-Control': 'no-store', 'X-Accel-Buffering': 'no'})
 
     @app.post("/v1/sessions")
     def create_session() -> dict[str, Any]:
@@ -48,7 +55,7 @@ def create_app(pipeline: VoicePipeline, origins: list[str] | None = None,
         "required": ["text", "session_epoch"], "properties": {
             "text": {"type": "string", "minLength": 1, "maxLength": 2000},
             "session_epoch": {"type": "integer", "minimum": 0}}}}}}})
-    async def text_turn(session_id: str, request: Request) -> dict[str, Any]:
+    async def text_turn(session_id: str, request: Request) -> Any:
         data = await read_body(request, 16384)
         try:
             body = load_json(data.decode("utf-8"))
@@ -59,6 +66,8 @@ def create_app(pipeline: VoicePipeline, origins: list[str] | None = None,
         epoch = body.get("session_epoch")
         if type(epoch) is not int or epoch < 0:
             raise VoiceError("invalid_input", "session_epoch 必须为非负整数")
+        if request.url.path.startswith('/v2/'):
+            return streamed(session_id, epoch, text=body['text'])
         return await run_in_threadpool(pipeline.turn, session_id, epoch, text=body["text"])
 
     @app.post("/v1/sessions/{session_id}/audio", openapi_extra={
@@ -66,7 +75,7 @@ def create_app(pipeline: VoicePipeline, origins: list[str] | None = None,
                         "schema": {"type": "integer", "minimum": 0}}],
         "requestBody": {"required": True, "content": {"audio/wav": {
             "schema": {"type": "string", "format": "binary"}}}}})
-    async def audio_turn(session_id: str, request: Request) -> dict[str, Any]:
+    async def audio_turn(session_id: str, request: Request) -> Any:
         if request.headers.get("content-type", "").split(";")[0].lower() != "audio/wav":
             raise VoiceError("unsupported_media_type", "请发送 audio/wav 的 PCM 录音", 415)
         try:
@@ -77,7 +86,17 @@ def create_app(pipeline: VoicePipeline, origins: list[str] | None = None,
         except ValueError as error:
             raise VoiceError("invalid_input", "X-Session-Epoch 必须为非负整数") from error
         data = await read_body(request, 6 * 1024 * 1024)
+        if request.url.path.startswith('/v2/'):
+            return streamed(session_id, epoch, audio=data)
         return await run_in_threadpool(pipeline.turn, session_id, epoch, audio=data)
+
+    if hasattr(pipeline, 'stream_turn'):
+        app.add_api_route('/v2/sessions/{session_id}/text', text_turn, methods=['POST'])
+        app.add_api_route('/v2/sessions/{session_id}/audio', audio_turn, methods=['POST'])
+
+        @app.get('/v2/sessions/{session_id}/turns/{utterance_id}/segments/{index}/audio')
+        def segment_audio(session_id: str, utterance_id: str, index: int) -> FileResponse:
+            return FileResponse(pipeline.audio_file(session_id, f'{utterance_id}.{index}'), media_type='audio/wav', headers={'Cache-Control': 'no-store'})
 
     @app.get("/v1/sessions/{session_id}/turns/{utterance_id}/audio")
     def audio_file(session_id: str, utterance_id: str) -> FileResponse:
@@ -110,12 +129,25 @@ def main() -> None:
     parser.add_argument("--output-dir", type=Path, default=Path("runs/voice"))
     parser.add_argument("--port", type=int, default=8000)
     parser.add_argument("--allow-origin", action="append", default=[])
+    parser.add_argument('--resident', action='store_true', help='Load ASR/LLM/TTS once and enable sentence streaming')
     args = parser.parse_args()
-    models = ProcessModels(RuntimeConfig.from_file(args.config))
+    config = RuntimeConfig.from_file(args.config)
+    if args.resident:
+        from .resident import ResidentModels
+        from .sentence_pipeline import SentencePipeline
+        models: Any = ResidentModels(config, args.output_dir / 'workers')
+        pipeline: VoicePipeline = SentencePipeline(models, args.output_dir)
+    else:
+        models = ProcessModels(config)
+        pipeline = VoicePipeline(models, args.output_dir)
     web_dir = models.config.project_root / "web"
-    app = create_app(VoicePipeline(models, args.output_dir), args.allow_origin,
+    app = create_app(pipeline, args.allow_origin,
                      web_dir=web_dir if web_dir.is_dir() else None)
-    uvicorn.run(app, host="127.0.0.1", port=args.port)
+    try:
+        uvicorn.run(app, host="127.0.0.1", port=args.port)
+    finally:
+        if args.resident:
+            models.close()
 
 
 if __name__ == "__main__":

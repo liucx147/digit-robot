@@ -25,7 +25,7 @@ def load_json(text: str) -> Any:
     return json.loads(text, parse_constant=_reject_constant)
 
 
-def _validate_answer(raw: str) -> dict[str, Any]:
+def validate_answer(raw: str) -> dict[str, Any]:
     answer = load_json(raw)
     if not isinstance(answer, dict):
         raise ValueError("模型输出必须是 JSON 对象")
@@ -70,7 +70,7 @@ class DialogueSession:
             raw = None
             try:
                 raw = self.backend.generate(messages)
-                answer = _validate_answer(raw)
+                answer = validate_answer(raw)
             except Exception as error:
                 diagnostic = f"{type(error).__name__}: {error}"
                 attempts.append({"raw_output": raw, "error": diagnostic})
