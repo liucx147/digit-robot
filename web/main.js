@@ -448,6 +448,7 @@ profileControls = attachProfileControls({
   stop() {
     voiceGeneration++; cancelSentencePlayback(); microphone.cancel(); microphonePhase = null;
     voiceClient?.invalidate(); stopLocal(); voiceBusy = false; loadedTurn = null; utteranceId = null; powerSamples = null; turnObservation = null;
+    record = {version:1,frames:[],events:[]}; $('#frame').textContent = '尚无播放记录'; $('#download').disabled = true;
     $('#play').disabled = true; $('#voice-reply').textContent = '回复将在这里显示。';
     $('#voice-transcript').textContent = '语音转写将在这里显示。';
     $('#user-emotion').textContent = '尚无'; $('#voice-expression').textContent = '尚无';

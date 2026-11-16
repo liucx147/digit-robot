@@ -200,3 +200,15 @@ test('preference mutation cancels playing sentences and prefetched later audio w
   await send(page);await page.waitForFunction(()=>{try{return JSON.parse(document.querySelector('#frame').textContent).session_epoch===2&&!document.querySelector('audio').paused;}catch{return false;}});
  }finally{gate.resolve();await page.close();}
 });
+test('changing profiles clears the previous response playback record and disables its download',async()=>{
+ const {page,state}=await setup();state.speak=true;try{
+  await connect(page);await create(page,'实验甲');await send(page);await page.waitForFunction(()=>document.querySelector('audio').currentTime>.1);
+  await page.getByText('播放记录',{exact:true}).click();
+  assert.equal(await page.getByRole('button',{name:'下载播放记录',exact:true}).isDisabled(),false);
+  await page.getByLabel('档案名称',{exact:true}).fill('改名后');await page.getByRole('button',{name:'修改档案名称',exact:true}).click();await ready(page);
+  assert.equal(await page.getByRole('button',{name:'下载播放记录',exact:true}).isDisabled(),true);assert.equal(await page.locator('#frame').textContent(),'尚无播放记录');
+  await send(page);await page.waitForFunction(()=>document.querySelector('audio').currentTime>.1);
+  await page.getByLabel('选择档案',{exact:true}).selectOption('');await ready(page);
+  assert.equal(await page.getByRole('button',{name:'下载播放记录',exact:true}).isDisabled(),true);assert.equal(await page.locator('#frame').textContent(),'尚无播放记录');
+ }finally{await page.close();}
+});
