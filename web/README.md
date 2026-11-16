@@ -33,3 +33,5 @@ These tests check the browser media clock, rendered pixel change across a known 
 Source and redistribution terms: [asset notices](assets/NOTICES.md).
 
 文本输入与本地 LLM/TTS 接入见 [文本语音说明](README-voice.md)。页面初载不请求 API，本地音频演示仍可独立使用。
+
+档案选择和跨会话偏好见 [档案说明](README-profiles.md)。

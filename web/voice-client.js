@@ -22,7 +22,7 @@ export function createVoiceClient(baseUrl) {
     const response = await fetch(new URL(path, base), { cache: 'no-store', ...options });
     let body;
     try { body = await response.json(); } catch { throw new Error('本地服务未返回有效 JSON'); }
-    if (!response.ok) throw new Error(body.code === 'gpu_busy' ? '模型服务正在处理其他轮次，请稍后重试。' : `${body.message || '服务请求失败'}${body.code ? `（${body.code}）` : ''}`);
+    if (!response.ok) { const error = new Error(body.code === 'gpu_busy' ? '模型服务正在处理其他轮次，请稍后重试。' : `${body.message || '服务请求失败'}${body.code ? `（${body.code}）` : ''}`); error.code = body.code; throw error; }
     return body;
   }
   function route(suffix = '') {
@@ -31,13 +31,15 @@ export function createVoiceClient(baseUrl) {
   }
   async function send(suffix, options, requireTranscript = false) {
     const stamp = ++generation, sid = session?.session_id, epoch = session?.session_epoch;
+    streamAbort?.abort();
+    const controller = streamAbort = new AbortController();
     try {
-      const result = await request(route(suffix), options);
+      const result = await request(route(suffix), {...options,signal:controller.signal});
       if (!current(stamp, sid, epoch)) return null;
       if (result.session_id !== sid || result.session_epoch !== epoch) throw new Error('服务返回了不匹配的会话或代次');
       validateResult(result);
       if (requireTranscript && (typeof result.transcript !== 'string' || !result.transcript.trim() || result.transcript.length > 2000)) throw new Error('未得到有效语音转写，未播放回复');
-      const response = await fetch(new URL(result.audio.url, base), { cache: 'no-store' });
+      const response = await fetch(new URL(result.audio.url, base), { cache: 'no-store', signal:controller.signal });
       if (!current(stamp, sid, epoch)) return null;
       if (!response.ok) throw new Error(`语音获取失败（HTTP ${response.status}）`);
       const blob = await response.blob();
@@ -127,7 +129,46 @@ export function createVoiceClient(baseUrl) {
     } catch (error) { if (!current(stamp, sid, epoch)) return null; if (timedOut) throw new Error('分句回复超时：15秒未收到有效事件，请重试'); throw error; }
     finally { clearTimeout(idleTimer); if (reader) { reader.cancel().catch(() => {}); reader.releaseLock(); } }
   }
+  function profileSession(next, sid, epoch) {
+    if (!validSession(next) || next.session_id !== sid || next.session_epoch < epoch || !(next.profile_id === null || typeof next.profile_id === 'string')) throw new Error('无法确认当前档案，请重新连接');
+    session = next; return next;
+  }
+  async function confirmProfileSession() {
+    const path = route(), sid = session.session_id, epoch = session.session_epoch, stamp = ++generation;
+    streamAbort?.abort();
+    const next = await request(path);
+    if (!current(stamp,sid,epoch)) return null;
+    return profileSession(next,sid,epoch);
+  }
+  async function mutateProfile(id, suffix, method, data) {
+    const sid = session?.session_id, epoch = session?.session_epoch, stamp = ++generation;
+    streamAbort?.abort();
+    const value = await request('/v1/profiles/' + encodeURIComponent(id) + suffix, {method,headers:{'Content-Type':'application/json'},...(data === undefined ? {} : {body:JSON.stringify(data)})});
+    if (!current(stamp,sid,epoch)) return null;
+    const affected = value.affected_sessions?.find(s => s.session_id === sid);
+    const next = affected || await request(route());
+    if (!current(stamp,sid,epoch)) return null;
+    profileSession(next,sid,epoch);
+    return value;
+  }
   return {
+    async profilesSupported() { if (!Object.hasOwn(session || {}, 'profile_id')) return false; try { return (await request('/v1/health')).profile_memory === true; } catch (error) { if (error.code === 'not_found') return false; throw error; } },
+    profiles() { return request('/v1/profiles'); },
+    createProfile(display_name) { return request('/v1/profiles', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({display_name})}); },
+    preferences(id) { return request('/v1/profiles/' + encodeURIComponent(id) + '/preferences'); },
+    renameProfile(id, display_name) { return mutateProfile(id,'','PATCH',{display_name}); },
+    deleteProfile(id) { return mutateProfile(id,'','DELETE'); },
+    savePreferences(id, preferences) { return mutateProfile(id,'/preferences','PATCH',preferences); },
+    clearPreferences(id) { return mutateProfile(id,'/preferences','DELETE'); },
+    confirmProfileSession,
+    async bindProfile(profile_id) {
+      const sid = session?.session_id, epoch = session?.session_epoch, stamp = ++generation;
+      streamAbort?.abort();
+      const next = await request(route('/profile'), {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({profile_id,session_epoch:epoch})});
+      if (!current(stamp,sid,epoch)) return null;
+      if (!validSession(next) || next.session_id !== sid || next.session_epoch <= epoch || next.profile_id !== profile_id) throw new Error('无法确认档案切换，请重新连接');
+      session = next; return next;
+    },
     get sentenceStreaming() { return sentenceStreaming; },
     get connected() { return !!session; },
     invalidate() {
@@ -175,3 +216,4 @@ export function createVoiceClient(baseUrl) {
     },
   };
 }
+

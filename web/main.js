@@ -1,3 +1,4 @@
+import { attachProfileControls } from './profile-controls.js';
 import { attachGazeControls } from './gaze.js';
 import { createVoiceClient } from './voice-client.js';
 import { createMicrophoneRecorder } from './microphone.js';
@@ -9,7 +10,7 @@ let replyActivityOffsetMs = null, playbackAcknowledgedToken = null;
 const REPLY_ACTIVITY_RMS = .008;
 let sessionEpoch = 0, resourceToken = 0, utteranceId = null, frameId = 0, playing = false;
 let voiceClient, voiceGeneration = 0, voiceBusy = false, loadedTurn = null, microphonePhase = null, turnObservation = null;
-let sentencePlayback = null;
+let sentencePlayback = null, profileControls;
 const styleLabels = { gentle: '温和关切', cheerful: '轻快友善', calm: '平静清晰', serious: '认真沉稳' };
 const emotionLabels = { happiness: '高兴', sadness: '悲伤', anger: '愤怒', fear: '恐惧', surprise: '惊讶', disgust: '厌恶', neutral: '中性' };
 // The licensed asset has Joy, jaw and blink morphs; calm/serious use the neutral rest pose.
@@ -20,9 +21,9 @@ function voiceStatus(message, failed = false) {
   refreshVoiceControls();
 }
 function refreshVoiceControls() {
-  $('#voice-send').disabled = !avatar || !voiceClient?.connected || voiceBusy || playing;
+  $('#voice-send').disabled = !avatar || !voiceClient?.connected || voiceBusy || playing || profileControls?.blocked;
   $('#voice-connect').disabled = !avatar || voiceBusy;
-  $('#microphone-start').disabled = !avatar || !voiceClient?.connected || voiceBusy || playing;
+  $('#microphone-start').disabled = !avatar || !voiceClient?.connected || voiceBusy || playing || profileControls?.blocked;
   $('#microphone-end').disabled = microphonePhase !== 'recording';
 }
 function abandonVoice() {
@@ -260,6 +261,7 @@ $('#stop').addEventListener('click', async () => {
   }
 });
 $('#voice-connect').addEventListener('click', async () => {
+  profileControls?.beginConnect();
   const stamp = ++voiceGeneration;
   cancelSentencePlayback();
   microphone.cancel(); microphonePhase = null;
@@ -267,7 +269,10 @@ $('#voice-connect').addEventListener('click', async () => {
   voiceBusy = true; voiceStatus('正在连接本地模型服务…');
   try {
     voiceClient = createVoiceClient($('#api-base').value);
-    await voiceClient.open();
+    const connecting = voiceClient;
+    await connecting.open();
+    if (stamp !== voiceGeneration) return;
+    await profileControls.connect(connecting);
     if (stamp !== voiceGeneration) return;
     voiceBusy = false; voiceStatus('已连接本地服务，可以输入中文。重新连接会开启新会话。');
   } catch (error) {
@@ -401,7 +406,7 @@ function beginVoiceTurn() {
 }
 const microphone = createMicrophoneRecorder(error => turnFailed(error, voiceGeneration, resourceToken));
 $('#microphone-start').addEventListener('click', async () => {
-  if (voiceBusy || !voiceClient?.connected || playing) return;
+  if (voiceBusy || !voiceClient?.connected || playing || profileControls?.blocked) return;
   const { stamp, token } = beginVoiceTurn();
   microphonePhase = 'permission'; voiceStatus('请求麦克风权限中，可随时停止…');
   try {
@@ -429,7 +434,7 @@ $('#microphone-end').addEventListener('click', async () => {
   } catch (error) { turnFailed(error, stamp, token); }
 });
 $('#voice-send').addEventListener('click', async () => {
-  if (voiceBusy || !voiceClient?.connected) return;
+  if (voiceBusy || !voiceClient?.connected || profileControls?.blocked) return;
   const text = $('#text-input').value.trim();
   if (!text || text.length > 2000) { voiceStatus('请输入 1 至 2000 字中文。', true); return; }
   const { stamp, token } = beginVoiceTurn();
@@ -437,6 +442,18 @@ $('#voice-send').addEventListener('click', async () => {
   if (voiceClient.sentenceStreaming) { await receiveSentenceTurn('text',text,stamp); return; }
   try { const pending = voiceClient.text(text); watchVoiceStages(stamp, token); await receiveAnswer(await pending, stamp, token); }
   catch (error) { turnFailed(error, stamp, token); }
+});
+profileControls = attachProfileControls({
+  onChange: refreshVoiceControls,
+  stop() {
+    voiceGeneration++; cancelSentencePlayback(); microphone.cancel(); microphonePhase = null;
+    voiceClient?.invalidate(); stopLocal(); voiceBusy = false; loadedTurn = null; utteranceId = null; powerSamples = null; turnObservation = null;
+    $('#play').disabled = true; $('#voice-reply').textContent = '回复将在这里显示。';
+    $('#voice-transcript').textContent = '语音转写将在这里显示。';
+    $('#user-emotion').textContent = '尚无'; $('#voice-expression').textContent = '尚无';
+    voiceStatus('当前回复已停止，正在更新档案…');
+  },
+  settled(failed) { voiceStatus(failed ? '档案操作未完成，请重新读取档案或重新连接后继续。' : '档案已就绪，可以输入中文。', failed); }
 });
 window.addEventListener('pagehide', () => { cancelSentencePlayback(); microphone.cancel(); voiceGeneration++; voiceClient?.invalidate(); });
 $('#expression').addEventListener('input', () => { if (avatar && !playing) frame(0); });
