@@ -162,12 +162,25 @@ export function createVoiceClient(baseUrl) {
     clearPreferences(id) { return mutateProfile(id,'/preferences','DELETE'); },
     confirmProfileSession,
     async bindProfile(profile_id) {
-      const sid = session?.session_id, epoch = session?.session_epoch, stamp = ++generation;
+      const sid = session?.session_id, stamp = ++generation;
+      let epoch = session?.session_epoch;
       streamAbort?.abort();
-      const next = await request(route('/profile'), {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({profile_id,session_epoch:epoch})});
-      if (!current(stamp,sid,epoch)) return null;
-      if (!validSession(next) || next.session_id !== sid || next.session_epoch <= epoch || next.profile_id !== profile_id) throw new Error('无法确认档案切换，请重新连接');
-      session = next; return next;
+      for (let attempt = 0; attempt < 2; attempt++) {
+        let next;
+        try {
+          next = await request(route('/profile'), {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({profile_id,session_epoch:epoch})});
+        } catch (error) {
+          if (error.code !== 'stale_epoch' || attempt || !current(stamp,sid,epoch)) throw error;
+          const latest = await request(route());
+          if (!current(stamp,sid,epoch)) return null;
+          profileSession(latest,sid,epoch);
+          epoch = latest.session_epoch;
+          continue;
+        }
+        if (!current(stamp,sid,epoch)) return null;
+        if (!validSession(next) || next.session_id !== sid || next.session_epoch <= epoch || next.profile_id !== profile_id) throw new Error('无法确认档案切换，请重新连接');
+        session = next; return next;
+      }
     },
     get sentenceStreaming() { return sentenceStreaming; },
     get connected() { return !!session; },
