@@ -48,8 +48,33 @@ export function createVoiceClient(baseUrl) {
     const stamp = ++generation, sid = session?.session_id, epoch = session?.session_epoch;
     streamAbort?.abort();
     const controller = streamAbort = new AbortController();
+    let idleTimer, timedOut = false;
+    const armDeadline = () => {
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(() => { timedOut = true; controller.abort(); }, 15000);
+    };
     let reader, uid, metadata, nextSegment = 0, done = false, awaitingAudio = null, spoken = '';
+    async function downloadAudio(url) {
+      const download = new AbortController();
+      const stop = () => download.abort();
+      controller.signal.addEventListener('abort', stop, {once:true});
+      if (controller.signal.aborted) stop();
+      let downloadTimedOut = false;
+      const deadline = setTimeout(() => { downloadTimedOut = true; download.abort(); }, 15000);
+      try {
+        const response = await fetch(new URL(url, base), {signal:download.signal,cache:'no-store'});
+        if (!response.ok) throw new Error(`分句音频获取失败（HTTP ${response.status}）`);
+        const blob = await response.blob();
+        return current(stamp, sid, epoch) ? blob : null;
+      } catch (error) {
+        if (downloadTimedOut) throw new Error('分句音频下载超时：15秒内未完成，请重试');
+        throw error;
+      } finally {
+        clearTimeout(deadline);controller.signal.removeEventListener('abort',stop);
+      }
+    }
     try {
+      armDeadline();
       const response = await fetch(new URL(route(suffix).replace('/v1/', '/v2/'), base), { ...options, signal: controller.signal, cache: 'no-store' });
       if (!current(stamp, sid, epoch)) return null;
       if (!response.ok) { const error = await response.json(); throw new Error(error.message || '分句请求失败'); }
@@ -77,11 +102,7 @@ export function createVoiceClient(baseUrl) {
           awaitingAudio = null;
           nextSegment++;
           // Start prefetch now; playback consumes these promises in segment order.
-          value.blob = fetch(new URL(audio.url, base), {signal:controller.signal,cache:'no-store'}).then(async response => {
-            if (!response.ok) throw new Error(`分句音频获取失败（HTTP ${response.status}）`);
-            const blob = await response.blob();
-            return current(stamp, sid, epoch) ? blob : null;
-          });
+          value.blob = downloadAudio(audio.url);
           value.blob.catch(() => {}); // Queue consumption owns the visible error.
           Object.assign(value, {user_emotion:metadata.user_emotion,expression_intent:metadata.expression_intent});
         } else if (value.type === 'done') {
@@ -90,6 +111,7 @@ export function createVoiceClient(baseUrl) {
         } else if (value.type === 'error') throw new Error(value.message || '分句回复失败');
         else if (!['start','transcript','meta'].includes(value.type)) throw new Error('未知的分句事件');
         await onEvent(value);
+        armDeadline();
       };
       while (current(stamp, sid, epoch)) {
         const {value, done:ended} = await reader.read();
@@ -102,8 +124,8 @@ export function createVoiceClient(baseUrl) {
       if (!current(stamp, sid, epoch)) return null;
       if (!done) throw new Error('分句回复连接提前结束');
       return true;
-    } catch (error) { if (!current(stamp, sid, epoch)) return null; throw error; }
-    finally { reader?.releaseLock(); }
+    } catch (error) { if (!current(stamp, sid, epoch)) return null; if (timedOut) throw new Error('分句回复超时：15秒未收到有效事件，请重试'); throw error; }
+    finally { clearTimeout(idleTimer); if (reader) { reader.cancel().catch(() => {}); reader.releaseLock(); } }
   }
   return {
     get sentenceStreaming() { return sentenceStreaming; },

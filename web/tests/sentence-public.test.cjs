@@ -9,7 +9,7 @@ before(async()=>{app=await publicBrowser(path.resolve(__dirname,'..'));});
 after(async()=>{await app?.close();});
 function deferred(){let resolve;const promise=new Promise(r=>resolve=r);return {promise,resolve};}
 function wav(){const rate=16000,n=rate*1.1,b=Buffer.alloc(44+n*2);b.write('RIFF');b.writeUInt32LE(b.length-8,4);b.write('WAVEfmt ',8);b.writeUInt32LE(16,16);b.writeUInt16LE(1,20);b.writeUInt16LE(1,22);b.writeUInt32LE(rate,24);b.writeUInt32LE(rate*2,28);b.writeUInt16LE(2,32);b.writeUInt16LE(16,34);b.write('data',36);b.writeUInt32LE(n*2,40);for(let i=0;i<n;i++)b.writeInt16LE(Math.round(8000*Math.sin(i/rate*2*Math.PI*220)),44+i*2);return b;}
-async function setup({delayedGeneration=true,delayedAudio=false,badAudio=false,delayedDone=false,tooMany=false,mismatch=false}={}){
+async function setup({delayedGeneration=true,delayedAudio=false,badAudio=false,delayedDone=false,tooMany=false,mismatch=false,fault=null}={}){
  const release=deferred(),doneRelease=deferred(),requests=[],completed=[];let epoch=0,streamEnded=false;
  if(!delayedDone)doneRelease.resolve();
  const api=http.createServer(async(req,res)=>{
@@ -28,9 +28,17 @@ async function setup({delayedGeneration=true,delayedAudio=false,badAudio=false,d
    const emit=(type,extra={})=>res.write(JSON.stringify({type,session_id:'sentence-session',session_epoch:initial,utterance_id:'sentence-turn',...extra})+'\n');
    emit('start');emit('meta',{user_emotion:'sadness',expression_intent:{style:'gentle',intensity:.5}});
    const segment=i=>{emit('sentence',{segment_index:i,text:i?'我们可以一起想办法。':'听起来你很难过。'});emit('audio_ready',{segment_index:i,text:i?'我们可以一起想办法。':'听起来你很难过。',user_emotion:'sadness',expression_intent:{style:'gentle',intensity:.5},audio:{url:badAudio?'https://external.invalid/audio':`/v2/sessions/sentence-session/turns/sentence-turn/segments/${i}/audio`,mime_type:'audio/wav',duration_ms:1100,sample_rate_hz:16000,channels:1}});};
-   segment(0);if(delayedGeneration)await release.promise;segment(1);if(tooMany)for(let i=2;i<7;i++)segment(i);await doneRelease.promise;emit('done',{reply:mismatch?'你好。':'听起来你很难过。我们可以一起想办法。',status:'ok',timings_ms:{first_audio_ready_ms:100,total_ms:200}});streamEnded=true;return res.end();
+   if(fault==='stalled'&&initial===0){res.flushHeaders();return;}
+   segment(0);
+   if(initial===0&&fault==='missing-done')return res.end();
+   if(initial===0&&fault==='error'){emit('error',{code:'stage_failed',message:'测试合成失败'});return res.end();}
+   if(initial===0&&fault==='disconnect'){setTimeout(()=>res.destroy(),50);return;}
+   if(delayedGeneration)await release.promise;segment(1);if(tooMany)for(let i=2;i<7;i++)segment(i);await doneRelease.promise;emit('done',{reply:mismatch?'你好。':'听起来你很难过。我们可以一起想办法。',status:'ok',timings_ms:{first_audio_ready_ms:100,total_ms:200}});streamEnded=true;return res.end();
   }
   if(p.endsWith('/audio')){
+   if(epoch===0&&fault==='stalled-download'){res.setHeader('Content-Type','audio/wav');res.flushHeaders();return;}
+   if(epoch===0&&fault==='download'){res.statusCode=503;return res.end('synthetic download failure');}
+   if(epoch===0&&fault==='decode'){res.setHeader('Content-Type','audio/wav');return res.end('synthetic invalid WAV');}
    const index=Number(p.split('/').at(-2));if(delayedAudio&&index===0)await new Promise(r=>setTimeout(r,700));completed.push(index);res.setHeader('Content-Type','audio/wav');return res.end(wav());
   }
   json(session());
@@ -44,6 +52,62 @@ async function setup({delayedGeneration=true,delayedAudio=false,badAudio=false,d
  const close=async()=>{release.resolve();doneRelease.resolve();await page.close();api.closeAllConnections();await new Promise(r=>api.close(r));};
  return {page,release,doneRelease,requests,completed,send,close,get streamEnded(){return streamEnded;}};
 }
+
+test('a stalled stream becomes a visible timeout, then a new turn can play and stop again',async()=>{
+ const f=await setup({delayedGeneration:false,fault:'stalled'});
+ try {
+  await f.page.clock.install();
+  await f.send();
+  await f.page.getByRole('status',{name:'对话状态'}).filter({hasText:'正在生成回复'}).waitFor();
+  await f.page.waitForTimeout(150);
+  await f.page.clock.fastForward(15100);
+  await f.page.getByRole('status',{name:'对话状态'}).filter({hasText:/回复失败.*超时/}).waitFor({timeout:2500});
+  await f.page.clock.resume();
+  assert.equal(await f.page.locator('#audio').evaluate(a=>a.paused),true);
+  await f.page.waitForFunction(()=>!document.querySelector('#voice-send').disabled);
+  await f.send();
+  await f.page.waitForFunction(()=>!document.querySelector('#audio').paused);
+  await f.page.locator('#stop').click();
+  await f.page.getByRole('status',{name:'对话状态'}).filter({hasText:'旧结果已失效'}).waitFor();
+  assert.equal(await f.page.locator('#audio').evaluate(a=>a.paused),true);
+  assert.equal(Number(await f.page.locator('#mouth-weight').innerText()),0);
+ }finally{await f.close();}
+});
+
+test('completed generation cannot hide a stalled WAV download',async()=>{
+ const f=await setup({delayedGeneration:false,fault:'stalled-download'});
+ try {
+  await f.page.clock.install();await f.send();
+  await f.page.waitForResponse(r=>r.url().includes('/segments/1/audio'));
+  await f.page.clock.fastForward(15100);
+  await f.page.getByRole('status',{name:'对话状态'}).filter({hasText:/回复失败.*下载超时/}).waitFor({timeout:2500});
+  await f.page.clock.resume();
+  await f.page.waitForFunction(()=>!document.querySelector('#voice-send').disabled);
+  await f.send();await f.page.waitForFunction(()=>!document.querySelector('#audio').paused);
+  await f.page.locator('#stop').click();
+  await f.page.getByRole('status',{name:'对话状态'}).filter({hasText:'旧结果已失效'}).waitFor();
+ }finally{await f.close();}
+});
+
+for(const fault of ['missing-done','error','disconnect','download','decode','play'])test(`${fault} visibly fails, clears playback and allows recovery plus another Stop`,async()=>{
+ const f=await setup({delayedGeneration:false,fault});
+ try {
+  const errors=[];f.page.on('pageerror',e=>errors.push(e.message));
+  if(fault==='play')await f.page.evaluate(()=>{const play=HTMLMediaElement.prototype.play;let fail=true;HTMLMediaElement.prototype.play=function(){if(fail){fail=false;return Promise.reject(new DOMException('synthetic device rejection','NotAllowedError'));}return play.call(this);};});
+  await f.send();
+  await f.page.getByRole('status',{name:'对话状态'}).filter({hasText:'回复失败'}).waitFor();
+  await f.page.waitForFunction(()=>!document.querySelector('#voice-send').disabled);
+  assert.equal(await f.page.locator('#audio').evaluate(a=>a.paused),true);
+  assert.equal(await f.page.locator('#play').isDisabled(),true);
+  assert.equal(Number(await f.page.locator('#mouth-weight').innerText()),0);
+  await f.send();await f.page.waitForFunction(()=>!document.querySelector('#audio').paused);
+  await f.page.locator('#stop').click();
+  await f.page.getByRole('status',{name:'对话状态'}).filter({hasText:'旧结果已失效'}).waitFor();
+  await f.page.waitForTimeout(150);
+  assert.equal(await f.page.locator('#audio').evaluate(a=>a.paused),true);
+  assert.deepEqual(errors,[],'handled stream/media errors must not become uncaught page errors');
+ }finally{await f.close();}
+});
 test('first sentence plays while generation is unfinished; full queue exports correlated frames and separate timing',async()=>{
  const f=await setup();try{await f.send();await f.page.waitForFunction(()=>!document.querySelector('#audio').paused&&Number(document.querySelector('#mouth-weight').textContent)>.05);assert.equal(f.streamEnded,false);f.release.resolve();await f.page.getByRole('status',{name:'对话状态'}).filter({hasText:'回复播放完成'}).waitFor();
  await f.page.getByText('播放记录',{exact:true}).click();const download=f.page.waitForEvent('download');await f.page.locator('#download').click();const record=JSON.parse(await fs.readFile(await (await download).path(),'utf8'));
