@@ -35,3 +35,20 @@ $env:PYTHON_EXE='E:\digital robot\_work\voice-dev-py311\Scripts\python.exe'
 两个独立只读审阅轴（实现标准、规格）均未发现可执行缺陷；指出交接文档需一并提交，已纳入。未因软件通过关闭04/09，其他工单仍由A维护。档案契约缺失不做自创API。原始真人采集、档案数据库及模型不上传。
 
 先按分支顺序审阅测量修复、麦克风恢复、文档/证据补充；不直接合main。具体缺口和操作者清单见 [交接说明](b-engineering-handoff.md)。
+
+## 第二批：分句故障恢复与页面本地资源
+
+修复提交 `1950c97`。先通过公开页面复现两个永久等待：服务已建立连接但不再输出事件；生成结束后音频下载一直不完成。修复后流在15秒没有有效事件时取消，每段音频下载必须在15秒内完成；失败通过既有Stop路径推进代次并清队列。两个期限是连接/下载保护，不是整轮首响保证，不代表三秒目标达标。原有短回复与提前下载/解码不变。
+
+实际执行（沿用上述环境）：
+
+- `node --test --test-name-pattern='stalled stream' web/tests/sentence-public.test.cjs`：修复前因一直等待失败，修复后1/1通过。
+- `node --test --test-name-pattern='completed generation cannot' web/tests/sentence-public.test.cjs`：修复前音频下载无限等待，修复后在完整套件通过。
+- `node --test --test-concurrency=1 web/tests/sentence-public.test.cjs web/tests/voice-api.test.cjs web/tests/voice-public.test.cjs`：41/41通过，64.84秒。
+- `node --test web/tests/offline-page-public.test.cjs`：2/2通过，3.09秒。
+
+新增八种故障：流停滞、下载停滞、无done提前结束、显式错误、网络断开、HTTP下载失败、损坏WAV、播放设备拒绝。每种均验证失败可见、恢复新轮、再次停止；实际使用浏览器音频与页面，模型/网络故障在外部边界受控注入，不能等同真实模型/物理验收。
+
+页面本地资源测试在新页面阻断全部非本机请求，当前头部和本地样例可加载、播放、停止；缺少solid-head.js时明确资源失败且不替换成历史头部。没有连接模型服务，没有证明ASR/TTS/视觉的整机离线启动。第二批两个独立审阅轴均未发现可执行缺陷。
+
+A远端分支再次获取仍是f17443c，档案契约仍缺失。现有v2客户端上限为3句/80字，与早期2句/60字约定存在差异，需A统一契约和生成约束；B未单方面修改跨端字段或上限。真人麦克风、物理停止/同步、档案和整机稳定性验收继续保持待执行。
