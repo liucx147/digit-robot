@@ -8,6 +8,8 @@ $('#ledger-download').href=ledgerURL;
 let frozen, ledgerBytes, ledgerHash, fixtureFile, graphContext, elementSource;
 let recorder, captureStream, recordingDestination, analyser, analysisSource, silentGain;
 let chunks = [], recording = false, maxRms = 0, startedAt = 0, complete = false;
+let reviewReady=false,reviewGeneration=0;
+const browserMediaHashes=new Set();
 let rawMedia, manifest, loadedManifest, loadedMedia, mediaURL, framePTS = null, inputLock, playbackIntegrity, releasePlaybackGuard;
 const sha256 = async bytes => [...new Uint8Array(await crypto.subtle.digest('SHA-256', bytes))].map(v => v.toString(16).padStart(2,'0')).join('');
 function status(message, failed = false) {$('#capture-status').textContent = message;$('#capture-status').classList.toggle('error',failed);}
@@ -28,6 +30,7 @@ async function loadFrozenInput() {
 }
 $('#prepare').addEventListener('click',async()=>{
   try {
+    frozen=null;resetPhysicalDeclarations();
     $('#prepare').disabled=true;status('核对固定音频与事件表…');
     await waitUntil(()=>iframe.contentDocument?.querySelector('#sample')?.disabled===false,'说话头资源未就绪');
     const [ledgerResponse,audioResponse]=await Promise.all([fetch(ledgerURL),fetch('./measurement-fixtures/mandarin40/fixture.wav')]);
@@ -37,6 +40,7 @@ $('#prepare').addEventListener('click',async()=>{
     if(JSON.parse(product().canvas.dataset.avatar || 'null')?.sha256!==frozen.setup.avatar_sha256)throw Error('当前头部与冻结测量条件不符，请重新冻结独立版本');
     fixtureFile=new File([bytes],'mandarin40.wav',{type:'audio/wav'});
     await loadFrozenInput();
+    updatePhysicalButton();
     $('#record-graph').disabled=false;$('#record-display').disabled=false;status(`${frozen.events.length} 个固定事件已就绪。请记录运行条件后采集。`);
   }catch(error){status(`准备失败：${error.message}`,true);}finally{$('#prepare').disabled=false;}
 });
@@ -134,6 +138,7 @@ async function startCapture(scope) {
       analysisSource?.disconnect();analysisSource=null;analyser.disconnect();silentGain?.disconnect();silentGain=null;
       rawMedia=new Blob(chunks,{type:mime});
       manifest={schema:1,scope,media:{path:'capture.webm',sha256:await sha256(await rawMedia.arrayBuffer()),bytes:rawMedia.size,mime},ledger_sha256:ledgerHash,fixture_sha256:frozen.fixture.sha256,expected_events:frozen.events.length,playback_integrity:playbackIntegrity,complete_playback:complete,audio_non_silent:maxRms>.001,audio_max_rms:maxRms,track_settings:trackSettings,viewport:{width:canvas.width,height:canvas.height,device_pixel_ratio:devicePixelRatio},user_agent:navigator.userAgent,revision_and_conditions:$('#revision').value,recorder_elapsed_ms_telemetry:performance.now()-startedAt,calibration:{status:'pending'},acceptance_status:'pending-independent-physical-av',limitations:['Elapsed wall time is telemetry, not media PTS or source origin.','Canvas/audio-graph capture does not measure physical output.','Do not score controller records; independently annotate this original A/V file.']};
+      browserMediaHashes.add(manifest.media.sha256);
       manifest.avatar=capturedAvatar;manifest.renderer=capturedRenderer;
       manifest.product_url=iframe.contentWindow.location.href;
       loadedManifest={value:manifest,path:'capture-manifest.json',sha256:await sha256(new TextEncoder().encode(JSON.stringify(manifest,null,2)+'\n'))};
@@ -161,26 +166,69 @@ function presented(now,metadata){framePTS=metadata.mediaTime;$('#frame-pts').tex
 if(video.requestVideoFrameCallback)video.requestVideoFrameCallback(presented);
 $('#manifest-file').addEventListener('change',async()=>{
   try {
+    resetPhysicalDeclarations();
+    const generation=reviewGeneration;
     const file=$('#manifest-file').files[0];if(!file)return;
     const bytes=await file.arrayBuffer();const value=JSON.parse(new TextDecoder().decode(bytes));
+    if(generation!==reviewGeneration)return;
     if(value.schema!==1||!value.media?.sha256||!value.ledger_sha256)throw Error('采集清单格式不符');
-    loadedManifest={value,path:file.name,sha256:await sha256(bytes)};
-    $('#scope').value=value.scope;
+    if(['browser-graph','browser-output'].includes(value.scope))browserMediaHashes.add(value.media.sha256);
+    const manifestHash=await sha256(bytes);if(generation!==reviewGeneration)return;
+    loadedManifest={value,path:file.name,sha256:manifestHash};
+    $('#scope').value=value.scope;updatePhysicalButton();
     $('#review-status').textContent='已载入原始采集清单。生成模板时会核对媒体和事件表哈希。';
   }catch(error){loadedManifest=null;$('#review-status').textContent=`清单读取失败：${error.message}`;}
 });
 $('#review-file').addEventListener('change',async()=>{
-  loadedMedia=$('#review-file').files[0];if(!loadedMedia)return;
+  loadedMedia=$('#review-file').files[0];reviewReady=false;
+  resetPhysicalDeclarations();
+  updatePhysicalButton();if(!loadedMedia)return;
   if(mediaURL)URL.revokeObjectURL(mediaURL);mediaURL=URL.createObjectURL(loadedMedia);video.src=mediaURL;framePTS=null;
   $('#review-status').textContent='正在读取原始媒体…';
-  video.onloadedmetadata=()=>{if(Number.isFinite(video.duration))$('#duration').value=video.duration*1000;$('#review-status').textContent='已载入原始音视频。请核对声音、媒体时长与原始时间轴。';$('#seek').disabled=false;$('#save-frame').disabled=false;$('#template').disabled=!frozen;$('#download-annotations').disabled=!frozen;makeTemplate();};
-  video.onerror=()=>{$('#review-status').textContent='媒体解码失败。保留原始文件，不能使用此采集评分。';$('#template').disabled=true;$('#download-annotations').disabled=true;};
+  video.onloadedmetadata=()=>{reviewReady=video.videoWidth>0&&video.videoHeight>0;updatePhysicalButton();if(Number.isFinite(video.duration))$('#duration').value=video.duration*1000;$('#review-status').textContent='已载入原始音视频。请核对声音、媒体时长与原始时间轴。';$('#seek').disabled=false;$('#save-frame').disabled=false;$('#template').disabled=!frozen;$('#download-annotations').disabled=!frozen;makeTemplate();};
+  video.onerror=()=>{reviewReady=false;updatePhysicalButton();$('#review-status').textContent='媒体解码失败。保留原始文件，不能使用此采集评分。';$('#template').disabled=true;$('#download-annotations').disabled=true;};
+});
+function resetPhysicalDeclarations(){
+  reviewGeneration++;
+  for(const selector of ['#physical-confirm','#physical-complete','#physical-audio'])$(selector).checked=false;
+  updatePhysicalButton();
+}
+$('#scope').addEventListener('change',resetPhysicalDeclarations);
+function updatePhysicalButton(){
+  $('#physical-manifest').disabled=!frozen||!loadedMedia||!reviewReady||$('#scope').value!=='physical-av'||!$('#physical-confirm').checked||!$('#physical-operator').value.trim()||!$('#physical-conditions').value.trim();
+}
+for(const selector of ['#physical-operator','#physical-conditions'])$(selector).addEventListener('input',resetPhysicalDeclarations);
+for(const selector of ['#physical-confirm','#physical-complete','#physical-audio'])$(selector).addEventListener('input',()=>{reviewGeneration++;updatePhysicalButton();});
+$('#physical-manifest').addEventListener('click',async()=>{
+  try{
+    if($('#physical-manifest').disabled)throw Error('请载入原始视频并明确确认采集条件');
+    const media=loadedMedia,generation=reviewGeneration;
+    const {canvas}=product();
+    const avatar=JSON.parse(canvas.dataset.avatar||'null'),renderer=JSON.parse(canvas.dataset.renderer||'null');
+    if(!avatar?.sha256||avatar.sha256!==frozen.setup.avatar_sha256||!renderer?.renderer||!renderer?.vendor||!renderer?.webgl_version)throw Error('当前资产或渲染器不符合冻结条件');
+    const complete_playback=$('#physical-complete').checked,audio_non_silent=$('#physical-audio').checked;
+    const declaration={basis:'operator-declared',operator:$('#physical-operator').value.trim(),conditions_match:true};
+    const revision_and_conditions=$('#physical-conditions').value.trim();
+    const mediaHash=await sha256(await media.arrayBuffer());
+    if(browserMediaHashes.has(mediaHash))throw Error('已知浏览器采集不能重标为物理采集，请保留原始范围');
+    if(media!==loadedMedia||generation!==reviewGeneration||!$('#physical-confirm').checked)throw Error('媒体或声明已改变，请重新确认');
+    const value={schema:1,scope:'physical-av',media:{path:media.name,sha256:mediaHash,bytes:media.size,mime:media.type},ledger_sha256:ledgerHash,fixture_sha256:frozen.fixture.sha256,expected_events:frozen.events.length,avatar,renderer,product_url:iframe.contentWindow.location.href,user_agent:navigator.userAgent,viewport:{width:canvas.width,height:canvas.height,device_pixel_ratio:devicePixelRatio},revision_and_conditions,physical_review:declaration,complete_playback,audio_non_silent,calibration:{status:'pending'},acceptance_status:complete_playback&&audio_non_silent?'pending-calibration':'pending-independent-media-review',limitations:['External media identity and physical conditions are operator declarations, not automatically identified from recorded pixels.','Complete playback and audible speaker sound are separate operator review declarations, not browser measurements.','Original media/PTS must be retained; no calibration or event observation is supplied by this manifest.','Independent calibration and human evidence review remain required; this manifest does not establish acceptance.']};
+    const bytes=new TextEncoder().encode(JSON.stringify(value,null,2)+'\n');
+    const manifestHash=await sha256(bytes);
+    if(media!==loadedMedia||generation!==reviewGeneration)throw Error('媒体或声明已改变，请重新确认');
+    loadedManifest={value,path:'physical-capture-manifest.json',sha256:manifestHash};
+    download(bytes,loadedManifest.path,'application/json');
+    $('#review-status').textContent='已下载操作者声明的物理采集清单；校准与逐事件独立复核待完成。请保留原始视频。';
+    await makeTemplate();
+  }catch(error){$('#review-status').textContent=`物理清单未生成：${error.message}`;}
 });
 $('#seek').addEventListener('click',()=>{video.pause();video.currentTime=Number($('#seek-time').value);});
 $('#save-frame').addEventListener('click',()=>{if(framePTS===null)return;reviewCanvas.width=video.videoWidth;reviewCanvas.height=video.videoHeight;reviewCanvas.getContext('2d').drawImage(video,0,0);reviewCanvas.toBlob(blob=>download(blob,`frame-pts-${framePTS.toFixed(6)}.png`,'image/png'));});
 async function makeTemplate(){
   if(!frozen||!loadedMedia)return;
-  const mediaHash=await sha256(await loadedMedia.arrayBuffer());
+  const media=loadedMedia,generation=reviewGeneration;
+  const mediaHash=await sha256(await media.arrayBuffer());
+  if(media!==loadedMedia||generation!==reviewGeneration)return;
   const matches=loadedManifest?.value.media.sha256===mediaHash&&loadedManifest.value.ledger_sha256===ledgerHash&&loadedManifest.value.scope===$('#scope').value;
   const value={schema:1,ledger_sha256:ledgerHash,capture_manifest:matches?{path:loadedManifest.path,sha256:loadedManifest.sha256}:null,media:{path:loadedMedia.name,sha256:mediaHash,scope:$('#scope').value,duration_ms:Number($('#duration').value)||null,timebase:'single-media-timeline'},review:{annotator:$('#annotator').value,method:'independent-media-review',audio_basis:'captured-audio',visual_basis:'recorded-pixels'},source_origin_ms:Number($('#origin').value),calibration:{status:'pending'},events:frozen.events.map(event=>({expected_id:event.id,type:event.type,audio_ms:null,visual_ms:null,audio_observation_id:`audio-${event.id}`,visual_observation_id:`pixels-${event.id}`,audio_evidence:'',visual_evidence:'',note:'待独立观察；不要填写源音频或控制器的计划时间'})),unexpected:[]};
   $('#annotations').value=JSON.stringify(value,null,2);
