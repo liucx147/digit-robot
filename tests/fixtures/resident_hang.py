@@ -11,6 +11,11 @@ for line in sys.stdin:
         break
     if request['op'] != 'call':
         continue
+    if request['payload'].get('close_rpc'):
+        print('invalid-rpc-record', flush=True)
+        os.close(0)
+        while True:
+            time.sleep(.1)
     if request['payload'].get('hang'):
         while True:
             time.sleep(.1)

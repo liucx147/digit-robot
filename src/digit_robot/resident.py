@@ -48,7 +48,11 @@ class ResidentWorker:
                         target = self.calls.get(value.get('id'))
                     if target is not None:
                         target.put(value)
+        except (OSError, ValueError, AttributeError, TypeError):
+            # The failure is delivered to all callers below; raw RPC is not logged.
+            pass
         finally:
+            self.unhealthy = True
             error = {'event': 'error', 'message': '模型常驻进程已退出'}
             self.startup.put(error)
             with self.guard:
@@ -60,8 +64,12 @@ class ResidentWorker:
             if self.process.poll() is not None:
                 raise VoiceError('worker_failed', '模型常驻进程不可用', 502)
             assert self.process.stdin
-            self.process.stdin.write(json.dumps(value, ensure_ascii=False) + '\n')
-            self.process.stdin.flush()
+            try:
+                self.process.stdin.write(json.dumps(value, ensure_ascii=False) + '\n')
+                self.process.stdin.flush()
+            except (OSError, ValueError) as error:
+                self.unhealthy = True
+                raise VoiceError('worker_failed', '模型RPC通道不可用', 502) from error
 
     def stream(self, payload: dict[str, Any], cancel: Event) -> Iterator[dict[str, Any]]:
         with self.serial:
