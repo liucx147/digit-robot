@@ -2,6 +2,8 @@
 
 冻结版本：`6a487c9718d7d04debc83464dbf42ab4f1f62690`，包含A后端`7b888c0`与B`6112f87`的功能和证据。没有直接推main。原PR #1通过集成分支更新，main仍是此前用户要求合入的fd57db9。
 
+共同起点为`f17443cc8178e6b611d0d9c832a6dca06945d065`。长稳后的最小修复提交为`dbfe3229da7ca2c61b52eeb4e503369cc4ea814c`，当前分支`codex/engineering-integration`；本报告之后的文档提交不改变受测产品源码。
+
 ## 当前集成回归
 
 - Python65项、42子测试及mypy17源码通过。
@@ -40,13 +42,27 @@ API及四个常驻worker前后PID/加载记录完全一致，没有测试中重�
 
 结束后再次只读核验：原PID644043及四个子进程存活，8003的/v1/health正常，8004不再监听；本机18000的健康接口正常、页面返回200。具体检查时间与元数据见service-after.json。SHA256.json记录报告和本地原始证据的字节哈希，原始音频仍仅保留本地。
 
-## 审阅后仍待处理
+## 审阅问题与正式修复
 
 两轴审阅新增两项具体问题，未用全绿基线测试掩盖：
 
 1. 生成中切换/退出档案：中断HTTP使服务器先推进epoch，绑定可能携带旧epoch返回409。真实HTTP＋原客户端的新增两例均复现。最小副本补丁只在明确stale_epoch后确认当前会话并重试同一次绑定一次，真实HTTP两例通过；没有放松服务器epoch校验。
 2. 继承的profile-real-api测试自动报告硬编码旧SHA。补丁改为记录实际源码路径与Python文件哈希，没有可靠Git版本时写未知；副本的真实API/SQLite重启页面测试1/1通过。
 
-最小补丁及建议回归在docs/development/patches/。用户此前明确web归B，因此当前未直接应用到真实web文件，等待归属确认或B应用；07常规联调已通过，但这处边界未修复前暂保持open。长稳属于原冻结6a487c9，不冒充未来补丁版本的完整长稳。
+用户随后明确授权当前集成会话修复这两个B文件。正式修复dbfe322已应用，真实HTTP回归在tests/test_profile_client_contract.py；原补丁保留在docs/development/patches/供B审阅，不要重复应用。API契约追加了明确stale_epoch的一次重试规则。
+
+修复后验证：真实HTTP两例通过；Python全套67项/42子测试、mypy17源码通过；串行浏览器全套124/124，0失败、0跳过，包含真实HTTP/SQLite重启页面测试。新自动报告a_source_sha=null，实际源码路径及14个Python文件SHA256逐一核验一致。首次并行执行为121通过/1失败，失败是Windows拒绝临时测试端口49980绑定（WinError10013），未隐藏该失败或修改端口分配代码；串行重跑完整通过。对应日志为fixed-*.log，报告为fixed-profile-report.json，源码与命令为fixed-validation.json。代码/规格两轴复审均确认原P2解决，新增可执行发现0。
+
+07依据既有A真实模型、B页面、用户联调确认和本轮正式修复回归在当前集成分支关闭。30分钟长稳仍属于原冻结6a487c9，不冒充dbfe322的新一次长稳；当前8003也没有替换为该修复版。
+
+## 交给B与部署边界
+
+改动范围：web/voice-client.js的切档重试、web/tests/profile-real-api.test.cjs的源码标识；新增tests/test_profile_client_contract.py；更新docs/development/profile-api.md、07/11状态及本报告。后端模型代码没有为本次回归改变。
+
+B继续使用[档案API契约](../../../docs/development/profile-api.md)。具备profile_memory:true的候选服务调用示例：POST /v1/profiles，body为{"display_name":"合成演示"}；PATCH /v1/profiles/{返回ID}/preferences，body为{"preferred_name":"合成称呼","communication_style":"简短"}；POST /v1/sessions可携带{"profile_id":"返回ID"}，随后使用其session_id/session_epoch调用既有v1/v2对话。切换或退出前立即停本地队列，绑定携带当前epoch；只有明确stale_epoch才验证同会话后重试一次，删除/修改以affected_sessions更新代次。
+
+原服务目录/root/autodl-tmp/digit-robot-releases/resident-voice和8000/8001/8002回退版本保留。此次临时8004已清理，原8003从监督进程保存的原命令恢复；18000保持指向8003。后续部署应先选择明确集成提交、复用同一个私有--profiles-db、核对当前监听进程归属，按docs/development/resident-voice.md及A运维准备操作；不能按本报告历史PID直接kill。回退选择原发布目录及保存命令，再核验/v1/health和18000页面；本轮没有要求用户额外执行回退。
+
+后续集成顺序：B同步当前集成分支并确认接口；在新测试窗口部署冻结候选；完成真人麦克风、全部固定停止/恢复与独立40事件音画采集；受控单主机离线验收后，再收口11并决定是否将草稿PR合入main。
 
 04/05/06/09/10/11仍有真人、物理声画、单主机离线或最终混合验收缺口。当前远端4090+Windows浏览器不能当原单5090同机断网；整套工程未宣称验收通过，研究12–18没有启动。

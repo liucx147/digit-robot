@@ -1,14 +1,15 @@
 {
-  "tested_commit": "6a487c9718d7d04debc83464dbf42ab4f1f62690",
-  "note": "Hashes include ignored local-only raw artifacts; no audio, database or model bytes are included by this manifest.",
+  "frozen_soak_commit": "6a487c9718d7d04debc83464dbf42ab4f1f62690",
+  "fixed_code_commit": "dbfe3229da7ca2c61b52eeb4e503369cc4ea814c",
+  "note": "Separate pre-fix soak and post-fix CPU/browser evidence. Hashes include ignored local-only raw artifacts; no audio, database or model bytes are included by this manifest.",
   "files": {
     ".gitattributes": {
       "bytes": 47,
       "sha256": "920781736b28385b1c3625f2a8a187763ea8facb06daa3f6bb319bee46182807"
     },
     ".gitignore": {
-      "bytes": 322,
-      "sha256": "ecc05aaea54d216a9b880a56d85d2933194ccf5b5b3aa2c5ec8e1a2692119084"
+      "bytes": 477,
+      "sha256": "2143a69787bf2e8ed37ef635ff834e9bd780c1b67159a9210eb497704ef7458c"
     },
     "actual-profile-test.json": {
       "bytes": 1348,
@@ -25,6 +26,34 @@
     "epoch-red.log": {
       "bytes": 132656,
       "sha256": "058cbaee0ead3e0818267c8830a48a3c461aa63c80a2ab27d29cdfabe6563cea"
+    },
+    "fixed-browser-parallel.log": {
+      "bytes": 31164,
+      "sha256": "056f0f276ceeffba1be3ac7dc97fbbc1e7fe3f6b84c8e31841bbfa7742ed0e6c"
+    },
+    "fixed-browser-serial.log": {
+      "bytes": 30305,
+      "sha256": "9f5ab8e4765c455080692ff4d04f195da35a464a2e978b27e042e460b672aacc"
+    },
+    "fixed-epoch.log": {
+      "bytes": 100,
+      "sha256": "ab6ace76305e872f31afc9245c043175986782be5f7a8ce12ef1520e8e92c9b4"
+    },
+    "fixed-mypy.log": {
+      "bytes": 45,
+      "sha256": "63da153bcdac04b2cc982479df4378f21b20029f9acb87ad908fb4d5befe6a43"
+    },
+    "fixed-profile-report.json": {
+      "bytes": 2069,
+      "sha256": "cffffcaeda9fa294778938ce46dd1264c0ca9182558560d7bb4a6e277ac752f1"
+    },
+    "fixed-python.log": {
+      "bytes": 152,
+      "sha256": "f272fe47777e170b1768335cdd972fb586d8ebc7a62c4dec68521298df7d3a7b"
+    },
+    "fixed-validation.json": {
+      "bytes": 2080,
+      "sha256": "6128b8f2e066bc6d631639e041f729c15e312dc44b6fd8647a6da7726c5714ab"
     },
     "mypy.log": {
       "bytes": 45,
@@ -51,8 +80,8 @@
       "sha256": "e37ce92552700dcb3f0e0a45b4daf9398039ff9297f26e74b90a1f6c849233b3"
     },
     "README.md": {
-      "bytes": 5149,
-      "sha256": "6efe4e41c816389c8f3d406fab7a0ad1b5e385ab5dd20b122f43a4998656f793"
+      "bytes": 8005,
+      "sha256": "ca5228090756405bbe3adcac838e181534b889861034ac9d0340f446549d6507"
     },
     "report-proposal-green.log": {
       "bytes": 400,

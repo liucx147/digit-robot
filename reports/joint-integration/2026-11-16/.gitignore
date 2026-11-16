@@ -14,6 +14,13 @@
 !epoch-proposal-green.log
 !report-proposal-green.log
 !service-after.json
+!fixed-epoch.log
+!fixed-python.log
+!fixed-mypy.log
+!fixed-browser-parallel.log
+!fixed-browser-serial.log
+!fixed-profile-report.json
+!fixed-validation.json
 !soak-6a487c9/
 soak-6a487c9/*
 !soak-6a487c9/summary.json
