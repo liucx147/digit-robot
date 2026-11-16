@@ -6,24 +6,9 @@ const crypto=require('node:crypto');
 const {spawnSync}=require('node:child_process');
 const {publicBrowser}=require('./browser-fixture.cjs');
 
-// This generated sub-second software clip is only an upload/metadata fixture.
-// It does not depict a head, physical loudspeaker, calibration or acceptance run.
-async function syntheticSoftwareVideo(page){
- const bytes=await page.evaluate(async()=>{
-  const canvas=document.createElement('canvas');canvas.width=64;canvas.height=64;document.body.prepend(canvas);canvas.scrollIntoView();
-  canvas.getContext('2d').fillRect(0,0,64,64);
-  const stream=canvas.captureStream(10),chunks=[];
-  const recorder=new MediaRecorder(stream,{mimeType:'video/webm;codecs=vp8'});
-  const stopped=new Promise(resolve=>recorder.onstop=resolve);
-  recorder.ondataavailable=event=>chunks.push(event.data);
-  recorder.start();
-  const draw=setInterval(()=>{canvas.getContext('2d').fillStyle=`rgb(${Math.floor(performance.now())%255},60,80)`;canvas.getContext('2d').fillRect(0,0,64,64);},30);
-  await new Promise(resolve=>setTimeout(resolve,600));clearInterval(draw);recorder.stop();await stopped;
-  stream.getTracks().forEach(track=>track.stop());canvas.remove();
-  return [...new Uint8Array(await new Blob(chunks).arrayBuffer())];
- });
- return Buffer.from(bytes);
-}
+// Frozen automatically generated, silent software clip; upload/metadata only.
+// No head, physical loudspeaker, calibration or acceptance run is depicted.
+const softwareVideoPath=path.resolve(__dirname,'fixtures/measurement-software.webm');
 const hash=bytes=>crypto.createHash('sha256').update(bytes).digest('hex');
 
 test('external media needs explicit condition declarations before a physical manifest can be downloaded', {timeout:60000},async()=>{
@@ -37,7 +22,7 @@ test('external media needs explicit condition declarations before a physical man
   assert.equal(await page.locator('#scope').inputValue(),'browser-graph');
   await page.locator('#prepare').click();
   await page.locator('#capture-status').filter({hasText:'40 个固定事件已就绪'}).waitFor();
-  const bytes=await syntheticSoftwareVideo(page);
+  const bytes=await fs.readFile(softwareVideoPath);
   await page.getByLabel('载入原始音视频').setInputFiles({name:'synthetic-software-only.webm',mimeType:'video/webm',buffer:bytes});
   await page.locator('#review-status').filter({hasText:'已载入原始音视频'}).waitFor();
   await page.locator('#scope').selectOption('physical-av');
@@ -126,7 +111,7 @@ test('a known browser-origin manifest cannot be relabeled as a physical capture'
   const page=await app.browser.newPage({acceptDownloads:true});
   await page.goto(app.baseURL+'/measurement.html');await page.locator('#prepare').click();
   await page.locator('#capture-status').filter({hasText:'40 个固定事件已就绪'}).waitFor();
-  const bytes=await syntheticSoftwareVideo(page);
+  const bytes=await fs.readFile(softwareVideoPath);
   await page.getByLabel('载入原始音视频').setInputFiles({name:'known-browser-software.webm',mimeType:'video/webm',buffer:bytes});
   await page.locator('#review-status').filter({hasText:'已载入原始音视频'}).waitFor();
   const ledger=await fs.readFile(path.resolve(__dirname,'../measurement-fixtures/mandarin40/ledger-solid-v1.json'));
@@ -149,7 +134,7 @@ test('scope changes clear physical declarations and edits during hashing abort a
   const page=await app.browser.newPage({acceptDownloads:true});
   await page.goto(app.baseURL+'/measurement.html');await page.locator('#prepare').click();
   await page.locator('#capture-status').filter({hasText:'40 个固定事件已就绪'}).waitFor();
-  const bytes=await syntheticSoftwareVideo(page);
+  const bytes=await fs.readFile(softwareVideoPath);
   await page.getByLabel('载入原始音视频').setInputFiles({name:'synthetic-race-case.webm',mimeType:'video/webm',buffer:bytes});
   await page.locator('#review-status').filter({hasText:'已载入原始音视频'}).waitFor();
   await page.locator('#scope').selectOption('physical-av');
@@ -174,7 +159,7 @@ test('a stale failed manifest read cannot erase the newer original manifest', {t
   const page=await app.browser.newPage({acceptDownloads:true});
   await page.goto(app.baseURL+'/measurement.html');await page.locator('#prepare').click();
   await page.locator('#capture-status').filter({hasText:'40 个固定事件已就绪'}).waitFor();
-  const bytes=await syntheticSoftwareVideo(page);
+  const bytes=await fs.readFile(softwareVideoPath);
   await page.getByLabel('载入原始音视频').setInputFiles({name:'synthetic-current.webm',mimeType:'video/webm',buffer:bytes});
   await page.locator('#review-status').filter({hasText:'已载入原始音视频'}).waitFor();
   const ledger=await fs.readFile(path.resolve(__dirname,'../measurement-fixtures/mandarin40/ledger-solid-v1.json'));
