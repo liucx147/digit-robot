@@ -6,6 +6,8 @@
 
 **Status:** ready-for-agent
 
+**State:** open
+
 **Category:** enhancement
 
 **Parent:** [数字人优先的单卡离线情感交互与蒸馏规格 v1.1](../spec.md)
@@ -22,3 +24,8 @@
 ## User stories
 
 US23、US24、US25、US26、US27、US28、US29
+
+
+## A阶段进展（2026-11-16）
+
+SQLite与档案/偏好CRUD、v1/v2提示快照、切换/修改/清空/删除后的历史失效与重启隔离已实现。4090六个合成档案用例通过，实际称呼在更新/删除后按有效值变化。B页面尚未接入，整票保持open。 代码与全部成功/失败边界见[A后端验证报告](../../../reports/a-backend/2026-11-16/README.md)，B接口见[档案契约](../../../docs/development/profile-api.md)。本次不以软件测试替代物理验收。

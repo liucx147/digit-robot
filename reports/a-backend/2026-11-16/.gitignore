@@ -1,0 +1,15 @@
+*
+!.gitignore
+!.gitattributes
+!README.md
+!SHA256.json
+!python.log
+!mypy.log
+!browser.log
+!service-after.json
+!attempt-profile/
+!attempt-preflight/
+!attempt-recovery-r2/
+!attempt-recovery-r3/
+!attempt-recovery-final/
+!*/summary.json

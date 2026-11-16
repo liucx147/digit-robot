@@ -6,6 +6,8 @@
 
 **Status:** ready-for-agent
 
+**State:** open
+
 **Category:** enhancement
 
 **Parent:** [数字人优先的单卡离线情感交互与蒸馏规格 v1.1](../spec.md)
@@ -23,3 +25,8 @@
 ## User stories
 
 US53、US56、US61、US62、US63、US64
+
+
+## A阶段进展（2026-11-16）
+
+已形成A/B集成候选和后端验证报告；main仅按用户要求接入已验收语音优化与B分支，A新增后端仍独立。最终冻结版30分钟/20轮、物理同步/停播、档案页面和整机离线验收未完成，保持open。 代码与全部成功/失败边界见[A后端验证报告](../../../reports/a-backend/2026-11-16/README.md)，B接口见[档案契约](../../../docs/development/profile-api.md)。本次不以软件测试替代物理验收。
