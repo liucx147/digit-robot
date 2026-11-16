@@ -1,5 +1,9 @@
 [
   {
+    "file": ".gitattributes",
+    "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
+  },
+  {
     "file": "full-browser-before-review.log",
     "sha256": "b581024b1eee5ad5f62d39340f2ad666af0d8466d4daf8da529c2e92e1d76cd7"
   },
