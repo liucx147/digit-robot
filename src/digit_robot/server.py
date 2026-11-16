@@ -6,14 +6,33 @@ import json
 import asyncio
 from threading import Event
 
-from fastapi import APIRouter, Depends, FastAPI, Request, Response
+from fastapi import APIRouter, FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.concurrency import run_in_threadpool
+from starlette.datastructures import MutableHeaders
+from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
 from .dialogue import load_json
 from .voice import VoiceError, VoicePipeline
+
+
+class _ProfileCacheControl:
+    def __init__(self, app: ASGIApp) -> None:
+        self.app = app
+
+    async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
+        if scope['type'] != 'http' or not scope['path'].startswith('/v1/profiles'):
+            await self.app(scope, receive, send)
+            return
+
+        async def private_response(message: Message) -> None:
+            if message['type'] == 'http.response.start':
+                MutableHeaders(scope=message)['Cache-Control'] = 'no-store'
+            await send(message)
+
+        await self.app(scope, receive, private_response)
 
 
 def create_app(pipeline: VoicePipeline, origins: list[str] | None = None,
@@ -21,16 +40,12 @@ def create_app(pipeline: VoicePipeline, origins: list[str] | None = None,
     app = FastAPI(title="Digit Robot A/B Voice API", version="0.2.0", docs_url=None, redoc_url=None)
     app.add_middleware(CORSMiddleware, allow_origins=origins or [],
                        allow_methods=["GET", "POST", "PATCH", "DELETE"], allow_headers=["Content-Type", "X-Session-Epoch"])
-
-    def private_profiles(response: Response) -> None:
-        response.headers['Cache-Control'] = 'no-store'
-
-    profile_routes = APIRouter(prefix='/v1/profiles', dependencies=[Depends(private_profiles)])
+    app.add_middleware(_ProfileCacheControl)
+    profile_routes = APIRouter(prefix='/v1/profiles')
 
     @app.exception_handler(VoiceError)
     async def voice_error(request: Request, error: VoiceError) -> JSONResponse:
-        headers = {'Cache-Control': 'no-store'} if request.url.path.startswith('/v1/profiles') else None
-        return JSONResponse(error.body, status_code=error.status, headers=headers)
+        return JSONResponse(error.body, status_code=error.status)
 
     @app.get("/v1/health")
     def health() -> dict[str, Any]:

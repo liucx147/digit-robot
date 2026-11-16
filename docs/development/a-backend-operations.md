@@ -26,7 +26,7 @@ PYTHONPATH=src /root/autodl-tmp/digit-robot-envs/api/bin/python -m digit_robot.s
 - 分开计时：服务启动至health可用、第一轮推理、暖机推理、首音频ready、首语音活动和整轮播放。加载时间不能混入或藏在暖机指标内。
 - 保存workers/ready.json的PID、load_count、restart_count、软件及模型版本。连续采集nvidia-smi后才能报告本次窗口的采样峰值；单点显存读数不称全程峰值。
 - 重启同一服务时复用profiles-db，重新建会话并显式绑定档案。内存会话和聊天历史不会恢复；档案和明确偏好应恢复。B页面需要按404 session_not_found重建，而非补播旧音频。
-- 单个模型进程退出后，本轮错误可见；下一轮首次使用该role时最多尝试重新加载一次。ready元数据记录新PID和restart_count，其他模型不重载。若资源或配置使重载失败，继续明确失败，禁止云端回退。
+- 单个模型进程退出后，或进程仍存活但超过阶段超时而被标为unhealthy时，本轮错误可见；下一轮首次使用该role时最多尝试重新加载一次。对超时的自有进程先终止再加载，避免向活着但挂起的worker不断排队。ready元数据记录新PID和restart_count，其他模型不重载。若资源或配置使重载失败，继续明确失败，禁止云端回退。
 - v1请求实际断开时失效化本请求拥有的轮次；v2断流沿用原取消边界。停止与档案mutation均不要求GPU计算500ms内结束，迟到结果必须不可交付。
 - 离线试验采用受控的验证进程网络隔离，保留SSH管理通道。本次4090远端推理/Windows浏览器不能写成单5090同主机断网验收。
 

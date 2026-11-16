@@ -169,3 +169,7 @@ def test_profile_protocol_validation_and_cors(tmp_path: Path):
     cors = TestClient(create_app(pipeline, ['http://localhost:8765']))
     response = cors.options(f'/v1/profiles/{pid}/preferences', headers={'Origin': 'http://localhost:8765', 'Access-Control-Request-Method': 'PATCH', 'Access-Control-Request-Headers': 'Content-Type'})
     assert response.status_code == 200
+    for method, path, status in [('PUT', '/v1/profiles', 405), ('GET', '/v1/profiles/missing/unknown', 404)]:
+        error = client.request(method, path)
+        assert error.status_code == status
+        assert error.headers.get('cache-control') == 'no-store'
