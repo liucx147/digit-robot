@@ -409,6 +409,7 @@ $('#microphone-start').addEventListener('click', async () => {
     microphonePhase = 'recording'; voiceStatus('正在录音，请说中文；说完点击“结束发言”（最多30秒）。');
   } catch (error) {
     if (error.name === 'NotAllowedError') error = new Error('麦克风权限被拒绝，请在浏览器设置中允许后重试');
+    if (error.name === 'NotReadableError') error = new Error('麦克风被占用或无法读取，请关闭占用麦克风的程序或重复页面，检查设备后重试');
     turnFailed(error, stamp, token);
   }
 });

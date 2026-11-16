@@ -55,6 +55,21 @@ async function setup(options={}) {
 async function connect(page){await page.getByRole('button',{name:'连接本地服务',exact:true}).click();await page.getByRole('status',{name:'对话状态'}).filter({hasText:/已连接/}).waitFor();}
 async function start(page){await page.getByRole('button',{name:'开始发言',exact:true}).click();await page.getByRole('status',{name:'对话状态'}).filter({hasText:/正在录音/}).waitFor();}
 async function finish(page){await page.waitForTimeout(350);await page.getByRole('button',{name:'结束发言',exact:true}).click();}
+test('occupied microphone explains how to recover and a retry releases its audio track',async()=>{
+ const {page,submitted}=await setup();
+ try {
+  await connect(page);
+  await page.evaluate(()=>{window.retryMicrophone=navigator.mediaDevices.getUserMedia;navigator.mediaDevices.getUserMedia=async()=>{throw new DOMException('DEVICE IN USE','NotReadableError');};});
+  await page.locator('#microphone-start').click();
+  await page.locator('#voice-status').filter({hasText:/麦克风.*占用/}).waitFor();
+  assert.equal(submitted.length,0);
+  await page.evaluate(()=>navigator.mediaDevices.getUserMedia=window.retryMicrophone);
+  await start(page);
+  await page.locator('#stop').click();
+  await page.waitForFunction(()=>window.mediaBoundary.streams.every(stream=>stream.getTracks().every(track=>track.readyState==='ended')));
+  assert.equal(submitted.length,0);
+ } finally {await page.close();}
+});
 before(async()=>{({browser,baseURL,close}=await publicBrowser(path.resolve(__dirname,'..')));await fs.mkdir(path.resolve(__dirname,'../../artifacts'),{recursive:true});});
 after(async()=>{await close?.();});
 test('a microphone turn posts mono PCM16 WAV and displays ASR text before actual reply playback',async()=>{
