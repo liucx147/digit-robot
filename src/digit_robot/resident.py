@@ -18,6 +18,7 @@ class ResidentWorker:
     def __init__(self, command: list[str], root: Path, logs: Path, timeout: float) -> None:
         logs.mkdir(parents=True, exist_ok=True)
         self.timeout = timeout
+        self.unhealthy = False
         self.calls: dict[str, Queue[dict[str, Any]]] = {}
         self.guard, self.writer, self.serial = Lock(), Lock(), Lock()
         self.startup: Queue[dict[str, Any]] = Queue()
@@ -74,6 +75,8 @@ class ResidentWorker:
                 self._send({'op': 'call', 'id': request_id, 'payload': payload})
                 while True:
                     if cancel.is_set() or time.monotonic() - started > self.timeout:
+                        if not cancel.is_set():
+                            self.unhealthy = True
                         self._send({'op': 'cancel', 'id': request_id})
                         raise VoiceError('turn_cancelled' if cancel.is_set() else 'stage_timeout',
                                          '轮次已取消' if cancel.is_set() else '常驻模型阶段超时', 409 if cancel.is_set() else 504)
@@ -96,10 +99,13 @@ class ResidentWorker:
                 with self.guard:
                     self.calls.pop(request_id, None)
 
-    def close(self) -> None:
+    def close(self, *, force: bool = False) -> None:
         if self.process.poll() is None:
             try:
-                self._send({'op': 'shutdown'})
+                if force:
+                    self.process.kill()
+                else:
+                    self._send({'op': 'shutdown'})
                 self.process.wait(timeout=10)
             except (OSError, subprocess.TimeoutExpired, VoiceError):
                 self.process.kill()
@@ -150,8 +156,8 @@ class ResidentModels:
     def _active_worker(self, name: str) -> ResidentWorker:
         with self.recovery_lock:
             worker = self.workers[name]
-            if worker.process.poll() is not None:
-                worker.close()
+            if worker.process.poll() is not None or worker.unhealthy:
+                worker.close(force=worker.unhealthy)
                 replacement = ResidentWorker(self.worker_commands[name], self.config.project_root,
                                              self.logs / name, self.config.stage_timeout_seconds)
                 self.workers[name] = replacement

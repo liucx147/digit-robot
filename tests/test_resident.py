@@ -80,3 +80,32 @@ def test_startup_metadata_failure_closes_every_owned_worker(tmp_path: Path, monk
     finally:
         for worker in workers:
             worker.close()
+
+
+def test_live_but_hung_worker_is_replaced_after_timeout(tmp_path: Path, monkeypatch) -> None:
+    import digit_robot.resident as resident
+    from digit_robot.process_models import RuntimeConfig
+    fixture = Path(__file__).parent / 'fixtures/resident_hang.py'
+    def cpu_worker(command, root, logs, timeout):
+        return ResidentWorker([sys.executable, str(fixture)], root, logs, timeout)
+    monkeypatch.setattr(resident, 'ResidentWorker', cpu_worker)
+    config = RuntimeConfig(Path.cwd(), sys.executable, sys.executable, sys.executable, 'llm', 'asr', 'tts', 5)
+    models = resident.ResidentModels(config, tmp_path)
+    try:
+        old = models.workers['asr']
+        old.timeout = .1
+        with pytest.raises(VoiceError) as failure:
+            list(old.stream({'hang': True}, Event()))
+        assert failure.value.body['code'] == 'stage_timeout'
+        assert old.process.poll() is None
+        fresh = models._active_worker('asr')
+        assert fresh is not old, 'a live process can still be unhealthy after a non-cooperative timeout'
+        assert old.process.poll() is not None
+        assert list(fresh.stream({'value': 'recovered'}, Event()))[0]['value'] == 'recovered'
+    finally:
+        # Force the fixture down even when testing the old implementation.
+        for worker in models.workers.values():
+            if worker.process.poll() is None:
+                worker.process.kill()
+                worker.process.wait()
+        models.close()
