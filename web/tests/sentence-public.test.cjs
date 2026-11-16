@@ -9,7 +9,8 @@ before(async()=>{app=await publicBrowser(path.resolve(__dirname,'..'));});
 after(async()=>{await app?.close();});
 function deferred(){let resolve;const promise=new Promise(r=>resolve=r);return {promise,resolve};}
 function wav(){const rate=16000,n=rate*1.1,b=Buffer.alloc(44+n*2);b.write('RIFF');b.writeUInt32LE(b.length-8,4);b.write('WAVEfmt ',8);b.writeUInt32LE(16,16);b.writeUInt16LE(1,20);b.writeUInt16LE(1,22);b.writeUInt32LE(rate,24);b.writeUInt32LE(rate*2,28);b.writeUInt16LE(2,32);b.writeUInt16LE(16,34);b.write('data',36);b.writeUInt32LE(n*2,40);for(let i=0;i<n;i++)b.writeInt16LE(Math.round(8000*Math.sin(i/rate*2*Math.PI*220)),44+i*2);return b;}
-async function setup({delayedGeneration=true,delayedAudio=false,badAudio=false,delayedDone=false,tooMany=false,mismatch=false,fault=null}={}){
+async function setup({delayedGeneration=true,delayedAudio=false,badAudio=false,delayedDone=false,tooMany=false,mismatch=false,fault=null,gateNextDownload=false}={}){
+ const downloadGate=deferred(),downloadEntered=deferred(),downloadsWaiting=[];
  const release=deferred(),doneRelease=deferred(),requests=[],completed=[];let epoch=0,streamEnded=false;
  if(!delayedDone)doneRelease.resolve();
  const api=http.createServer(async(req,res)=>{
@@ -36,6 +37,7 @@ async function setup({delayedGeneration=true,delayedAudio=false,badAudio=false,d
    if(delayedGeneration)await release.promise;segment(1);if(tooMany)for(let i=2;i<7;i++)segment(i);await doneRelease.promise;emit('done',{reply:mismatch?'你好。':'听起来你很难过。我们可以一起想办法。',status:'ok',timings_ms:{first_audio_ready_ms:100,total_ms:200}});streamEnded=true;return res.end();
   }
   if(p.endsWith('/audio')){
+   if(epoch===0&&gateNextDownload&&p.includes('/segments/1/')){downloadsWaiting.push(p);downloadEntered.resolve();await downloadGate.promise;}
    if(epoch===0&&fault==='stalled-download'){res.setHeader('Content-Type','audio/wav');res.flushHeaders();return;}
    if(epoch===0&&fault==='download'){res.statusCode=503;return res.end('synthetic download failure');}
    if(epoch===0&&fault==='decode'){res.setHeader('Content-Type','audio/wav');return res.end('synthetic invalid WAV');}
@@ -49,9 +51,41 @@ async function setup({delayedGeneration=true,delayedAudio=false,badAudio=false,d
  await page.getByText('本地服务连接',{exact:true}).click();await page.getByLabel('本地服务地址').fill(base);
  await page.getByRole('button',{name:'连接本地服务',exact:true}).click();await page.getByRole('status',{name:'对话状态'}).filter({hasText:'已连接'}).waitFor();
  const send=async()=>{await page.getByLabel('输入中文').fill('今天很难过');await page.getByRole('button',{name:'发送并播放回复'}).click();};
- const close=async()=>{release.resolve();doneRelease.resolve();await page.close();api.closeAllConnections();await new Promise(r=>api.close(r));};
- return {page,release,doneRelease,requests,completed,send,close,get streamEnded(){return streamEnded;}};
+ const close=async()=>{release.resolve();doneRelease.resolve();downloadGate.resolve();await page.close();api.closeAllConnections();await new Promise(r=>api.close(r));};
+ return {page,release,doneRelease,downloadGate,downloadEntered:downloadEntered.promise,downloadsWaiting,requests,completed,send,close,get streamEnded(){return streamEnded;}};
 }
+
+for(const phase of ['download','decode','play-ack'])test(`Stop during queued ${phase} rejects late work and preserves a new sentence turn`,{timeout:15000},async()=>{
+ const f=await setup({delayedGeneration:false,gateNextDownload:phase==='download'});
+ try {
+  await f.page.evaluate(phase=>{
+   window.raceFrames=[];document.addEventListener('digitalhuman:frame',e=>window.raceFrames.push(e.detail));
+   const method=phase==='decode'?'decodeAudioData':'play',prototype=phase==='decode'?AudioContext.prototype:HTMLMediaElement.prototype;
+   if(phase==='download')return;
+   const native=prototype[method];let calls=0;
+   prototype[method]=async function(...args){
+    const result=await native.apply(this,args);
+    if(++calls===2){window.queuedWorkEntered=true;await new Promise(resolve=>window.releaseQueuedWork=resolve);}
+    return result;
+   };
+  },phase);
+  await f.send();
+  if(phase==='download')await f.downloadEntered;
+  else await f.page.waitForFunction(()=>window.queuedWorkEntered);
+  if(phase==='download')assert.equal(f.downloadsWaiting.length,1);
+  await f.page.locator('#stop').click();
+  await f.page.getByRole('status',{name:'对话状态'}).filter({hasText:'旧结果已失效'}).waitFor();
+  await f.page.evaluate(()=>window.raceFrames=[]);
+  await f.send();await f.page.waitForFunction(()=>!document.querySelector('#audio').paused);
+  if(phase==='download')f.downloadGate.resolve();else await f.page.evaluate(()=>window.releaseQueuedWork());
+  await f.page.getByRole('status',{name:'对话状态'}).filter({hasText:'回复播放完成'}).waitFor();
+  const frames=await f.page.evaluate(()=>window.raceFrames);
+  assert.ok(frames.some(frame=>frame.weights.jawOpen>0));
+  assert.ok(frames.every(frame=>frame.session_epoch===1),'old epoch must not reappear after Stop');
+  assert.equal(await f.page.locator('#audio').evaluate(a=>a.paused),true);
+  assert.equal(Number(await f.page.locator('#mouth-weight').innerText()),0);
+ }finally{await f.close();}
+});
 
 test('a stalled stream becomes a visible timeout, then a new turn can play and stop again',async()=>{
  const f=await setup({delayedGeneration:false,fault:'stalled'});
