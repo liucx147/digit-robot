@@ -114,14 +114,22 @@ class ResidentWorker:
 
 
 class ResidentModels:
-    def __init__(self, config: RuntimeConfig, logs: Path) -> None:
+    def __init__(self, config: RuntimeConfig, logs: Path, tts_workers: int = 1) -> None:
+        if tts_workers not in (1, 2):
+            raise ValueError('TTS worker count must be one or two')
         self.config = config
         self.workers: dict[str, ResidentWorker] = {}
+        self.tts_pool: Queue[str] = Queue(maxsize=tts_workers)
         try:
-            for role in ('asr', 'llm', 'tts'):
-                self.workers[role] = ResidentWorker([getattr(config, f'{role}_python'), '-m',
+            roles = [('asr', 'asr'), ('llm', 'llm'), ('tts', 'tts')]
+            if tts_workers == 2:
+                roles.append(('tts-next', 'tts'))
+            for name, role in roles:
+                self.workers[name] = ResidentWorker([getattr(config, f'{role}_python'), '-m',
                     'digit_robot.resident_worker', '--role', role, '--model-dir', getattr(config, f'{role}_model')],
-                    config.project_root, logs / role, config.stage_timeout_seconds)
+                    config.project_root, logs / name, config.stage_timeout_seconds)
+                if role == 'tts':
+                    self.tts_pool.put(name)
         except Exception:
             self.close()
             raise
@@ -156,7 +164,19 @@ class ResidentModels:
 
     def synthesize(self, text: str, intent: dict[str, Any], output_dir: Path, cancel: Event) -> Path:
         output_dir.mkdir(parents=True, exist_ok=True)
-        result = self._result('tts', {'text': text, 'intent': intent, 'output_dir': str(output_dir)}, cancel)
+        while True:
+            if cancel.is_set():
+                raise VoiceError('turn_cancelled', '轮次已取消', 409)
+            try:
+                worker = self.tts_pool.get(timeout=.05)
+                break
+            except Empty:
+                continue
+        try:
+            result = self._result(worker, {'text': text, 'intent': intent, 'output_dir': str(output_dir)}, cancel)
+            result.update(worker=worker, worker_pid=self.workers[worker].ready['pid'])
+        finally:
+            self.tts_pool.put(worker)
         (output_dir / 'resident-tts.json').write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding='utf-8')
         return Path(result['audio_path'])
 

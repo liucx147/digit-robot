@@ -92,12 +92,12 @@ function loadFailed(error, token) {
   $('#stop').disabled = true;
   setStatus(`音频加载失败：${error.message}。请选择有效音频。`, true);
 }
-async function loadAudio(file, token, turn = null) {
+async function loadAudio(file, token, turn = null, decodedAudio = null) {
   if (!avatar) return;
   token ??= beginLoad();
   try {
     audioContext ||= new AudioContext();
-    const decoded = await audioContext.decodeAudioData(await file.arrayBuffer());
+    const decoded = decodedAudio || await audioContext.decodeAudioData(await file.arrayBuffer());
     if (token !== resourceToken) return;
     if (!decoded.length || !Number.isFinite(decoded.duration) || decoded.duration <= 0) throw new Error('音频为空');
     powerSamples = new Float32Array(decoded.length);
@@ -318,11 +318,10 @@ async function pumpSentences(turn) {
   turn.pumping = true;
   try {
     while (turn.queue.length && turn === sentencePlayback && !turn.cancelled) {
-      const segment = turn.queue.shift(), blob = await segment.blob;
+      const segment = turn.queue.shift(), prepared = await segment.prepared;
       if (turn !== sentencePlayback || turn.cancelled) return;
-      if (!blob) throw new Error('分句音频已经失效');
-      const response = {...segment, blob:undefined, reply:turn.reply};
-      const ready = await loadAudio(new File([blob], `数字人回复-${segment.segment_index + 1}.wav`, {type:'audio/wav'}), resourceToken, response);
+      const response = {...segment, blob:undefined, prepared:undefined, reply:turn.reply};
+      const ready = await loadAudio(prepared.file, resourceToken, response, prepared.decoded);
       if (turn !== sentencePlayback || turn.cancelled) return;
       if (!ready) throw new Error('分句语音无法解码');
       const ended = new Promise((resolve,reject) => { turn.resolveSegment = resolve; turn.rejectSegment = reject; });
@@ -364,7 +363,16 @@ async function receiveSentenceTurn(kind, input, stamp) {
       turn.reply += value.text; $('#voice-reply').textContent = turn.reply;
       if (!playing) voiceStatus('首句已生成，正在合成语音，可随时停止…');
     }
-    if (value.type === 'audio_ready') { turn.queue.push(value); pumpSentences(turn); }
+    if (value.type === 'audio_ready') {
+      audioContext ||= new AudioContext();
+      value.prepared = value.blob.then(async blob => {
+        if (!blob) throw new Error('分句音频已经失效');
+        const file = new File([blob], `数字人回复-${value.segment_index + 1}.wav`, {type:'audio/wav'});
+        return {file, decoded:await audioContext.decodeAudioData(await file.arrayBuffer())};
+      });
+      value.prepared.catch(() => {});
+      turn.queue.push(value); pumpSentences(turn);
+    }
     if (value.type === 'done') { turn.done = value; turn.doneObserved = performance.now(); pumpSentences(turn); }
   };
   try {

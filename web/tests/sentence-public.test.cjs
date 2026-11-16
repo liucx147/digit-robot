@@ -73,3 +73,9 @@ test('late done cannot inflate actual last-ended playback duration',async()=>{
 for(const option of ['tooMany','mismatch'])test(`invalid ${option} stream cannot report successful playback`,async()=>{
  const f=await setup({delayedGeneration:false,[option]:true});try{await f.send();await f.page.getByRole('status',{name:'对话状态'}).filter({hasText:'回复失败'}).waitFor();assert.equal(await f.page.locator('#audio').evaluate(a=>a.paused),true);if(option==='tooMany')assert(!f.requests.some(p=>p.includes('/segments/3/')));}finally{await f.close();}
 });
+test('next segment decoding starts before the previous media ends',async()=>{
+ const f=await setup({delayedGeneration:false});try{
+ await f.page.evaluate(()=>{let calls=0;const decode=AudioContext.prototype.decodeAudioData;AudioContext.prototype.decodeAudioData=async function(...args){const result=await decode.apply(this,args);if(++calls===2){window.nextDecodeAt=performance.now();await new Promise(resolve=>setTimeout(resolve,500));}return result;};document.querySelector('audio').addEventListener('ended',()=>{window.firstEndedAt??=performance.now();});});
+ await f.send();await f.page.getByRole('status',{name:'对话状态'}).filter({hasText:'回复播放完成'}).waitFor();const observed=await f.page.evaluate(()=>({decode:window.nextDecodeAt,ended:window.firstEndedAt}));assert(observed.decode<observed.ended,'the next WAV must decode during current playback');
+ }finally{await f.close();}
+});

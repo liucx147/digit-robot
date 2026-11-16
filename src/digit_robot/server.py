@@ -162,13 +162,14 @@ def main() -> None:
     parser.add_argument("--port", type=int, default=8000)
     parser.add_argument("--allow-origin", action="append", default=[])
     parser.add_argument('--resident', action='store_true', help='Load ASR/LLM/TTS once and enable sentence streaming')
+    parser.add_argument('--tts-workers', type=int, choices=(1, 2), default=1, help='Bounded resident TTS concurrency')
     args = parser.parse_args()
     config = RuntimeConfig.from_file(args.config)
     if args.resident:
         from .resident import ResidentModels
         from .sentence_pipeline import SentencePipeline
-        models: Any = ResidentModels(config, args.output_dir / 'workers')
-        pipeline: VoicePipeline = SentencePipeline(models, args.output_dir)
+        models: Any = ResidentModels(config, args.output_dir / 'workers', tts_workers=args.tts_workers)
+        pipeline: VoicePipeline = SentencePipeline(models, args.output_dir, tts_workers=args.tts_workers)
     else:
         models = ProcessModels(config)
         pipeline = VoicePipeline(models, args.output_dir)

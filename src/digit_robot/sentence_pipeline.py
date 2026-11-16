@@ -1,5 +1,6 @@
 """A bounded sentence producer overlaps LLM continuation with sequential TTS."""
 from collections.abc import Iterator
+from concurrent.futures import ThreadPoolExecutor
 import json
 from pathlib import Path
 from queue import Empty, Full, Queue
@@ -8,15 +9,22 @@ import time
 from typing import Any
 
 from .reply_stream import STREAM_PROMPT, reply_records
-from .voice import VoiceError, VoicePipeline, wav_info
+from .voice import VoiceError, VoiceModels, VoicePipeline, wav_info
 
 
 class SentencePipeline(VoicePipeline):
+    def __init__(self, models: VoiceModels, output_dir: Path, tts_workers: int = 1) -> None:
+        super().__init__(models, output_dir)
+        if tts_workers not in (1, 2):
+            raise ValueError('TTS concurrency must be one or two')
+        self.tts_workers = tts_workers
+
     def stream_turn(self, session_id: str, epoch: int, *, text: str | None = None,
                     audio: bytes | None = None) -> Iterator[dict[str, Any]]:
         acquired = False
         cancel = None
         producer = None
+        synthesis = None
         folder = None
         utterance_id = None
         started = time.perf_counter()
@@ -104,37 +112,59 @@ class SentencePipeline(VoicePipeline):
             metadata: dict[str, Any] = {}
             segments: list[dict[str, Any]] = []
             sentences: list[str] = []
-            while True:
-                self._phase(session, epoch, 'generating' if not segments else 'synthesizing')
-                try:
-                    record = pending.get(timeout=.05)
-                except Empty:
-                    continue
-                if record is None:
-                    break
-                if isinstance(record, Exception):
-                    raise record
-                if record['type'] == 'meta':
-                    metadata = {key: record[key] for key in ('user_emotion', 'expression_intent')}
-                    yield event('meta', **metadata)
-                    continue
-                index = len(segments)
-                sentences.append(record['text'])
-                yield event('sentence', segment_index=index, text=record['text'])
-                self._phase(session, epoch, 'synthesizing')
-                before = time.perf_counter()
+            jobs: list[dict[str, Any]] = []
+            llm_finished = False
+            synthesis = ThreadPoolExecutor(max_workers=self.tts_workers)
+
+            def synthesize(index: int, sentence: str, intent: dict[str, Any]) -> dict[str, Any]:
+                began = elapsed()
                 segment_dir = folder / f'segment-{index}'
                 segment_dir.mkdir()
-                path = self.models.synthesize(record['text'], metadata['expression_intent'], segment_dir, cancel)
-                duration = (time.perf_counter() - before) * 1000
+                path = self.models.synthesize(sentence, intent, segment_dir, cancel)
+                ended = elapsed()
+                return {'path': path, 'synth_ms': ended - began,
+                        'synth_started_ms': began, 'synth_finished_ms': ended}
+
+            while not llm_finished or len(segments) < len(jobs):
+                self._phase(session, epoch, 'generating' if not segments else 'synthesizing')
+                if not llm_finished:
+                    try:
+                        record = pending.get(timeout=.02)
+                    except Empty:
+                        record = 'waiting'
+                    if record is None:
+                        llm_finished = True
+                    elif isinstance(record, Exception):
+                        raise record
+                    elif isinstance(record, dict):
+                        if record['type'] == 'meta':
+                            metadata = {key: record[key] for key in ('user_emotion', 'expression_intent')}
+                            yield event('meta', **metadata)
+                        else:
+                            index = len(jobs)
+                            sentences.append(record['text'])
+                            jobs.append({'text': record['text'], 'announced': False,
+                                         'future': synthesis.submit(synthesize, index, record['text'], metadata['expression_intent'])})
+                index = len(segments)
+                if index == len(jobs):
+                    continue
+                job = jobs[index]
+                if not job['announced']:
+                    job['announced'] = True
+                    yield event('sentence', segment_index=index, text=job['text'])
+                if not job['future'].done():
+                    if llm_finished:
+                        cancel.wait(.02)
+                    continue
+                completed = job['future'].result()
+                path = completed.pop('path')
                 sound = wav_info(path)
                 sound['url'] = f'/v2/sessions/{session_id}/turns/{utterance_id}/segments/{index}/audio'
                 with self.lock:
                     self._phase(session, epoch, 'synthesizing')
                     session.audio[f'{utterance_id}.{index}'] = (epoch, path)
                 timings.setdefault('first_audio_ready_ms', elapsed())
-                segment = dict(segment_index=index, text=record['text'], audio=sound, synth_ms=duration,
-                               **metadata)
+                segment = dict(segment_index=index, text=job['text'], audio=sound, **completed, **metadata)
                 segments.append(segment)
                 emitted_audio = True
                 yield event('audio_ready', **segment)
@@ -169,5 +199,7 @@ class SentencePipeline(VoicePipeline):
                 cancel.set()
             if producer is not None:
                 producer.join(timeout=10)
+            if synthesis is not None:
+                synthesis.shutdown(wait=True, cancel_futures=True)
             if acquired:
                 self.gpu.release()

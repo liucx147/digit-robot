@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 import socket
 from threading import Event, Thread
+from threading import Lock
 import time
 import httpx
 import uvicorn
@@ -115,3 +116,31 @@ def test_disconnect_cancels_only_its_own_turn_and_releases_admission(tmp_path: P
             assert status['session_epoch'] == 1
         finally:
             models.release.set()
+
+
+def test_two_syntheses_overlap_but_audio_is_published_in_sentence_order(tmp_path: Path):
+    class ParallelFixture(StreamingFixture):
+        def __init__(self):
+            super().__init__()
+            self.release.set()
+            self.lock = Lock()
+            self.started = 0
+            self.both = Event()
+        def synthesize(self, text, intent, output_dir, cancel):
+            with self.lock:
+                self.started += 1
+                if self.started == 2:
+                    self.both.set()
+            assert self.both.wait(2), 'second sentence must synthesize before first finishes'
+            if output_dir.name == 'segment-0':
+                time.sleep(.1)  # The second result arrives first at the external model boundary.
+            return super().synthesize(text, intent, output_dir, cancel)
+    models = ParallelFixture()
+    with serve(create_app(SentencePipeline(models, tmp_path, tts_workers=2))) as base, httpx.Client(base_url=base, timeout=5) as client:
+        sid = client.post('/v1/sessions').json()['session_id']
+        response = client.post(f'/v2/sessions/{sid}/text', json={'text':'难过', 'session_epoch':0})
+        events = [json.loads(line) for line in response.text.splitlines()]
+        assert events[-1]['type'] == 'done'
+        segments = [event for event in events if event['type']=='audio_ready']
+        assert [event['segment_index'] for event in segments] == [0,1]
+        assert segments[1]['synth_started_ms'] < segments[0]['synth_finished_ms']
