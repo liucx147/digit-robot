@@ -52,3 +52,19 @@ $env:PYTHON_EXE='E:\digital robot\_work\voice-dev-py311\Scripts\python.exe'
 页面本地资源测试在新页面阻断全部非本机请求，当前头部和本地样例可加载、播放、停止；缺少solid-head.js时明确资源失败且不替换成历史头部。没有连接模型服务，没有证明ASR/TTS/视觉的整机离线启动。第二批两个独立审阅轴均未发现可执行缺陷。
 
 A远端分支再次获取仍是f17443c，档案契约仍缺失。现有v2客户端上限为3句/80字，与早期2句/60字约定存在差异，需A统一契约和生成约束；B未单方面修改跨端字段或上限。真人麦克风、物理停止/同步、档案和整机稳定性验收继续保持待执行。
+
+## 第三批：收到A契约后的档案接入
+
+以上“契约缺失”为第二批时点记录。本轮已获取A `26c6b995c165d14753612aed4dad8dc78cedbaad`，其执行记录明确确认双方共同完整基线f17443cc8178e6b611d0d9c832a6dca06945d065。页面按A发布的[档案契约](https://github.com/liucx147/digit-robot/blob/26c6b995c165d14753612aed4dad8dc78cedbaad/docs/development/profile-api.md)实施；B不修改A源文件或契约。
+
+新增排队下载/解码/播放确认的停止竞态，实际命令 `node --test --test-name-pattern='Stop during queued' web/tests/sentence-public.test.cjs`，3/3通过。首次下载用例等待一个已经发生的HTTP响应导致测试超时；改为观测外部HTTP处理器进入等待点后3项通过，未据此修改产品代码或伪称发现产品缺陷。
+
+真实API软件联调使用A该SHA的归档源（tar SHA256 `31b34498dbfa74107d39bc293ea2a6738a6a6aa4452079564f93b0c567cfde16`），在独立本机进程中运行真实FastAPI/SQLite。固定回复与音调是明确合成模型替身，不是Qwen/Vivian推理。原始A服务和GPU未改动。`web/tests/profile-api-fixture.py` 是浏览器测试专用驱动，不是部署脚本。
+
+设置 `B_PROFILE_BACKEND_SRC=<归档目录>/src`、`PYTHON_EXE=<有效Python>`，可选 `B_PROFILE_WEB_ROOT=<候选web目录>`，运行 `node --test web/tests/profile-real-api.test.cjs`。实际首轮1/1通过：创建绑定、保存偏好、终止并重启测试服务、另一API客户端修改称呼、页面重载重新绑定并读取更新值、清空偏好、删除后匿名。未设置源目录时测试明确skip，不能写成通过。
+
+报告位于本地忽略目录 `artifacts/b-profile-real-api/<尝试时间>/report.json`，包含精确A源版本、浏览器和renderer；最终运行还保存重启后页面截图。真实SQLite/API通过不等于真实LLM偏好生效，07仍由A结合最终模型证据决定生命周期。当前已完成用途的B自建18707测试进程已关闭，不保留占用端口。
+
+档案候选首次完整浏览器回归：115项，113通过、1失败、1条件跳过，307.94秒（默认Intel UHD/D3D11）。原始日志在实施工作树 `artifacts/b-profile-ui/full-browser.log`。唯一失败是下载停滞测试在send后才注册HTTP响应监听，错过已发生事件而超时；父分支改为发送前注册，后续定向结果另记。真实API项因缺少B_PROFILE_BACKEND_SRC显式skip，不能算通过，将单独运行。
+
+两轴审阅同时发现一项档案身份隔离缺陷：甲切乙绑定成功但读取乙偏好失败时，旧selected甲仍可被后续保存/删除操作使用。此候选未作为完成版本发布，要求身份重新确认前阻止写入、清除旧内容，并补公开GET失败后的防误写/删回归。实施者同时自查修复切换时旧播放记录下载残留。正式审阅问题由新的修复实施者集中处理，最终结果另记。

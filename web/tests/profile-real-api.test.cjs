@@ -60,14 +60,15 @@ test('profile UI reads real SQLite state after service restart and clears/delete
   await page.reload();await page.locator('#status').filter({hasText:'三维头部已就绪'}).waitFor();await connect();
   await page.locator('#profile-current').filter({hasText:name}).waitFor();
   assert.equal(await page.locator('#profile-preferred-name').inputValue(),'合成称呼乙','reconnect must read changed SQLite values instead of browser preference copies');
+  const evidence=path.resolve(__dirname,'../../artifacts/b-profile-real-api',new Date().toISOString().replace(/[:.]/g,'-'));
+  await fs.mkdir(evidence,{recursive:true});
+  await page.screenshot({path:path.join(evidence,'profile-after-service-restart.png'),fullPage:true});
   await page.getByRole('button',{name:'清空偏好',exact:true}).click();
   await page.waitForFunction(()=>document.querySelector('#profile-preferred-name').value===''&&!document.querySelector('#profile-preferred-name').matches(':disabled'));
   assert.deepEqual(await (await fetch(`${service.base}/v1/profiles/${profile.profile_id}/preferences`)).json(),{preferred_name:null,communication_style:null});
   await page.getByRole('button',{name:'删除档案',exact:true}).click();
   await page.waitForFunction(()=>document.querySelector('#profile-current').textContent.includes('匿名'));
   assert.equal((await fetch(`${service.base}/v1/profiles/${profile.profile_id}`)).status,404);
-  const evidence=path.resolve(__dirname,'../../artifacts/b-profile-real-api',new Date().toISOString().replace(/[:.]/g,'-'));
-  await fs.mkdir(evidence,{recursive:true});
   const renderer=await page.locator('#avatar').getAttribute('data-renderer');
   await fs.writeFile(path.join(evidence,'report.json'),JSON.stringify({scope:'real-A-HTTP-and-SQLite-with-synthetic-model-only',a_source_sha:'26c6b995c165d14753612aed4dad8dc78cedbaad',browser:await app.browser.version(),renderer:JSON.parse(renderer),service_restart:true,read_changed_server_value:true,cleared_preferences:true,deleted_profile:true,real_model_or_physical_acceptance:false},null,2));
  }finally{await service?.stop();await app.close();}

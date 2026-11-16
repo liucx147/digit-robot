@@ -111,8 +111,9 @@ test('a stalled stream becomes a visible timeout, then a new turn can play and s
 test('completed generation cannot hide a stalled WAV download',async()=>{
  const f=await setup({delayedGeneration:false,fault:'stalled-download'});
  try {
-  await f.page.clock.install();await f.send();
-  await f.page.waitForResponse(r=>r.url().includes('/segments/1/audio'));
+  await f.page.clock.install();
+  const response=f.page.waitForResponse(r=>r.url().includes('/segments/1/audio'));
+  await f.send();await response;
   await f.page.clock.fastForward(15100);
   await f.page.getByRole('status',{name:'对话状态'}).filter({hasText:/回复失败.*下载超时/}).waitFor({timeout:2500});
   await f.page.clock.resume();
