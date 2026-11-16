@@ -1,0 +1,30 @@
+✖ a stale failed manifest read cannot erase the newer original manifest (2905.4652ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3286.2886
+
+✖ failing tests:
+
+test at web\tests\measurement-evidence-public.test.cjs:171:1
+✖ a stale failed manifest read cannot erase the newer original manifest (2905.4652ms)
+  AssertionError [ERR_ASSERTION]: malformed-json: an old failure must not overwrite the newer success
+  + actual - expected
+  
+  + "清单读取失败：Expected property name or '}' in JSON at position 1 (line 1 column 2)"
+  - '已载入原始采集清单。生成模板时会核对媒体和事件表哈希。'
+  
+      at TestContext.<anonymous> (C:\Users\30415\.codex\worktrees\b-profile-ui\b-voice-integration\web\tests\measurement-evidence-public.test.cjs:197:11)
+      at async Test.run (node:internal/test_runner/test:1332:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: "清单读取失败：Expected property name or '}' in JSON at position 1 (line 1 column 2)",
+    expected: '已载入原始采集清单。生成模板时会核对媒体和事件表哈希。',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

@@ -1,0 +1,26 @@
+✖ external media needs explicit condition declarations before a physical manifest can be downloaded (32900.9048ms)
+✔ audio-only original media cannot produce a physical screen-video manifest (2128.6315ms)
+✔ a known browser-origin manifest cannot be relabeled as a physical capture (2489.1786ms)
+✔ scope changes clear physical declarations and edits during hashing abort an export (3030.8687ms)
+✔ a stale failed manifest read cannot erase the newer original manifest (3025.2459ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 4
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 43980.3215
+
+✖ failing tests:
+
+test at web\tests\measurement-evidence-public.test.cjs:29:1
+✖ external media needs explicit condition declarations before a physical manifest can be downloaded (32900.9048ms)
+  locator.waitFor: Timeout 30000ms exceeded.
+  Call log:
+  [2m  - waiting for locator('#review-status').filter({ hasText: '已载入原始音视频' }) to be visible[22m
+  
+      at TestContext.<anonymous> (C:\Users\30415\.codex\worktrees\b-profile-ui\b-voice-integration\web\tests\measurement-evidence-public.test.cjs:42:69) {
+    name: 'TimeoutError',
+    log: [ "  - waiting for locator('#review-status').filter({ hasText: '已载入原始音视频' }) to be visible" ]
+  }
