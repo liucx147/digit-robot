@@ -1,0 +1,105 @@
+{
+  "code_commit": "0c65ae7acb77a68238cdd5a8d7eb4f5a8bf7fc39",
+  "source_sha256": "0f65021e44c5cb922e0b4c7a47ebf7eb66875c063d1a8fea79e86304094a4a4e",
+  "notes": [
+    "Small fixed-input cohorts; use medians/maxima rather than claiming population P95.",
+    "Initial rounds are pilots; server models were already resident and warmed.",
+    "Single and dual original cohorts use the same forced CPU SwiftShader flags.",
+    "Native renderer results are an additional dual-mode cohort, not a matched single/dual comparison.",
+    "Software renderer jitter reproduced and is retained, not excluded."
+  ],
+  "cohorts": {
+    "single": {
+      "warm_runs": 5,
+      "pilot_runs": 1,
+      "successes": 5,
+      "gap_count": 10,
+      "gap_median_ms": 443.7500000074506,
+      "gap_min_ms": 21.19999998807907,
+      "gap_max_ms": 900.8999999910593,
+      "first_speech_median_ms": 9237,
+      "first_speech_max_ms": 9782,
+      "playback_median_ms": 19629.79999999702,
+      "playback_max_ms": 20262.5,
+      "server_first_audio_median_ms": 5665.411,
+      "server_all_audio_median_ms": 11343.771,
+      "stop": {
+        "requested": 176553.39999999106,
+        "paused": 176642.89999999106,
+        "software_stop_ms": 89.5,
+        "expired_audio_http": 410,
+        "remained_stopped": true
+      },
+      "renderer": "forced SwiftShader by recorded runner"
+    },
+    "dual": {
+      "warm_runs": 5,
+      "pilot_runs": 1,
+      "successes": 5,
+      "gap_count": 10,
+      "gap_median_ms": 33.25,
+      "gap_min_ms": 20.099999994039536,
+      "gap_max_ms": 2185,
+      "first_speech_median_ms": 9282,
+      "first_speech_max_ms": 10077,
+      "playback_median_ms": 17451,
+      "playback_max_ms": 22915.79999999702,
+      "server_first_audio_median_ms": 5759.72,
+      "server_all_audio_median_ms": 7874.428,
+      "stop": {
+        "requested": 177582.10000000894,
+        "paused": 177629.90000000596,
+        "software_stop_ms": 47.79999999701977,
+        "expired_audio_http": 410,
+        "remained_stopped": true
+      },
+      "renderer": "forced SwiftShader by recorded runner"
+    },
+    "dual-confirm": {
+      "warm_runs": 3,
+      "pilot_runs": 1,
+      "successes": 3,
+      "gap_count": 6,
+      "gap_median_ms": 500.65000000596046,
+      "gap_min_ms": 437.79999999701977,
+      "gap_max_ms": 587.7999999970198,
+      "first_speech_median_ms": 10036,
+      "first_speech_max_ms": 10353,
+      "playback_median_ms": 21661.70000000298,
+      "playback_max_ms": 24028.60000000894,
+      "server_first_audio_median_ms": 5775.167,
+      "server_all_audio_median_ms": 7807.78,
+      "stop": {
+        "requested": 138819.89999999106,
+        "paused": 138868,
+        "software_stop_ms": 48.1000000089407,
+        "expired_audio_http": 410,
+        "remained_stopped": true
+      },
+      "renderer": "forced SwiftShader by recorded runner"
+    },
+    "dual-native-render": {
+      "warm_runs": 3,
+      "pilot_runs": 1,
+      "successes": 3,
+      "gap_count": 6,
+      "gap_median_ms": 19.149999998509884,
+      "gap_min_ms": 11,
+      "gap_max_ms": 36.19999998807907,
+      "first_speech_median_ms": 8991,
+      "first_speech_max_ms": 9052,
+      "playback_median_ms": 17114.89999999106,
+      "playback_max_ms": 17189.10000000894,
+      "server_first_audio_median_ms": 5784.701,
+      "server_all_audio_median_ms": 7834.226,
+      "stop": {
+        "requested": 114942.29999999702,
+        "paused": 114943.39999999106,
+        "software_stop_ms": 1.0999999940395355,
+        "expired_audio_http": 410,
+        "remained_stopped": true
+      },
+      "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4060 Laptop GPU (0x000028E0) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+    }
+  }
+}

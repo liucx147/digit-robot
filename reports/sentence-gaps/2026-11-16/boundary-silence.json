@@ -1,0 +1,20 @@
+{
+  "scope": "10ms non-overlapping RMS windows >= .008; signal threshold not phonetic alignment",
+  "segments": [
+    {
+      "file": "segment-0.wav",
+      "leading_ms": 90.0,
+      "trailing_ms": 50.0
+    },
+    {
+      "file": "segment-1.wav",
+      "leading_ms": 90.0,
+      "trailing_ms": 110.0
+    },
+    {
+      "file": "segment-2.wav",
+      "leading_ms": 90.0,
+      "trailing_ms": 20.0
+    }
+  ]
+}

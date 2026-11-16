@@ -1,0 +1,71 @@
+{
+  "checked_at_utc": "2026-11-16T03:46:11Z",
+  "commit": "0c65ae7acb77a68238cdd5a8d7eb4f5a8bf7fc39",
+  "ready": {
+    "asr": {
+      "event": "ready",
+      "role": "asr",
+      "pid": 511073,
+      "load_count": 1,
+      "model_load_ms": 8683.307949453592,
+      "gpu": "NVIDIA GeForce RTX 4090 D",
+      "allocated_bytes": 1571201024,
+      "reserved_bytes": 1885339648
+    },
+    "llm": {
+      "event": "ready",
+      "role": "llm",
+      "pid": 511336,
+      "load_count": 1,
+      "model_load_ms": 6610.594287514687,
+      "gpu": "NVIDIA GeForce RTX 4090 D",
+      "allocated_bytes": 9180272640,
+      "reserved_bytes": 9219080192
+    },
+    "tts": {
+      "event": "ready",
+      "role": "tts",
+      "pid": 511412,
+      "load_count": 1,
+      "model_load_ms": 7203.011345118284,
+      "gpu": "NVIDIA GeForce RTX 4090 D",
+      "allocated_bytes": 4178577920,
+      "reserved_bytes": 4311744512
+    },
+    "tts-next": {
+      "event": "ready",
+      "role": "tts",
+      "pid": 511677,
+      "load_count": 1,
+      "model_load_ms": 7075.529761612415,
+      "gpu": "NVIDIA GeForce RTX 4090 D",
+      "allocated_bytes": 4178577920,
+      "reserved_bytes": 4311744512
+    }
+  },
+  "api_pid": 511071,
+  "processes_alive": {
+    "511071": true,
+    "511073": true,
+    "511336": true,
+    "511412": true,
+    "511677": true,
+    "3115": true,
+    "5216": true,
+    "309430": true
+  },
+  "health": {
+    "8003": {
+      "status": "ok",
+      "api_version": "0.2.0",
+      "model_policy": "resident_sentence_pipeline",
+      "sentence_streaming": true
+    },
+    "8002": {
+      "status": "ok",
+      "api_version": "0.2.0",
+      "model_policy": "serial_local_subprocesses"
+    }
+  },
+  "gpu": "name, memory.used [MiB], memory.total [MiB], utilization.gpu [%]\nNVIDIA GeForce RTX 4090 D, 20743 MiB, 24564 MiB, 0 %\n"
+}

@@ -1,0 +1,194 @@
+{
+  "base": "http://127.0.0.1:18000",
+  "checkout_commit": "0c65ae7acb77a68238cdd5a8d7eb4f5a8bf7fc39",
+  "started_at_utc": "2026-11-16T03:33:50Z",
+  "warm_runs_planned": 3,
+  "scope": "One fixed original synthetic Chinese recording at Chromium microphone boundary; real MediaRecorder, ASR/LLM/Qwen3-TTS and rendered audio playback. Fresh session per round. Single-input repeatability, not language-wide quality or physical microphone acceptance.",
+  "source_sha256": "0f65021e44c5cb922e0b4c7a47ebf7eb66875c063d1a8fea79e86304094a4a4e",
+  "samples": [
+    {
+      "index": 0,
+      "phase": "cold-inference",
+      "success": true,
+      "session_id": "5d0c0862-dae7-4f55-adbc-5028dd38bee8",
+      "utterance_id": "cb6284a8-726a-4bd7-9e62-43dd30c14399",
+      "reply": "小林，没关系的，难过很正常。愿意跟我说说心里的感受吗？我会一直在这里陪着你。",
+      "transcript": "我叫小林，今天考试没考好，我很难过。",
+      "reply_characters": 38,
+      "frames": 263,
+      "segments": 3,
+      "server_timings_ms": {
+        "asr_ms": 335.14029905200005,
+        "first_token_ms": 1308.796,
+        "first_sentence_ms": 1872.585,
+        "llm_ms": 2646.7543691396713,
+        "llm_done_ms": 2983.438,
+        "first_audio_ready_ms": 5877.138,
+        "all_audio_ready_ms": 7989.681,
+        "total_ms": 7989.681,
+        "tts_ms": 9980.627999999999
+      },
+      "client_timings_ms": {
+        "first_audio_start_ms": 9664,
+        "first_reply_activity_ms": 9797,
+        "generation_done_observed_ms": 10941.90000000596,
+        "total_playback_ms": 20709.40000000596,
+        "segment_gaps_ms": [
+          747.2000000029802,
+          436
+        ]
+      },
+      "audio_duration_ms": 8080,
+      "segment_rtf": [
+        1.247445,
+        1.2423538461538461,
+        1.200375
+      ]
+    },
+    {
+      "index": 1,
+      "phase": "warm",
+      "success": true,
+      "session_id": "64db4660-6162-45f5-b884-f4d831c94876",
+      "utterance_id": "24dc69b2-2d79-4223-aff3-ac58bc1a4985",
+      "reply": "小林，没关系的，难过很正常。愿意跟我说说心里的感受吗？我会一直在这里陪着你。",
+      "transcript": "我叫小林，今天考试没考好，我很难过。",
+      "reply_characters": 38,
+      "frames": 237,
+      "segments": 3,
+      "server_timings_ms": {
+        "asr_ms": 359.4261594116688,
+        "first_token_ms": 1309.246,
+        "first_sentence_ms": 1864.352,
+        "llm_ms": 2620.465237647295,
+        "llm_done_ms": 2982.236,
+        "first_audio_ready_ms": 5775.167,
+        "all_audio_ready_ms": 7807.78,
+        "total_ms": 7807.78,
+        "tts_ms": 9778.48
+      },
+      "client_timings_ms": {
+        "first_audio_start_ms": 9353,
+        "first_reply_activity_ms": 9528,
+        "generation_done_observed_ms": 10777.89999999106,
+        "total_playback_ms": 19582.89999999106,
+        "segment_gaps_ms": [
+          437.79999999701977,
+          554.5999999940395
+        ]
+      },
+      "audio_duration_ms": 8080,
+      "segment_rtf": [
+        1.219981875,
+        1.2328650641025642,
+        1.152272159090909
+      ]
+    },
+    {
+      "index": 2,
+      "phase": "warm",
+      "success": true,
+      "session_id": "0c645ea4-21a8-438c-900f-75536eecd24d",
+      "utterance_id": "abee2f4f-c293-4915-913c-b40a423aec2b",
+      "reply": "小林，没关系的，难过很正常。愿意跟我说说心里的感受吗？我会一直在这里陪着你。",
+      "transcript": "我叫小林，今天考试没考好，我很难过。",
+      "reply_characters": 38,
+      "frames": 318,
+      "segments": 3,
+      "server_timings_ms": {
+        "asr_ms": 350.2506949007511,
+        "first_token_ms": 1303.691,
+        "first_sentence_ms": 1857.471,
+        "llm_ms": 2613.011259585619,
+        "llm_done_ms": 2965.146,
+        "first_audio_ready_ms": 5939.192,
+        "all_audio_ready_ms": 7951.817,
+        "total_ms": 7951.817,
+        "tts_ms": 10002.423
+      },
+      "client_timings_ms": {
+        "first_audio_start_ms": 10079,
+        "first_reply_activity_ms": 10353,
+        "generation_done_observed_ms": 10798.10000000894,
+        "total_playback_ms": 24028.60000000894,
+        "segment_gaps_ms": [
+          587.7999999970198,
+          498.90000000596046
+        ]
+      },
+      "audio_duration_ms": 8080,
+      "segment_rtf": [
+        1.2711559375,
+        1.2549512820512823,
+        1.147315909090909
+      ]
+    },
+    {
+      "index": 3,
+      "phase": "warm",
+      "success": true,
+      "session_id": "13d68a41-8e66-4985-86ba-f0989beeb764",
+      "utterance_id": "d6b081e4-8b84-4312-9418-b6c7c2f9ca3f",
+      "reply": "小林，没关系的，难过很正常。愿意跟我说说心里的感受吗？我会一直在这里陪着你。",
+      "transcript": "我叫小林，今天考试没考好，我很难过。",
+      "reply_characters": 38,
+      "frames": 277,
+      "segments": 3,
+      "server_timings_ms": {
+        "asr_ms": 363.45385760068893,
+        "first_token_ms": 1299.191,
+        "first_sentence_ms": 1843.169,
+        "llm_ms": 2569.0635442733765,
+        "llm_done_ms": 2934.422,
+        "first_audio_ready_ms": 5729.038,
+        "all_audio_ready_ms": 7763.841,
+        "total_ms": 7763.841,
+        "tts_ms": 9662.114000000001
+      },
+      "client_timings_ms": {
+        "first_audio_start_ms": 9554,
+        "first_reply_activity_ms": 10036,
+        "generation_done_observed_ms": 10602.90000000596,
+        "total_playback_ms": 21661.70000000298,
+        "segment_gaps_ms": [
+          502.40000000596046,
+          490.20000000298023
+        ]
+      },
+      "audio_duration_ms": 8080,
+      "segment_rtf": [
+        1.210110625,
+        1.2034397435897437,
+        1.1562659090909093
+      ]
+    }
+  ],
+  "browser_version": "157.0.8103.51",
+  "stop": {
+    "requested": 138819.89999999106,
+    "paused": 138868,
+    "software_stop_ms": 48.1000000089407,
+    "expired_audio_http": 410,
+    "remained_stopped": true
+  },
+  "warm_successes": 3,
+  "warm_percentiles_ms": {
+    "first_audio_start_ms": {
+      "p50": 9554,
+      "p95": 10079
+    },
+    "first_reply_activity_ms": {
+      "p50": 10036,
+      "p95": 10353
+    },
+    "total_playback_ms": {
+      "p50": 21661.70000000298,
+      "p95": 24028.60000000894
+    },
+    "generation_done_observed_ms": {
+      "p50": 10777.89999999106,
+      "p95": 10798.10000000894
+    }
+  },
+  "finished_at_utc": "2026-11-16T03:36:18Z"
+}

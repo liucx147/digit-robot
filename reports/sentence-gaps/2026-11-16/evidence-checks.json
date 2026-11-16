@@ -1,0 +1,194 @@
+{
+  "samples": [
+    {
+      "mode": "single",
+      "index": 0,
+      "session_id": "c72cfe51-66af-4ccb-a1e8-dae77d7b41f7",
+      "utterance_id": "f0f0ebc6-580a-4c34-a814-254a0ea10325",
+      "server_browser_pcm_equal": true,
+      "server_browser_wavs_equal": true,
+      "max_synthesis_overlap_ms": 0
+    },
+    {
+      "mode": "single",
+      "index": 1,
+      "session_id": "2abe2dcc-34c3-4d4e-9541-44f07f435183",
+      "utterance_id": "72a9620c-5f8c-4402-b5fb-b1e2c76921f2",
+      "server_browser_pcm_equal": true,
+      "server_browser_wavs_equal": true,
+      "max_synthesis_overlap_ms": 0
+    },
+    {
+      "mode": "single",
+      "index": 2,
+      "session_id": "fc71caee-e3c1-4b89-81ba-a09a09869a71",
+      "utterance_id": "c40bfcac-2a1b-4e10-aa57-84393aea157f",
+      "server_browser_pcm_equal": true,
+      "server_browser_wavs_equal": true,
+      "max_synthesis_overlap_ms": 0
+    },
+    {
+      "mode": "single",
+      "index": 3,
+      "session_id": "477f92e2-9ce2-44e7-b925-43f6ea8e3f3b",
+      "utterance_id": "303c4a4d-3a2f-4749-a59d-6ac2e359eeb3",
+      "server_browser_pcm_equal": true,
+      "server_browser_wavs_equal": true,
+      "max_synthesis_overlap_ms": 0
+    },
+    {
+      "mode": "single",
+      "index": 4,
+      "session_id": "99e22b0d-7b79-44c0-8534-794c92f15cda",
+      "utterance_id": "a7c03288-f18b-4309-b580-ef154d75e1ba",
+      "server_browser_pcm_equal": true,
+      "server_browser_wavs_equal": true,
+      "max_synthesis_overlap_ms": 0
+    },
+    {
+      "mode": "single",
+      "index": 5,
+      "session_id": "396a96ed-8bd5-4a2e-ac81-5dfe93bef627",
+      "utterance_id": "f0677b7c-fd9e-4b4c-bc65-a062e6b3fb18",
+      "server_browser_pcm_equal": true,
+      "server_browser_wavs_equal": true,
+      "max_synthesis_overlap_ms": 0
+    },
+    {
+      "mode": "dual",
+      "index": 0,
+      "session_id": "942d27c8-191f-4ca1-89cb-c04b0d842445",
+      "utterance_id": "f658f272-47e0-40b4-843b-43a4a48002bf",
+      "server_browser_pcm_equal": true,
+      "server_browser_wavs_equal": true,
+      "max_synthesis_overlap_ms": 3415.432
+    },
+    {
+      "mode": "dual",
+      "index": 1,
+      "session_id": "0237cbcb-54fa-4760-9965-9b1719fe4b13",
+      "utterance_id": "690e2fd9-677a-4910-a87b-d1aaf60a6e6e",
+      "server_browser_pcm_equal": true,
+      "server_browser_wavs_equal": true,
+      "max_synthesis_overlap_ms": 3364.7270000000003
+    },
+    {
+      "mode": "dual",
+      "index": 2,
+      "session_id": "59dd7dd0-2657-48b0-8982-6304f62d256a",
+      "utterance_id": "7cfc62f6-17d6-4a36-9988-603d7be4d533",
+      "server_browser_pcm_equal": true,
+      "server_browser_wavs_equal": true,
+      "max_synthesis_overlap_ms": 3344.9900000000002
+    },
+    {
+      "mode": "dual",
+      "index": 3,
+      "session_id": "e8e9e64a-3939-479a-9150-6eaf0df02138",
+      "utterance_id": "482ad556-4041-4aa0-8c21-2eeffa7c74f8",
+      "server_browser_pcm_equal": true,
+      "server_browser_wavs_equal": true,
+      "max_synthesis_overlap_ms": 3399.6980000000003
+    },
+    {
+      "mode": "dual",
+      "index": 4,
+      "session_id": "6b6fbbc9-f8fc-4990-9ef2-6422d31307d1",
+      "utterance_id": "a58de2ac-3a9d-43ac-b6c4-8282b0d9bea4",
+      "server_browser_pcm_equal": true,
+      "server_browser_wavs_equal": true,
+      "max_synthesis_overlap_ms": 3316.302
+    },
+    {
+      "mode": "dual",
+      "index": 5,
+      "session_id": "d8a551d4-f23f-4845-a943-aff60f2a48ba",
+      "utterance_id": "a0298b98-d403-4447-8d21-4ceb6f1367e2",
+      "server_browser_pcm_equal": true,
+      "server_browser_wavs_equal": true,
+      "max_synthesis_overlap_ms": 3299.2089999999994
+    },
+    {
+      "mode": "dual-confirm",
+      "index": 0,
+      "session_id": "5d0c0862-dae7-4f55-adbc-5028dd38bee8",
+      "utterance_id": "cb6284a8-726a-4bd7-9e62-43dd30c14399",
+      "server_browser_pcm_equal": true,
+      "server_browser_wavs_equal": true,
+      "max_synthesis_overlap_ms": 3462.5799999999995
+    },
+    {
+      "mode": "dual-confirm",
+      "index": 1,
+      "session_id": "64db4660-6162-45f5-b884-f4d831c94876",
+      "utterance_id": "24dc69b2-2d79-4223-aff3-ac58bc1a4985",
+      "server_browser_pcm_equal": true,
+      "server_browser_wavs_equal": true,
+      "max_synthesis_overlap_ms": 3367.2980000000002
+    },
+    {
+      "mode": "dual-confirm",
+      "index": 2,
+      "session_id": "0c645ea4-21a8-438c-900f-75536eecd24d",
+      "utterance_id": "abee2f4f-c293-4915-913c-b40a423aec2b",
+      "server_browser_pcm_equal": true,
+      "server_browser_wavs_equal": true,
+      "max_synthesis_overlap_ms": 3534.8050000000003
+    },
+    {
+      "mode": "dual-confirm",
+      "index": 3,
+      "session_id": "13d68a41-8e66-4985-86ba-f0989beeb764",
+      "utterance_id": "d6b081e4-8b84-4312-9418-b6c7c2f9ca3f",
+      "server_browser_pcm_equal": true,
+      "server_browser_wavs_equal": true,
+      "max_synthesis_overlap_ms": 3351.02
+    },
+    {
+      "mode": "dual-native-render",
+      "index": 0,
+      "session_id": "256cf059-cea7-4738-b34b-ae3a4563d808",
+      "utterance_id": "18d7f069-7383-4ce3-be14-b38a41e66d2d",
+      "server_browser_pcm_equal": true,
+      "server_browser_wavs_equal": true,
+      "max_synthesis_overlap_ms": 3363.2870000000003
+    },
+    {
+      "mode": "dual-native-render",
+      "index": 1,
+      "session_id": "e18d8506-8d51-4740-975e-2b383900ae50",
+      "utterance_id": "a3badc15-d428-4384-a262-cc8e839f68f4",
+      "server_browser_pcm_equal": true,
+      "server_browser_wavs_equal": true,
+      "max_synthesis_overlap_ms": 3345.788
+    },
+    {
+      "mode": "dual-native-render",
+      "index": 2,
+      "session_id": "f9333ebc-621c-4fce-b848-e56d38cecdc4",
+      "utterance_id": "0e4c0b6d-c68f-4f6f-b7f7-95a6c6c5d5ab",
+      "server_browser_pcm_equal": true,
+      "server_browser_wavs_equal": true,
+      "max_synthesis_overlap_ms": 3345.0009999999997
+    },
+    {
+      "mode": "dual-native-render",
+      "index": 3,
+      "session_id": "63a46281-b66f-49ec-977e-61bc97a27ef2",
+      "utterance_id": "e536d408-15a3-486f-8df8-e30974dadae1",
+      "server_browser_pcm_equal": true,
+      "server_browser_wavs_equal": true,
+      "max_synthesis_overlap_ms": 3336.423
+    }
+  ],
+  "tts_workers": [
+    [
+      "tts",
+      511412
+    ],
+    [
+      "tts-next",
+      511677
+    ]
+  ]
+}

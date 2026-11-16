@@ -1,0 +1,146 @@
+{
+  "deployment": {
+    "pid": 511071,
+    "command": [
+      "/root/autodl-tmp/digit-robot-envs/api/bin/python",
+      "-m",
+      "digit_robot.server",
+      "--resident",
+      "--config",
+      "/root/autodl-tmp/digit-robot-releases/resident-voice/config/voice-4090.json",
+      "--output-dir",
+      "/root/autodl-tmp/digit-robot-releases/resident-voice/runs/gap-dual",
+      "--port",
+      "8003",
+      "--tts-workers",
+      "2"
+    ],
+    "release": "/root/autodl-tmp/digit-robot-releases/resident-voice",
+    "output_dir": "/root/autodl-tmp/digit-robot-releases/resident-voice/runs/gap-dual",
+    "commit": "0c65ae7acb77a68238cdd5a8d7eb4f5a8bf7fc39",
+    "tts_workers": 2,
+    "gpu_before": {
+      "total_mib": 24564,
+      "used_mib": 0
+    },
+    "started_at_utc": "2026-11-16T03:18:38Z",
+    "ready": {
+      "asr": {
+        "event": "ready",
+        "role": "asr",
+        "pid": 511073,
+        "load_count": 1,
+        "model_load_ms": 8683.307949453592,
+        "gpu": "NVIDIA GeForce RTX 4090 D",
+        "allocated_bytes": 1571201024,
+        "reserved_bytes": 1885339648
+      },
+      "llm": {
+        "event": "ready",
+        "role": "llm",
+        "pid": 511336,
+        "load_count": 1,
+        "model_load_ms": 6610.594287514687,
+        "gpu": "NVIDIA GeForce RTX 4090 D",
+        "allocated_bytes": 9180272640,
+        "reserved_bytes": 9219080192
+      },
+      "tts": {
+        "event": "ready",
+        "role": "tts",
+        "pid": 511412,
+        "load_count": 1,
+        "model_load_ms": 7203.011345118284,
+        "gpu": "NVIDIA GeForce RTX 4090 D",
+        "allocated_bytes": 4178577920,
+        "reserved_bytes": 4311744512
+      },
+      "tts-next": {
+        "event": "ready",
+        "role": "tts",
+        "pid": 511677,
+        "load_count": 1,
+        "model_load_ms": 7075.529761612415,
+        "gpu": "NVIDIA GeForce RTX 4090 D",
+        "allocated_bytes": 4178577920,
+        "reserved_bytes": 4311744512
+      }
+    },
+    "gpu_after": "20343 MiB"
+  },
+  "single_ready": {
+    "asr": {
+      "event": "ready",
+      "role": "asr",
+      "pid": 338310,
+      "load_count": 1,
+      "model_load_ms": 8708.254761993885,
+      "gpu": "NVIDIA GeForce RTX 4090 D",
+      "allocated_bytes": 1571201024,
+      "reserved_bytes": 1885339648
+    },
+    "llm": {
+      "event": "ready",
+      "role": "llm",
+      "pid": 338610,
+      "load_count": 1,
+      "model_load_ms": 6578.650183975697,
+      "gpu": "NVIDIA GeForce RTX 4090 D",
+      "allocated_bytes": 9180272640,
+      "reserved_bytes": 9219080192
+    },
+    "tts": {
+      "event": "ready",
+      "role": "tts",
+      "pid": 338686,
+      "load_count": 1,
+      "model_load_ms": 7264.874219894409,
+      "gpu": "NVIDIA GeForce RTX 4090 D",
+      "allocated_bytes": 4178577920,
+      "reserved_bytes": 4311744512
+    }
+  },
+  "dual_ready": {
+    "asr": {
+      "event": "ready",
+      "role": "asr",
+      "pid": 511073,
+      "load_count": 1,
+      "model_load_ms": 8683.307949453592,
+      "gpu": "NVIDIA GeForce RTX 4090 D",
+      "allocated_bytes": 1571201024,
+      "reserved_bytes": 1885339648
+    },
+    "llm": {
+      "event": "ready",
+      "role": "llm",
+      "pid": 511336,
+      "load_count": 1,
+      "model_load_ms": 6610.594287514687,
+      "gpu": "NVIDIA GeForce RTX 4090 D",
+      "allocated_bytes": 9180272640,
+      "reserved_bytes": 9219080192
+    },
+    "tts": {
+      "event": "ready",
+      "role": "tts",
+      "pid": 511412,
+      "load_count": 1,
+      "model_load_ms": 7203.011345118284,
+      "gpu": "NVIDIA GeForce RTX 4090 D",
+      "allocated_bytes": 4178577920,
+      "reserved_bytes": 4311744512
+    },
+    "tts-next": {
+      "event": "ready",
+      "role": "tts",
+      "pid": 511677,
+      "load_count": 1,
+      "model_load_ms": 7075.529761612415,
+      "gpu": "NVIDIA GeForce RTX 4090 D",
+      "allocated_bytes": 4178577920,
+      "reserved_bytes": 4311744512
+    }
+  },
+  "gpu": "name, memory.used [MiB], memory.total [MiB], utilization.gpu [%]\nNVIDIA GeForce RTX 4090 D, 20739 MiB, 24564 MiB, 0 %\n"
+}

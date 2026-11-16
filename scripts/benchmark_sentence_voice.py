@@ -20,6 +20,7 @@ def main() -> None:
     parser.add_argument('--base', default='http://127.0.0.1:18003')
     parser.add_argument('--output-dir', type=Path, required=True)
     parser.add_argument('--warm-runs', type=int, default=30)
+    parser.add_argument('--native-renderer', action='store_true', help='Use the default GPU renderer instead of forced CPU SwiftShader; record the actual renderer')
     args = parser.parse_args()
     base = args.base.rstrip('/')
     if urlparse(base).hostname not in ('127.0.0.1', 'localhost') or not 1 <= args.warm_runs <= 100:
@@ -48,10 +49,14 @@ def main() -> None:
 
     save()
     with sync_playwright() as playwright:
+        browser_args = ['--autoplay-policy=no-user-gesture-required',
+            '--use-fake-device-for-media-stream','--use-fake-ui-for-media-stream',f'--use-file-for-fake-audio-capture={fixture}']
+        if not args.native_renderer:
+            browser_args += ['--use-angle=swiftshader','--enable-unsafe-swiftshader']
         browser = playwright.chromium.launch(executable_path=os.environ.get('CHROME_PATH', r'C:\Program Files\Google\Chrome\Application\chrome.exe'), headless=True,
-            args=['--autoplay-policy=no-user-gesture-required','--use-angle=swiftshader','--enable-unsafe-swiftshader',
-                  '--use-fake-device-for-media-stream','--use-fake-ui-for-media-stream',f'--use-file-for-fake-audio-capture={fixture}'])
+            args=browser_args)
         summary['browser_version'] = browser.version
+        summary['requested_renderer'] = 'native' if args.native_renderer else 'swiftshader'
         page = browser.new_page(viewport={'width':1360,'height':960}, accept_downloads=True)
         page.set_default_timeout(20000)
         active: dict = {}
@@ -81,6 +86,12 @@ def main() -> None:
             page.goto(base)
             page.wait_for_load_state('networkidle')
             page.get_by_role('status', name='播放状态').filter(has_text='三维头部已就绪').wait_for()
+            summary['renderer'] = page.evaluate("""() => {
+              const gl=document.querySelector('#avatar').getContext('webgl2');
+              const ext=gl?.getExtension('WEBGL_debug_renderer_info');
+              return ext?gl.getParameter(ext.UNMASKED_RENDERER_WEBGL):'unavailable';
+            }""")
+            save()
             page.get_by_text('本地服务连接', exact=True).click()
             page.get_by_label('本地服务地址').fill(base)
             page.evaluate("""() => document.addEventListener('digitalhuman:frame', event => {
