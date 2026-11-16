@@ -32,6 +32,8 @@ reset清空历史并推进epoch，但保留选中档案及其有效偏好；stop
 
 ## 错误与存储
 
+档案接口响应（含错误）带Cache-Control: no-store。
+
 使用现有VoiceError形状`{type:"error",code,message,...}`：422 invalid_profile_input；404 profile_not_found；409 profile_exists/stale_epoch；503 profile_store_unavailable。旧会话重启后按session_not_found重建。错误反馈不包含SQL、路径、偏好原文或数据库内部异常。
 
 服务启动参数`--profiles-db`显式指定持久SQLite路径，默认output-dir/profiles.sqlite3。生产重启换output-dir时必须复用同一profiles-db。数据库、WAL/SHM与用户数据不进Git。仅持久保存手动提交的档案与偏好，不保存全部聊天。档案选择提供业务上下文隔离，不是账户认证；本阶段在本地受控入口和合成档案下验证，不将个人数据放到公开隧道。

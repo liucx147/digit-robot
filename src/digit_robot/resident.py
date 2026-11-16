@@ -11,7 +11,7 @@ import uuid
 
 from .process_models import RuntimeConfig
 from .voice import VoiceError
-from .dialogue import SYSTEM_PROMPT, validate_answer
+from .dialogue import validate_answer
 
 
 class ResidentWorker:
@@ -118,6 +118,10 @@ class ResidentModels:
         if tts_workers not in (1, 2):
             raise ValueError('TTS worker count must be one or two')
         self.config = config
+        self.logs = logs
+        self.recovery_lock = Lock()
+        self.worker_commands: dict[str, list[str]] = {}
+        self.restart_counts: dict[str, int] = {}
         self.workers: dict[str, ResidentWorker] = {}
         self.tts_pool: Queue[str] = Queue(maxsize=tts_workers)
         try:
@@ -125,19 +129,40 @@ class ResidentModels:
             if tts_workers == 2:
                 roles.append(('tts-next', 'tts'))
             for name, role in roles:
-                self.workers[name] = ResidentWorker([getattr(config, f'{role}_python'), '-m',
-                    'digit_robot.resident_worker', '--role', role, '--model-dir', getattr(config, f'{role}_model')],
+                self.worker_commands[name] = [getattr(config, f'{role}_python'), '-m',
+                    'digit_robot.resident_worker', '--role', role, '--model-dir', getattr(config, f'{role}_model')]
+                self.restart_counts[name] = 0
+                self.workers[name] = ResidentWorker(self.worker_commands[name],
                     config.project_root, logs / name, config.stage_timeout_seconds)
                 if role == 'tts':
                     self.tts_pool.put(name)
+            self._save_ready()
         except Exception:
             self.close()
             raise
-        (logs / 'ready.json').write_text(json.dumps({role: worker.ready for role, worker in self.workers.items()}, indent=2), encoding='utf-8')
+
+    def _save_ready(self) -> None:
+        value = {name: {**worker.ready, 'restart_count': self.restart_counts[name]} for name, worker in self.workers.items()}
+        temporary = self.logs / 'ready.json.tmp'
+        temporary.write_text(json.dumps(value, indent=2), encoding='utf-8')
+        temporary.replace(self.logs / 'ready.json')
+
+    def _active_worker(self, name: str) -> ResidentWorker:
+        with self.recovery_lock:
+            worker = self.workers[name]
+            if worker.process.poll() is not None:
+                worker.close()
+                replacement = ResidentWorker(self.worker_commands[name], self.config.project_root,
+                                             self.logs / name, self.config.stage_timeout_seconds)
+                self.workers[name] = replacement
+                self.restart_counts[name] += 1
+                self._save_ready()
+                return replacement
+            return worker
 
     def _result(self, role: str, payload: dict[str, Any], cancel: Event) -> dict[str, Any]:
         result = None
-        for value in self.workers[role].stream(payload, cancel):
+        for value in self._active_worker(role).stream(payload, cancel):
             if value['event'] == 'result':
                 result = value
         if result is None:
@@ -150,7 +175,7 @@ class ResidentModels:
         return str(result['text'])
 
     def generate(self, messages: list[dict[str, str]], output_dir: Path, cancel: Event) -> str:
-        short = SYSTEM_PROMPT + '\n回复最多80字、1至3句，首句12至20字，禁止冗长重复。'
+        short = messages[0]['content'] + '\n回复最多80字、1至3句，首句12至20字，禁止冗长重复。'
         result = self._result('llm', {'messages': [{'role': 'system', 'content': short}, *messages[1:]]}, cancel)
         text = str(result['text'])
         if len(validate_answer(text)['reply']) > 80:
@@ -158,7 +183,7 @@ class ResidentModels:
         return text
 
     def stream_reply(self, messages: list[dict[str, str]], cancel: Event) -> Iterator[str]:
-        for value in self.workers['llm'].stream({'messages': messages, 'stream': True}, cancel):
+        for value in self._active_worker('llm').stream({'messages': messages, 'stream': True}, cancel):
             if value['event'] == 'text':
                 yield str(value['text'])
 

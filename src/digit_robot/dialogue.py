@@ -61,8 +61,8 @@ class DialogueSession:
         self.epoch += 1
         return {"type": "reset", "session_epoch": self.epoch}
 
-    def respond(self, text: str) -> dict[str, Any]:
-        messages = [{"role": "system", "content": SYSTEM_PROMPT}, *self.history,
+    def respond(self, text: str, *, context: str = '') -> dict[str, Any]:
+        messages = [{"role": "system", "content": SYSTEM_PROMPT + context}, *self.history,
                     {"role": "user", "content": text}]
         attempts: list[dict[str, Any]] = []
         answer = None

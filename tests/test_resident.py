@@ -31,3 +31,52 @@ def test_cancelled_call_cannot_poison_next_reply_or_reload_the_worker(tmp_path: 
         time.sleep(.3)
         new = list(worker.stream({'value':'new'}, Event()))
         assert new[0]['value'] == 'new' and new[0]['pid'] == worker.ready['pid']
+
+
+def test_dead_model_worker_is_reloaded_once_on_next_turn(tmp_path: Path, monkeypatch) -> None:
+    import digit_robot.resident as resident
+    from digit_robot.process_models import RuntimeConfig
+    fixture = Path(__file__).parent / 'fixtures/resident_protocol.py'
+    worker_type = ResidentWorker
+    def cpu_worker(command, root, logs, timeout):
+        return worker_type([sys.executable, str(fixture)], root, logs, timeout)
+    monkeypatch.setattr(resident, 'ResidentWorker', cpu_worker)
+    config = RuntimeConfig(Path.cwd(), sys.executable, sys.executable, sys.executable, 'llm', 'asr', 'tts', 5)
+    models = resident.ResidentModels(config, tmp_path)
+    try:
+        old = models.workers['asr']
+        other = models.workers['llm'].ready['pid']
+        old.process.kill()
+        old.process.wait()
+        restarted = models._active_worker('asr')
+        result = list(restarted.stream({'value': 'new'}, Event()))
+        assert result[0]['value'] == 'new' and restarted.ready['pid'] != old.ready['pid']
+        assert models._active_worker('asr') is restarted
+        assert models.workers['llm'].ready['pid'] == other
+        import json
+        assert json.loads((tmp_path/'ready.json').read_text())['asr']['restart_count'] == 1
+    finally:
+        models.close()
+
+
+def test_startup_metadata_failure_closes_every_owned_worker(tmp_path: Path, monkeypatch) -> None:
+    import digit_robot.resident as resident
+    from digit_robot.process_models import RuntimeConfig
+    fixture = Path(__file__).parent / 'fixtures/resident_protocol.py'
+    workers = []
+    def cpu_worker(command, root, logs, timeout):
+        worker = ResidentWorker([sys.executable, str(fixture)], root, logs, timeout)
+        workers.append(worker)
+        return worker
+    def fail_ready(self):
+        raise OSError('test ready metadata failure')
+    monkeypatch.setattr(resident, 'ResidentWorker', cpu_worker)
+    monkeypatch.setattr(resident.ResidentModels, '_save_ready', fail_ready)
+    config = RuntimeConfig(Path.cwd(), sys.executable, sys.executable, sys.executable, 'llm', 'asr', 'tts', 5)
+    try:
+        with pytest.raises(OSError):
+            resident.ResidentModels(config, tmp_path)
+        assert all(worker.process.poll() is not None for worker in workers)
+    finally:
+        for worker in workers:
+            worker.close()
