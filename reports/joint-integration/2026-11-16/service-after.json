@@ -1,0 +1,27 @@
+{
+  "checked_at_utc": "2026-11-16T12:54:03.100280+00:00",
+  "supervisor": {
+    "status": "stopped",
+    "restored_pid": 644043,
+    "restore_failure": null
+  },
+  "health_path": "/v1/health",
+  "health8003": {
+    "status": "ok",
+    "api_version": "0.2.0",
+    "model_policy": "resident_sentence_pipeline",
+    "sentence_streaming": true
+  },
+  "listening": {
+    "8003": true,
+    "8004": false
+  },
+  "restored_process_alive": true,
+  "restored_process_cwd": "/root/autodl-tmp/digit-robot-releases/resident-voice",
+  "restored_child_pids": [
+    644044,
+    644360,
+    644448,
+    644763
+  ]
+}

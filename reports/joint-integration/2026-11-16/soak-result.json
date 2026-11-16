@@ -1,0 +1,65 @@
+{
+  "tested_commit": "6a487c9718d7d04debc83464dbf42ab4f1f62690",
+  "status": "passed-fixed-input-software-soak",
+  "scope": "Fixed synthetic microphone input, fresh session each round, real models and browser; no physical audiovisual acceptance",
+  "pilot_rounds": 1,
+  "warm_successes": 20,
+  "warm_rounds": 20,
+  "observed_warm_window_seconds": 1850.438000000002,
+  "first_to_last_warm_start_seconds": 1805.0160000000033,
+  "browser": "157.0.8103.51",
+  "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4060 Laptop GPU (0x000028E0) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+  "client_ms": {
+    "first_audio_start_ms": {
+      "p50": 8831,
+      "p95": 9298
+    },
+    "first_reply_activity_ms": {
+      "p50": 8964,
+      "p95": 9435
+    },
+    "total_playback_ms": {
+      "p50": 17084.5,
+      "p95": 17535.099999997765
+    },
+    "generation_done_observed_ms": {
+      "p50": 10563.60000000149,
+      "p95": 10682.29999999702
+    }
+  },
+  "server_ms": {
+    "asr_ms": {
+      "p50": 338.8566244393587,
+      "p95": 402.3488573729992
+    },
+    "first_audio_ready_ms": {
+      "p50": 5721.642,
+      "p95": 5808.359
+    },
+    "all_audio_ready_ms": {
+      "p50": 7784.118,
+      "p95": 7871.42
+    }
+  },
+  "gaps_ms": {
+    "p50": 16.0,
+    "p95": 21.5,
+    "max": 28.399999998509884
+  },
+  "three_second_activity_successes": 0,
+  "stop": {
+    "requested": 1871123.5,
+    "paused": 1871125.799999997,
+    "software_stop_ms": 2.2999999970197678,
+    "expired_audio_http": 410,
+    "remained_stopped": true
+  },
+  "gpu_sampling": {
+    "interval_seconds": 1,
+    "soak_samples": 1913,
+    "soak_min_mib": 20343,
+    "soak_max_mib": 20743
+  },
+  "pids_unchanged": true,
+  "restored_pid": 644043
+}
