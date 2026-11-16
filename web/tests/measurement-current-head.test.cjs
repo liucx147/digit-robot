@@ -26,8 +26,10 @@ test('default measurement captures the current head and records actual renderer 
   assert.ok(manifest.renderer.webgl_version);
   assert.equal(manifest.complete_playback,false);
   assert.equal(manifest.acceptance_status,'pending-independent-physical-av');
-  const folder=path.resolve(__dirname,'../../artifacts/b-engineering');
+  const folder=path.resolve(__dirname,'../../artifacts/b-engineering',process.env.BROWSER_RENDERER || 'default',new Date().toISOString().replace(/[:.]/g,'-'));
   await fs.mkdir(folder,{recursive:true});
   await fs.writeFile(path.join(folder,'current-head-capture-manifest.json'),JSON.stringify(manifest,null,2));
+  const media=page.waitForEvent('download');await page.locator('#download-media').click();
+  await fs.copyFile(await (await media).path(),path.join(folder,'capture.webm'));
  } finally {await app.close();}
 });
