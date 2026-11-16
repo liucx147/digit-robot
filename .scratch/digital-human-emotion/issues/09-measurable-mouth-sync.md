@@ -22,3 +22,7 @@
 ## User stories
 
 US50、US51、US52、US54
+
+## B当前头部测量入口（2026-11-16）
+
+默认measurement.html从历史VRM切换为当前solid-v1；新增ledger-solid-v1.json独立条件表，冻结音频、40事件与计分规则不变，旧ledger.json不覆盖。采集清单记录实际资产与WebGL renderer，默认GPU和显式SwiftShader分别记录。公开页面短采集与计分边界回归通过；短采集提前停止且未进入声音活动，不能作为有效同步样本。完整物理声画、独立校准、逐事件人工标注与混合表情/注视验收仍待执行，本票保持open。操作与证据边界见docs/development/b-engineering-handoff.md。

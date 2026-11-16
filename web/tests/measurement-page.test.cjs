@@ -12,9 +12,9 @@ before(async () => {
 });
 after(async () => {await close?.();});
 
-test('a user freezes the Mandarin ledger then records actual canvas pixels and audible graph output', {timeout:90000}, async () => {
+test('legacy VRM diagnostic records canvas pixels and audible graph output', {timeout:90000}, async () => {
   const page = await browser.newPage({viewport:{width:1280,height:1000},acceptDownloads:true});
-  await page.goto(baseURL + '/measurement.html');
+  await page.goto(baseURL + '/measurement.html?measurementFixture=vrm1');
   await page.getByRole('button',{name:'准备固定40事件'}).click();
   await page.getByRole('status',{name:'测量状态'}).filter({hasText:/40 个固定事件已就绪/}).waitFor();
   await page.getByRole('button',{name:'录制画布与声音'}).click();

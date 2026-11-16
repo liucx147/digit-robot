@@ -43,6 +43,12 @@ export class FaceController {
 export async function loadAvatar(canvas, manifest, manifestURL) {
   const solid = manifest.type === 'solid-head';
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
+  const gl = renderer.getContext(), debug = gl.getExtension('WEBGL_debug_renderer_info');
+  canvas.dataset.renderer = JSON.stringify({
+    renderer: gl.getParameter(debug ? debug.UNMASKED_RENDERER_WEBGL : gl.RENDERER),
+    vendor: gl.getParameter(debug ? debug.UNMASKED_VENDOR_WEBGL : gl.VENDOR),
+    webgl_version: gl.getParameter(gl.VERSION),
+  });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setClearColor(solid ? 0xe2e7e5 : 0x1d2b3a);
   const scene = new THREE.Scene();
@@ -79,5 +85,6 @@ export async function loadAvatar(canvas, manifest, manifestURL) {
   new ResizeObserver(render).observe(canvas);
   if (solid) {const { attachAvatarView }=await import('./avatar-view.js');attachAvatarView(canvas,camera,center,render);}
   else for (const selector of ['.avatar-view','#view-help','#view-label']) document.querySelector(selector)?.setAttribute('hidden','');
+  canvas.dataset.avatar = JSON.stringify({name:manifest.name,version:manifest.version,type:manifest.type || 'gltf',sha256:manifest.sha256,file:new URL(manifest.file,manifestURL).href});
   render();return {face,render};
 }

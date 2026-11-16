@@ -1,5 +1,15 @@
 # Mouth / sound measurement
 
+2026-11-16: the normal entry now captures the current `solid-v1` head with
+`measurement-fixtures/mandarin40/ledger-solid-v1.json`. Use that ledger for its
+reports. The original ledger/audio/events remain unchanged; the separate ledger
+freezes the new asset/camera conditions. Historical VRM diagnostics require
+`measurement.html?measurementFixture=vrm1` and the original `ledger.json`.
+Capture manifests now include the actual avatar and WebGL renderer. Default
+browser tests use the browser's normal GPU selection; explicitly set
+`BROWSER_RENDERER=swiftshader` only for a separately reported software run.
+See [B's collection checklist](../docs/development/b-engineering-handoff.md).
+
 This is ticket 09's repeatable capture and scoring tool. It uses the actual ticket 01 page, canvas and audio element. No controller weights or playback JSON are used as measurement truth. The implementation and synthetic scorer checks do **not** establish the 95% audiovisual acceptance result. Physical screen/speaker calibration, independent event review, mixed gaze/expression runs and final integration measurement remain pending.
 
 ## Start and capture
