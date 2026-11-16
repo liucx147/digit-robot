@@ -6,7 +6,8 @@ export function attachProfileControls({stop,onChange,settled}) {
   const notice = (text, failed = false) => { $('#profile-status').textContent = text; $('#profile-status').classList.toggle('error', failed); };
   function refresh() {
     $('#profile-panel').querySelectorAll('input,select,textarea,button').forEach(el => el.disabled = pending || !client);
-    for (const id of ['profile-rename','profile-delete','profile-preferred-name','profile-communication-style','profile-save','profile-clear']) $('#' + id).disabled ||= !selected;
+    $('#profile-create').disabled ||= blocked;
+    for (const id of ['profile-rename','profile-delete','profile-preferred-name','profile-communication-style','profile-save','profile-clear']) $('#' + id).disabled ||= blocked || !selected;
     onChange();
   }
   function render() {
@@ -19,6 +20,11 @@ export function attachProfileControls({stop,onChange,settled}) {
     $('#profile-preferred-name').value = preferences.preferred_name || '';
     $('#profile-communication-style').value = preferences.communication_style || '';
     try { if (selected) localStorage.setItem(storageKey,selected); else localStorage.removeItem(storageKey); } catch { /* Selection persistence is optional. */ }
+  }
+  function clearUnconfirmedView() {
+    preferences = {};
+    $('#profile-current').textContent = '档案未确认';
+    for (const id of ['profile-name','profile-preferred-name','profile-communication-style']) $('#' + id).value = '';
   }
   async function readPreferences(active,current,id) {
     const values = id ? await active.preferences(id) : {};
@@ -39,6 +45,7 @@ export function attachProfileControls({stop,onChange,settled}) {
       blocked = false; render(); notice(message || '档案已就绪。'); settled(false);
     } catch (error) {
       if (!current()) return;
+      clearUnconfirmedView();
       notice('档案操作失败：' + error.message + '。请重新读取档案或重试。', true); settled(true);
     } finally { if (current()) { pending = false; refresh(); } }
   }
@@ -47,6 +54,7 @@ export function attachProfileControls({stop,onChange,settled}) {
     operation(async (active,current) => { const next = confirmed(await active.bindProfile(id)); if (current() && next) await readPreferences(active,current,next.profile_id); });
   });
   $('#profile-create').addEventListener('click', () => {
+    if (blocked) return;
     const name = $('#profile-name').value.trim();
     if (!name) { notice('请填写档案名称。',true); return; }
     operation(async (active,current) => {
@@ -58,14 +66,17 @@ export function attachProfileControls({stop,onChange,settled}) {
       if (current()) await readPreferences(active,current,next.profile_id);
     });
   });
-  const mutate = task => operation(async (active,current) => {
-    const value = confirmed(await task(active,selected));
-    if (!current() || !value) return;
-    const next = confirmed(await active.confirmProfileSession());
-    if (!current() || !next) return;
-    await readProfiles(active,current);
-    if (current()) await readPreferences(active,current,next.profile_id);
-  });
+  const mutate = task => {
+    if (blocked || !selected) return;
+    return operation(async (active,current) => {
+      const value = confirmed(await task(active,selected));
+      if (!current() || !value) return;
+      const next = confirmed(await active.confirmProfileSession());
+      if (!current() || !next) return;
+      await readProfiles(active,current);
+      if (current()) await readPreferences(active,current,next.profile_id);
+    });
+  };
   $('#profile-rename').addEventListener('click', () => {
     const name = $('#profile-name').value.trim();
     if (!name) { notice('请填写档案名称。',true); return; }
@@ -105,7 +116,7 @@ export function attachProfileControls({stop,onChange,settled}) {
         }
         if (!current()) return;
         render(); blocked = false; notice(saved && !selected ? '之前选择的档案已不存在，请重新选择。' : '请选择档案，或使用匿名对话。');
-      } catch (error) { if (!current()) return; notice('档案读取失败：' + error.message,true); throw error; }
+      } catch (error) { if (!current()) return; clearUnconfirmedView(); notice('档案读取失败：' + error.message,true); throw error; }
       finally { if (current()) { pending = false; refresh(); } }
     }
   };

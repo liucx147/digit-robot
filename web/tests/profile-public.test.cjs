@@ -49,7 +49,7 @@ async function setup(state=service()){
  return {page,state};
 }
 async function connect(page){await page.getByRole('button',{name:'连接本地服务',exact:true}).click();await page.getByRole('status',{name:'对话状态'}).filter({hasText:/已连接/}).waitFor();}
-async function ready(page){await page.waitForFunction(()=>!document.querySelector('#profile-create').disabled);}
+async function ready(page){await page.waitForFunction(()=>!document.querySelector('#profile-refresh').disabled);}
 async function create(page,name){await page.getByLabel('档案名称',{exact:true}).fill(name);await page.getByRole('button',{name:'创建并选择档案'}).click();await page.getByLabel('当前档案',{exact:true}).filter({hasText:name}).waitFor();await ready(page);}
 before(async()=>{({browser,baseURL,close}=await publicBrowser(path.resolve(__dirname,'..')));const page=await browser.newPage();console.log('Actual WebGL renderer:',await page.evaluate(()=>{const gl=document.createElement('canvas').getContext('webgl');const info=gl.getExtension('WEBGL_debug_renderer_info');return gl.getParameter(info.UNMASKED_RENDERER_WEBGL);}));await page.close();});
 after(async()=>await close?.());
@@ -210,5 +210,36 @@ test('changing profiles clears the previous response playback record and disable
   await send(page);await page.waitForFunction(()=>document.querySelector('audio').currentTime>.1);
   await page.getByLabel('选择档案',{exact:true}).selectOption('');await ready(page);
   assert.equal(await page.getByRole('button',{name:'下载播放记录',exact:true}).isDisabled(),true);assert.equal(await page.locator('#frame').textContent(),'尚无播放记录');
+ }finally{await page.close();}
+});
+
+test('failed preference reads after binding another profile clear stale identity and forbid writes until explicit refresh',async()=>{
+ const {page,state}=await setup();try{
+  await connect(page);await create(page,'实验甲');
+  await page.getByLabel('偏好称呼',{exact:true}).fill('甲的称呼');await page.getByLabel('交流偏好',{exact:true}).fill('甲的偏好');
+  await page.getByRole('button',{name:'保存偏好',exact:true}).click();await ready(page);
+  await create(page,'实验乙');
+  await page.getByLabel('偏好称呼',{exact:true}).fill('乙的称呼');await page.getByLabel('交流偏好',{exact:true}).fill('乙的偏好');
+  await page.getByRole('button',{name:'保存偏好',exact:true}).click();await ready(page);
+  await page.getByLabel('选择档案',{exact:true}).selectOption(pidA);await ready(page);
+  let unavailable=true;state.before=async({p,m,json})=>{if(p==='/v1/profiles/'+pidB+'/preferences'&&m==='GET'&&unavailable){await json({type:'error',code:'profile_store_unavailable',message:'乙的档案暂时无法读取'},503);return true;}};
+  await page.getByLabel('选择档案',{exact:true}).selectOption(pidB);
+  await page.getByRole('status',{name:'档案状态'}).filter({hasText:/暂时无法读取/}).waitFor();await ready(page);
+  const actions=['创建并选择档案','修改档案名称','保存偏好','清空偏好','删除档案'];
+  for(const name of actions)assert.equal(await page.getByRole('button',{name,exact:true}).isDisabled(),true,name+' must require a confirmed profile');
+  assert.equal(await page.getByLabel('当前档案',{exact:true}).textContent(),'档案未确认');
+  for(const label of ['档案名称','偏好称呼','交流偏好'])assert.equal(await page.getByLabel(label,{exact:true}).inputValue(),'','stale '+label+' must be cleared');
+  assert.equal(await page.getByRole('button',{name:'发送并播放回复',exact:true}).isDisabled(),true);
+  const start=state.requests.length;
+  // Native button activation, including keyboard/script activation, cannot issue writes while unconfirmed.
+  for(const name of actions)await page.getByRole('button',{name,exact:true}).evaluate(button=>button.click());
+  assert.equal(state.requests.slice(start).some(request=>request.p.startsWith('/v1/profiles')&&request.m!=='GET'),false);
+  unavailable=false;await page.getByRole('button',{name:'重新读取档案',exact:true}).click();await ready(page);
+  assert.equal(await page.getByLabel('当前档案',{exact:true}).textContent(),'实验乙');
+  assert.equal(await page.getByLabel('偏好称呼',{exact:true}).inputValue(),'乙的称呼');assert.equal(await page.getByLabel('交流偏好',{exact:true}).inputValue(),'乙的偏好');
+  await page.getByLabel('偏好称呼',{exact:true}).fill('乙的新称呼');await page.getByRole('button',{name:'保存偏好',exact:true}).click();await ready(page);
+  await page.getByRole('button',{name:'重新读取档案',exact:true}).click();await ready(page);assert.equal(await page.getByLabel('偏好称呼',{exact:true}).inputValue(),'乙的新称呼');
+  await page.getByLabel('选择档案',{exact:true}).selectOption(pidA);await ready(page);
+  assert.equal(await page.getByLabel('当前档案',{exact:true}).textContent(),'实验甲');assert.equal(await page.getByLabel('偏好称呼',{exact:true}).inputValue(),'甲的称呼');assert.equal(await page.getByLabel('交流偏好',{exact:true}).inputValue(),'甲的偏好');
  }finally{await page.close();}
 });
