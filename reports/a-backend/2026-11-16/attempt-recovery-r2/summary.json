@@ -1,0 +1,522 @@
+{
+  "started_at_utc": "2026-11-16T09:50:08Z",
+  "commit": "0ee0618",
+  "status": "failed",
+  "scope": "Real ASR process failure and new-turn CUDA recovery only. Initial profile tests and failed attempt remain separately preserved.",
+  "steps": [],
+  "gpu_samples": [
+    {
+      "phase": "preflight",
+      "at": 1794822612.7019365,
+      "used_mib": 20825,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "stop-original",
+      "at": 1794822616.792443,
+      "used_mib": 18593,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "stop-original",
+      "at": 1794822617.886818,
+      "used_mib": 9208,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "stop-original",
+      "at": 1794822618.9761357,
+      "used_mib": 4611,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "stop-original",
+      "at": 1794822620.0703351,
+      "used_mib": 0,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "stage-start",
+      "at": 1794822621.1728191,
+      "used_mib": 0,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "stage-start",
+      "at": 1794822622.2545848,
+      "used_mib": 3,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "stage-start",
+      "at": 1794822623.3511176,
+      "used_mib": 3,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "stage-start",
+      "at": 1794822624.4414618,
+      "used_mib": 3,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "stage-start",
+      "at": 1794822625.5276136,
+      "used_mib": 3,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "stage-start",
+      "at": 1794822626.6194189,
+      "used_mib": 3,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "stage-start",
+      "at": 1794822627.7119815,
+      "used_mib": 3,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "stage-start",
+      "at": 1794822628.8054469,
+      "used_mib": 2155,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "stage-start",
+      "at": 1794822629.8940272,
+      "used_mib": 2155,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "stage-start",
+      "at": 1794822630.9935038,
+      "used_mib": 2155,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "stage-start",
+      "at": 1794822632.081107,
+      "used_mib": 2155,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "stage-start",
+      "at": 1794822633.1684012,
+      "used_mib": 2155,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "stage-start",
+      "at": 1794822634.232846,
+      "used_mib": 2155,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "stage-start",
+      "at": 1794822635.317865,
+      "used_mib": 8782,
+      "total_mib": 24564,
+      "utilization_percent": 58
+    },
+    {
+      "phase": "stage-start",
+      "at": 1794822636.4026365,
+      "used_mib": 11300,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "stage-start",
+      "at": 1794822637.495163,
+      "used_mib": 11300,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "stage-start",
+      "at": 1794822638.5902872,
+      "used_mib": 11300,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "stage-start",
+      "at": 1794822639.681674,
+      "used_mib": 11300,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "stage-start",
+      "at": 1794822640.7699735,
+      "used_mib": 11300,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "stage-start",
+      "at": 1794822641.8373995,
+      "used_mib": 15311,
+      "total_mib": 24564,
+      "utilization_percent": 53
+    },
+    {
+      "phase": "stage-start",
+      "at": 1794822642.9232817,
+      "used_mib": 15821,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "stage-start",
+      "at": 1794822644.0059385,
+      "used_mib": 15821,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "stage-start",
+      "at": 1794822645.1260762,
+      "used_mib": 15821,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "stage-start",
+      "at": 1794822646.2089012,
+      "used_mib": 15821,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "stage-start",
+      "at": 1794822647.2929199,
+      "used_mib": 15821,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "stage-start",
+      "at": 1794822648.3855298,
+      "used_mib": 15821,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "stage-start",
+      "at": 1794822649.4682786,
+      "used_mib": 19833,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "stage-start",
+      "at": 1794822650.6319091,
+      "used_mib": 20343,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "stop-stage",
+      "at": 1794822651.7275405,
+      "used_mib": 18191,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "stop-stage",
+      "at": 1794822652.8099365,
+      "used_mib": 9046,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "stop-stage",
+      "at": 1794822653.8966663,
+      "used_mib": 4525,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "restore-original",
+      "at": 1794822654.9460375,
+      "used_mib": 0,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "restore-original",
+      "at": 1794822656.125228,
+      "used_mib": 3,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "restore-original",
+      "at": 1794822657.2168975,
+      "used_mib": 3,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "restore-original",
+      "at": 1794822658.3021162,
+      "used_mib": 3,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "restore-original",
+      "at": 1794822659.392872,
+      "used_mib": 3,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "restore-original",
+      "at": 1794822660.48236,
+      "used_mib": 3,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "restore-original",
+      "at": 1794822661.527615,
+      "used_mib": 3,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "restore-original",
+      "at": 1794822662.6500614,
+      "used_mib": 2155,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "restore-original",
+      "at": 1794822663.7373092,
+      "used_mib": 2155,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "restore-original",
+      "at": 1794822664.892252,
+      "used_mib": 2155,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "restore-original",
+      "at": 1794822665.9817455,
+      "used_mib": 2155,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "restore-original",
+      "at": 1794822667.0657685,
+      "used_mib": 2155,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "restore-original",
+      "at": 1794822668.153876,
+      "used_mib": 2180,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "restore-original",
+      "at": 1794822669.244038,
+      "used_mib": 10402,
+      "total_mib": 24564,
+      "utilization_percent": 58
+    },
+    {
+      "phase": "restore-original",
+      "at": 1794822670.333792,
+      "used_mib": 11300,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "restore-original",
+      "at": 1794822671.4259987,
+      "used_mib": 11300,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "restore-original",
+      "at": 1794822672.5194466,
+      "used_mib": 11300,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "restore-original",
+      "at": 1794822673.6035783,
+      "used_mib": 11300,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "restore-original",
+      "at": 1794822674.6920626,
+      "used_mib": 11300,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "restore-original",
+      "at": 1794822675.7567377,
+      "used_mib": 15311,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "restore-original",
+      "at": 1794822676.8446786,
+      "used_mib": 15821,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "restore-original",
+      "at": 1794822677.928936,
+      "used_mib": 15821,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "restore-original",
+      "at": 1794822679.0171776,
+      "used_mib": 15821,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "restore-original",
+      "at": 1794822680.1016762,
+      "used_mib": 15821,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "restore-original",
+      "at": 1794822681.1782563,
+      "used_mib": 15821,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    },
+    {
+      "phase": "restore-original",
+      "at": 1794822682.266218,
+      "used_mib": 19833,
+      "total_mib": 24564,
+      "utilization_percent": 52
+    },
+    {
+      "phase": "restore-original",
+      "at": 1794822683.3551953,
+      "used_mib": 20343,
+      "total_mib": 24564,
+      "utilization_percent": 0
+    }
+  ],
+  "full_commit": "0ee0618f6f65019a4fce711d7ecf8dc1ab1e7da1",
+  "first_start_ms": 30550.448186695576,
+  "ready_before": {
+    "asr": {
+      "event": "ready",
+      "role": "asr",
+      "pid": 598151,
+      "load_count": 1,
+      "model_load_ms": 8618.08804422617,
+      "gpu": "NVIDIA GeForce RTX 4090 D",
+      "allocated_bytes": 1571201024,
+      "reserved_bytes": 1885339648,
+      "restart_count": 0
+    },
+    "llm": {
+      "event": "ready",
+      "role": "llm",
+      "pid": 598431,
+      "load_count": 1,
+      "model_load_ms": 6906.212005764246,
+      "gpu": "NVIDIA GeForce RTX 4090 D",
+      "allocated_bytes": 9180272640,
+      "reserved_bytes": 9219080192,
+      "restart_count": 0
+    },
+    "tts": {
+      "event": "ready",
+      "role": "tts",
+      "pid": 598558,
+      "load_count": 1,
+      "model_load_ms": 7294.778827577829,
+      "gpu": "NVIDIA GeForce RTX 4090 D",
+      "allocated_bytes": 4178577920,
+      "reserved_bytes": 4311744512,
+      "restart_count": 0
+    },
+    "tts-next": {
+      "event": "ready",
+      "role": "tts",
+      "pid": 598874,
+      "load_count": 1,
+      "model_load_ms": 7134.373869746923,
+      "gpu": "NVIDIA GeForce RTX 4090 D",
+      "allocated_bytes": 4178577920,
+      "reserved_bytes": 4311744512,
+      "restart_count": 0
+    }
+  },
+  "expected_faults": [
+    {
+      "type": "error",
+      "session_id": "a4f2aa24-849f-4f54-9a22-8a8c86733053",
+      "session_epoch": 0,
+      "utterance_id": "05dd7775-6631-4fca-b69f-07dcf9bb153a",
+      "server_elapsed_ms": 118.895,
+      "code": "worker_failed",
+      "message": "模型常驻进程已退出",
+      "partial_audio": false
+    }
+  ],
+  "failure": {
+    "type": "AssertionError",
+    "detail": "{'type': 'error', 'session_id': 'a4f2aa24-849f-4f54-9a22-8a8c86733053', 'session_epoch': 0, 'utterance_id': 'ba149296-53f7-4526-a5ac-30c1d55842f1', 'server_elapsed_ms': 0.81, 'code': 'stream_failed', 'message': '分句生成或合成失败，请查看本轮日志', 'partial_audio': False}"
+  },
+  "restored_health": {
+    "status": "ok",
+    "api_version": "0.2.0",
+    "model_policy": "resident_sentence_pipeline",
+    "sentence_streaming": true
+  },
+  "restored_pid": 599202,
+  "finished_at_utc": "2026-11-16T09:51:24Z"
+}

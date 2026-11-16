@@ -6,6 +6,8 @@
 
 **Status:** ready-for-agent
 
+**State:** open
+
 **Category:** enhancement
 
 **Parent:** [数字人优先的单卡离线情感交互与蒸馏规格 v1.1](../spec.md)
@@ -22,3 +24,8 @@
 ## User stories
 
 US21、US22
+
+
+## A阶段进展（2026-11-16）
+
+A后端已完成各阶段失败/超时后恢复、worker退出/挂起/RPC损坏后按role重载；4090真实ASR故障后的新轮次已完成ASR→LLM→TTS。页面完整故障矩阵和物理采集仍待联合验收，且04/05未关闭，本票保持open。 代码与全部成功/失败边界见[A后端验证报告](../../../reports/a-backend/2026-11-16/README.md)，B接口见[档案契约](../../../docs/development/profile-api.md)。本次不以软件测试替代物理验收。
