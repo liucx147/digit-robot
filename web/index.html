@@ -14,6 +14,18 @@
         <p id="voice-status" role="status" aria-label="对话状态" aria-live="polite">尚未连接本地模型服务。录音示例可独立使用。</p>
         <details><summary>本地服务连接</summary><label for="api-base">本地服务地址<input id="api-base" type="url" value="http://127.0.0.1:18000" spellcheck="false"></label><p class="note">连接已准备好的本机服务；远端实验主机需先建立本机隧道。页面不调用云服务。</p></details>
         <button id="voice-connect" disabled>连接本地服务</button>
+        <fieldset id="profile-panel" class="profiles" hidden>
+          <legend>本地档案</legend>
+          <p>当前档案：<output id="profile-current" aria-label="当前档案">匿名</output></p>
+          <p id="profile-status" role="status" aria-label="档案状态" aria-live="polite"></p>
+          <label for="profile-select">选择档案<select id="profile-select" aria-label="选择档案"><option value="">匿名（不保存偏好）</option></select></label>
+          <label for="profile-name">档案名称<input id="profile-name" maxlength="80" autocomplete="off"></label>
+          <div class="profile-actions"><button id="profile-create">创建并选择档案</button><button id="profile-rename">修改档案名称</button><button id="profile-delete">删除档案</button></div>
+          <label for="profile-preferred-name">偏好称呼<input id="profile-preferred-name" maxlength="80" autocomplete="off"></label>
+          <label for="profile-communication-style">交流偏好<textarea id="profile-communication-style" rows="2" maxlength="500" placeholder="仅保存你明确填写的交流偏好"></textarea></label>
+          <div class="profile-actions"><button id="profile-save">保存偏好</button><button id="profile-clear">清空偏好</button><button id="profile-refresh">重新读取档案</button></div>
+          <p class="note">匿名对话不保存偏好；切换档案或修改偏好会结束当前回复并清空本轮对话。</p>
+        </fieldset>
         <div class="buttons microphone-buttons"><button id="microphone-start" disabled>开始发言</button><button id="microphone-end" disabled>结束发言</button></div>
         <p class="note">手动结束一轮中文发言后转写并回复；每轮最多30秒。录音不会自动下载。</p>
         <p id="voice-transcript" aria-label="语音转写">语音转写将在这里显示。</p>
@@ -41,3 +53,4 @@
 </main>
 <script type="importmap">{"imports":{"three":"./vendor/three/three.module.js"}}</script><script type="module" src="./main.js"></script>
 </body></html>
+

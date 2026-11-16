@@ -1,0 +1,468 @@
+{
+  "schema": 1,
+  "ledger_sha256": "e6a3ad2cc8a6a4c046acf166bb5e94c68679859e10d5480cebf9cf20f930a86d",
+  "capture_manifest": {
+    "path": "physical-capture-manifest.json",
+    "sha256": "561964458c4de39433b75cddbd65be46bdb9175ec0ac4d72c84f6c8f03846991"
+  },
+  "media": {
+    "path": "synthetic-software-only.webm",
+    "sha256": "df2eb25ea078e5174863ffc67ebbb459ead67c71969857b8df1fbdd5b057e4e8",
+    "scope": "physical-av",
+    "duration_ms": 1000,
+    "timebase": "single-media-timeline"
+  },
+  "review": {
+    "annotator": "synthetic software review",
+    "method": "independent-media-review",
+    "audio_basis": "captured-audio",
+    "visual_basis": "recorded-pixels"
+  },
+  "source_origin_ms": 0,
+  "calibration": {
+    "status": "pending"
+  },
+  "events": [
+    {
+      "expected_id": "phrase-01-open",
+      "type": "open",
+      "audio_ms": null,
+      "visual_ms": null,
+      "audio_observation_id": "audio-phrase-01-open",
+      "visual_observation_id": "pixels-phrase-01-open",
+      "audio_evidence": "",
+      "visual_evidence": "",
+      "note": "待独立观察；不要填写源音频或控制器的计划时间"
+    },
+    {
+      "expected_id": "phrase-01-close",
+      "type": "close",
+      "audio_ms": null,
+      "visual_ms": null,
+      "audio_observation_id": "audio-phrase-01-close",
+      "visual_observation_id": "pixels-phrase-01-close",
+      "audio_evidence": "",
+      "visual_evidence": "",
+      "note": "待独立观察；不要填写源音频或控制器的计划时间"
+    },
+    {
+      "expected_id": "phrase-02-open",
+      "type": "open",
+      "audio_ms": null,
+      "visual_ms": null,
+      "audio_observation_id": "audio-phrase-02-open",
+      "visual_observation_id": "pixels-phrase-02-open",
+      "audio_evidence": "",
+      "visual_evidence": "",
+      "note": "待独立观察；不要填写源音频或控制器的计划时间"
+    },
+    {
+      "expected_id": "phrase-02-close",
+      "type": "close",
+      "audio_ms": null,
+      "visual_ms": null,
+      "audio_observation_id": "audio-phrase-02-close",
+      "visual_observation_id": "pixels-phrase-02-close",
+      "audio_evidence": "",
+      "visual_evidence": "",
+      "note": "待独立观察；不要填写源音频或控制器的计划时间"
+    },
+    {
+      "expected_id": "phrase-03-open",
+      "type": "open",
+      "audio_ms": null,
+      "visual_ms": null,
+      "audio_observation_id": "audio-phrase-03-open",
+      "visual_observation_id": "pixels-phrase-03-open",
+      "audio_evidence": "",
+      "visual_evidence": "",
+      "note": "待独立观察；不要填写源音频或控制器的计划时间"
+    },
+    {
+      "expected_id": "phrase-03-close",
+      "type": "close",
+      "audio_ms": null,
+      "visual_ms": null,
+      "audio_observation_id": "audio-phrase-03-close",
+      "visual_observation_id": "pixels-phrase-03-close",
+      "audio_evidence": "",
+      "visual_evidence": "",
+      "note": "待独立观察；不要填写源音频或控制器的计划时间"
+    },
+    {
+      "expected_id": "phrase-04-open",
+      "type": "open",
+      "audio_ms": null,
+      "visual_ms": null,
+      "audio_observation_id": "audio-phrase-04-open",
+      "visual_observation_id": "pixels-phrase-04-open",
+      "audio_evidence": "",
+      "visual_evidence": "",
+      "note": "待独立观察；不要填写源音频或控制器的计划时间"
+    },
+    {
+      "expected_id": "phrase-04-close",
+      "type": "close",
+      "audio_ms": null,
+      "visual_ms": null,
+      "audio_observation_id": "audio-phrase-04-close",
+      "visual_observation_id": "pixels-phrase-04-close",
+      "audio_evidence": "",
+      "visual_evidence": "",
+      "note": "待独立观察；不要填写源音频或控制器的计划时间"
+    },
+    {
+      "expected_id": "phrase-05-open",
+      "type": "open",
+      "audio_ms": null,
+      "visual_ms": null,
+      "audio_observation_id": "audio-phrase-05-open",
+      "visual_observation_id": "pixels-phrase-05-open",
+      "audio_evidence": "",
+      "visual_evidence": "",
+      "note": "待独立观察；不要填写源音频或控制器的计划时间"
+    },
+    {
+      "expected_id": "phrase-05-close",
+      "type": "close",
+      "audio_ms": null,
+      "visual_ms": null,
+      "audio_observation_id": "audio-phrase-05-close",
+      "visual_observation_id": "pixels-phrase-05-close",
+      "audio_evidence": "",
+      "visual_evidence": "",
+      "note": "待独立观察；不要填写源音频或控制器的计划时间"
+    },
+    {
+      "expected_id": "phrase-06-open",
+      "type": "open",
+      "audio_ms": null,
+      "visual_ms": null,
+      "audio_observation_id": "audio-phrase-06-open",
+      "visual_observation_id": "pixels-phrase-06-open",
+      "audio_evidence": "",
+      "visual_evidence": "",
+      "note": "待独立观察；不要填写源音频或控制器的计划时间"
+    },
+    {
+      "expected_id": "phrase-06-close",
+      "type": "close",
+      "audio_ms": null,
+      "visual_ms": null,
+      "audio_observation_id": "audio-phrase-06-close",
+      "visual_observation_id": "pixels-phrase-06-close",
+      "audio_evidence": "",
+      "visual_evidence": "",
+      "note": "待独立观察；不要填写源音频或控制器的计划时间"
+    },
+    {
+      "expected_id": "phrase-07-open",
+      "type": "open",
+      "audio_ms": null,
+      "visual_ms": null,
+      "audio_observation_id": "audio-phrase-07-open",
+      "visual_observation_id": "pixels-phrase-07-open",
+      "audio_evidence": "",
+      "visual_evidence": "",
+      "note": "待独立观察；不要填写源音频或控制器的计划时间"
+    },
+    {
+      "expected_id": "phrase-07-close",
+      "type": "close",
+      "audio_ms": null,
+      "visual_ms": null,
+      "audio_observation_id": "audio-phrase-07-close",
+      "visual_observation_id": "pixels-phrase-07-close",
+      "audio_evidence": "",
+      "visual_evidence": "",
+      "note": "待独立观察；不要填写源音频或控制器的计划时间"
+    },
+    {
+      "expected_id": "phrase-08-open",
+      "type": "open",
+      "audio_ms": null,
+      "visual_ms": null,
+      "audio_observation_id": "audio-phrase-08-open",
+      "visual_observation_id": "pixels-phrase-08-open",
+      "audio_evidence": "",
+      "visual_evidence": "",
+      "note": "待独立观察；不要填写源音频或控制器的计划时间"
+    },
+    {
+      "expected_id": "phrase-08-close",
+      "type": "close",
+      "audio_ms": null,
+      "visual_ms": null,
+      "audio_observation_id": "audio-phrase-08-close",
+      "visual_observation_id": "pixels-phrase-08-close",
+      "audio_evidence": "",
+      "visual_evidence": "",
+      "note": "待独立观察；不要填写源音频或控制器的计划时间"
+    },
+    {
+      "expected_id": "phrase-09-open",
+      "type": "open",
+      "audio_ms": null,
+      "visual_ms": null,
+      "audio_observation_id": "audio-phrase-09-open",
+      "visual_observation_id": "pixels-phrase-09-open",
+      "audio_evidence": "",
+      "visual_evidence": "",
+      "note": "待独立观察；不要填写源音频或控制器的计划时间"
+    },
+    {
+      "expected_id": "phrase-09-close",
+      "type": "close",
+      "audio_ms": null,
+      "visual_ms": null,
+      "audio_observation_id": "audio-phrase-09-close",
+      "visual_observation_id": "pixels-phrase-09-close",
+      "audio_evidence": "",
+      "visual_evidence": "",
+      "note": "待独立观察；不要填写源音频或控制器的计划时间"
+    },
+    {
+      "expected_id": "phrase-10-open",
+      "type": "open",
+      "audio_ms": null,
+      "visual_ms": null,
+      "audio_observation_id": "audio-phrase-10-open",
+      "visual_observation_id": "pixels-phrase-10-open",
+      "audio_evidence": "",
+      "visual_evidence": "",
+      "note": "待独立观察；不要填写源音频或控制器的计划时间"
+    },
+    {
+      "expected_id": "phrase-10-close",
+      "type": "close",
+      "audio_ms": null,
+      "visual_ms": null,
+      "audio_observation_id": "audio-phrase-10-close",
+      "visual_observation_id": "pixels-phrase-10-close",
+      "audio_evidence": "",
+      "visual_evidence": "",
+      "note": "待独立观察；不要填写源音频或控制器的计划时间"
+    },
+    {
+      "expected_id": "phrase-11-open",
+      "type": "open",
+      "audio_ms": null,
+      "visual_ms": null,
+      "audio_observation_id": "audio-phrase-11-open",
+      "visual_observation_id": "pixels-phrase-11-open",
+      "audio_evidence": "",
+      "visual_evidence": "",
+      "note": "待独立观察；不要填写源音频或控制器的计划时间"
+    },
+    {
+      "expected_id": "phrase-11-close",
+      "type": "close",
+      "audio_ms": null,
+      "visual_ms": null,
+      "audio_observation_id": "audio-phrase-11-close",
+      "visual_observation_id": "pixels-phrase-11-close",
+      "audio_evidence": "",
+      "visual_evidence": "",
+      "note": "待独立观察；不要填写源音频或控制器的计划时间"
+    },
+    {
+      "expected_id": "phrase-12-open",
+      "type": "open",
+      "audio_ms": null,
+      "visual_ms": null,
+      "audio_observation_id": "audio-phrase-12-open",
+      "visual_observation_id": "pixels-phrase-12-open",
+      "audio_evidence": "",
+      "visual_evidence": "",
+      "note": "待独立观察；不要填写源音频或控制器的计划时间"
+    },
+    {
+      "expected_id": "phrase-12-close",
+      "type": "close",
+      "audio_ms": null,
+      "visual_ms": null,
+      "audio_observation_id": "audio-phrase-12-close",
+      "visual_observation_id": "pixels-phrase-12-close",
+      "audio_evidence": "",
+      "visual_evidence": "",
+      "note": "待独立观察；不要填写源音频或控制器的计划时间"
+    },
+    {
+      "expected_id": "phrase-13-open",
+      "type": "open",
+      "audio_ms": null,
+      "visual_ms": null,
+      "audio_observation_id": "audio-phrase-13-open",
+      "visual_observation_id": "pixels-phrase-13-open",
+      "audio_evidence": "",
+      "visual_evidence": "",
+      "note": "待独立观察；不要填写源音频或控制器的计划时间"
+    },
+    {
+      "expected_id": "phrase-13-close",
+      "type": "close",
+      "audio_ms": null,
+      "visual_ms": null,
+      "audio_observation_id": "audio-phrase-13-close",
+      "visual_observation_id": "pixels-phrase-13-close",
+      "audio_evidence": "",
+      "visual_evidence": "",
+      "note": "待独立观察；不要填写源音频或控制器的计划时间"
+    },
+    {
+      "expected_id": "phrase-14-open",
+      "type": "open",
+      "audio_ms": null,
+      "visual_ms": null,
+      "audio_observation_id": "audio-phrase-14-open",
+      "visual_observation_id": "pixels-phrase-14-open",
+      "audio_evidence": "",
+      "visual_evidence": "",
+      "note": "待独立观察；不要填写源音频或控制器的计划时间"
+    },
+    {
+      "expected_id": "phrase-14-close",
+      "type": "close",
+      "audio_ms": null,
+      "visual_ms": null,
+      "audio_observation_id": "audio-phrase-14-close",
+      "visual_observation_id": "pixels-phrase-14-close",
+      "audio_evidence": "",
+      "visual_evidence": "",
+      "note": "待独立观察；不要填写源音频或控制器的计划时间"
+    },
+    {
+      "expected_id": "phrase-15-open",
+      "type": "open",
+      "audio_ms": null,
+      "visual_ms": null,
+      "audio_observation_id": "audio-phrase-15-open",
+      "visual_observation_id": "pixels-phrase-15-open",
+      "audio_evidence": "",
+      "visual_evidence": "",
+      "note": "待独立观察；不要填写源音频或控制器的计划时间"
+    },
+    {
+      "expected_id": "phrase-15-close",
+      "type": "close",
+      "audio_ms": null,
+      "visual_ms": null,
+      "audio_observation_id": "audio-phrase-15-close",
+      "visual_observation_id": "pixels-phrase-15-close",
+      "audio_evidence": "",
+      "visual_evidence": "",
+      "note": "待独立观察；不要填写源音频或控制器的计划时间"
+    },
+    {
+      "expected_id": "phrase-16-open",
+      "type": "open",
+      "audio_ms": null,
+      "visual_ms": null,
+      "audio_observation_id": "audio-phrase-16-open",
+      "visual_observation_id": "pixels-phrase-16-open",
+      "audio_evidence": "",
+      "visual_evidence": "",
+      "note": "待独立观察；不要填写源音频或控制器的计划时间"
+    },
+    {
+      "expected_id": "phrase-16-close",
+      "type": "close",
+      "audio_ms": null,
+      "visual_ms": null,
+      "audio_observation_id": "audio-phrase-16-close",
+      "visual_observation_id": "pixels-phrase-16-close",
+      "audio_evidence": "",
+      "visual_evidence": "",
+      "note": "待独立观察；不要填写源音频或控制器的计划时间"
+    },
+    {
+      "expected_id": "phrase-17-open",
+      "type": "open",
+      "audio_ms": null,
+      "visual_ms": null,
+      "audio_observation_id": "audio-phrase-17-open",
+      "visual_observation_id": "pixels-phrase-17-open",
+      "audio_evidence": "",
+      "visual_evidence": "",
+      "note": "待独立观察；不要填写源音频或控制器的计划时间"
+    },
+    {
+      "expected_id": "phrase-17-close",
+      "type": "close",
+      "audio_ms": null,
+      "visual_ms": null,
+      "audio_observation_id": "audio-phrase-17-close",
+      "visual_observation_id": "pixels-phrase-17-close",
+      "audio_evidence": "",
+      "visual_evidence": "",
+      "note": "待独立观察；不要填写源音频或控制器的计划时间"
+    },
+    {
+      "expected_id": "phrase-18-open",
+      "type": "open",
+      "audio_ms": null,
+      "visual_ms": null,
+      "audio_observation_id": "audio-phrase-18-open",
+      "visual_observation_id": "pixels-phrase-18-open",
+      "audio_evidence": "",
+      "visual_evidence": "",
+      "note": "待独立观察；不要填写源音频或控制器的计划时间"
+    },
+    {
+      "expected_id": "phrase-18-close",
+      "type": "close",
+      "audio_ms": null,
+      "visual_ms": null,
+      "audio_observation_id": "audio-phrase-18-close",
+      "visual_observation_id": "pixels-phrase-18-close",
+      "audio_evidence": "",
+      "visual_evidence": "",
+      "note": "待独立观察；不要填写源音频或控制器的计划时间"
+    },
+    {
+      "expected_id": "phrase-19-open",
+      "type": "open",
+      "audio_ms": null,
+      "visual_ms": null,
+      "audio_observation_id": "audio-phrase-19-open",
+      "visual_observation_id": "pixels-phrase-19-open",
+      "audio_evidence": "",
+      "visual_evidence": "",
+      "note": "待独立观察；不要填写源音频或控制器的计划时间"
+    },
+    {
+      "expected_id": "phrase-19-close",
+      "type": "close",
+      "audio_ms": null,
+      "visual_ms": null,
+      "audio_observation_id": "audio-phrase-19-close",
+      "visual_observation_id": "pixels-phrase-19-close",
+      "audio_evidence": "",
+      "visual_evidence": "",
+      "note": "待独立观察；不要填写源音频或控制器的计划时间"
+    },
+    {
+      "expected_id": "phrase-20-open",
+      "type": "open",
+      "audio_ms": null,
+      "visual_ms": null,
+      "audio_observation_id": "audio-phrase-20-open",
+      "visual_observation_id": "pixels-phrase-20-open",
+      "audio_evidence": "",
+      "visual_evidence": "",
+      "note": "待独立观察；不要填写源音频或控制器的计划时间"
+    },
+    {
+      "expected_id": "phrase-20-close",
+      "type": "close",
+      "audio_ms": null,
+      "visual_ms": null,
+      "audio_observation_id": "audio-phrase-20-close",
+      "visual_observation_id": "pixels-phrase-20-close",
+      "audio_evidence": "",
+      "visual_evidence": "",
+      "note": "待独立观察；不要填写源音频或控制器的计划时间"
+    }
+  ],
+  "unexpected": []
+}

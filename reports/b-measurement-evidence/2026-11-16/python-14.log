@@ -1,0 +1,19 @@
+test_37_of_40_fails_without_rounding_up (test_cli.MeasurementCLI.test_37_of_40_fails_without_rounding_up) ... ok
+test_browser_manifest_is_required_and_incomplete_or_silent_capture_fails_every_event (test_cli.MeasurementCLI.test_browser_manifest_is_required_and_incomplete_or_silent_capture_fails_every_event) ... ok
+test_calibration_uncertainty_is_conservative_and_browser_scope_stays_pending (test_cli.MeasurementCLI.test_calibration_uncertainty_is_conservative_and_browser_scope_stays_pending) ... ok
+test_freeze_creates_reproducible_mandarin_fixture_and_40_expected_edges (test_cli.MeasurementCLI.test_freeze_creates_reproducible_mandarin_fixture_and_40_expected_edges) ... ok
+test_inclusive_signed_boundaries_and_fixed_denominator (test_cli.MeasurementCLI.test_inclusive_signed_boundaries_and_fixed_denominator) ... ok
+test_invalid_or_tampered_inputs_are_rejected (test_cli.MeasurementCLI.test_invalid_or_tampered_inputs_are_rejected) ... ok
+test_matching_physical_context_preserves_provenance_and_only_allows_human_review (test_cli.MeasurementCLI.test_matching_physical_context_preserves_provenance_and_only_allows_human_review) ... ok
+test_missing_ambiguous_reused_and_uncertain_edges_stay_failures (test_cli.MeasurementCLI.test_missing_ambiguous_reused_and_uncertain_edges_stay_failures) ... ok
+test_physical_bad_identity_or_incomplete_conditions_never_become_eligible (test_cli.MeasurementCLI.test_physical_bad_identity_or_incomplete_conditions_never_become_eligible) ... ok
+test_physical_pending_calibration_and_legacy_unfrozen_identity_are_diagnostic (test_cli.MeasurementCLI.test_physical_pending_calibration_and_legacy_unfrozen_identity_are_diagnostic) ... ok
+test_physical_scope_requires_original_matching_manifest_without_writing_invalid_reports (test_cli.MeasurementCLI.test_physical_scope_requires_original_matching_manifest_without_writing_invalid_reports) ... ok
+test_silent_capture_fails_all_events_and_missing_manifest_is_rejected (test_cli.MeasurementCLI.test_silent_capture_fails_all_events_and_missing_manifest_is_rejected) ... ok
+test_wrong_or_missing_capture_identity_fails_all_frozen_events (test_cli.MeasurementCLI.test_wrong_or_missing_capture_identity_fails_all_frozen_events) ... ok
+test_wrong_type_unpairable_edges_and_review_errors_count_as_failures (test_cli.MeasurementCLI.test_wrong_type_unpairable_edges_and_review_errors_count_as_failures) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 5.398s
+
+OK

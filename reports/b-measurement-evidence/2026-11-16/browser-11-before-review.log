@@ -1,0 +1,19 @@
+✔ default measurement captures the current head and records actual renderer without implying physical acceptance (3756.0736ms)
+✔ external media needs explicit condition declarations before a physical manifest can be downloaded (3715.9417ms)
+✔ audio-only original media cannot produce a physical screen-video manifest (2361.9336ms)
+✔ a known browser-origin manifest cannot be relabeled as a physical capture (3016.0809ms)
+✔ scope changes clear physical declarations and edits during hashing abort an export (3090.454ms)
+✔ legacy VRM diagnostic records canvas pixels and audible graph output (40907.5902ms)
+✔ permission denial and capture without an audio track are visible failures without silent fallback (2052.0878ms)
+✔ a missing frozen fixture is explained and recording remains unavailable (660.388ms)
+✔ capture reloads the frozen Mandarin from the beginning after the embedded page changes or plays another input (1769.7376ms)
+✔ recording locks audio replacement, replay and dialogue controls while keeping expression and gaze available (1488.8268ms)
+✔ a changed media source, seek, replay, pause or rate invalidates capture and retains the original evidence (11651.3042ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 75842.8984

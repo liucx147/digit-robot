@@ -1,0 +1,29 @@
+Actual WebGL renderer: ANGLE (Intel, Intel(R) UHD Graphics (0x00009BC4) Direct3D11 vs_5_0 ps_5_0, D3D11)
+✖ failed preference reads after binding another profile clear stale identity and forbid writes until explicit refresh (2250.5291ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2924.0375
+
+✖ failing tests:
+
+test at web\tests\profile-public.test.cjs:216:2
+✖ failed preference reads after binding another profile clear stale identity and forbid writes until explicit refresh (2250.5291ms)
+  AssertionError [ERR_ASSERTION]: 创建并选择档案 must require a confirmed profile
+  
+  false !== true
+  
+      at TestContext.<anonymous> (C:\Users\30415\.codex\worktrees\b-profile-ui\b-voice-integration\web\tests\profile-public.test.cjs:229:36)
+      at async Test.run (node:internal/test_runner/test:1332:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

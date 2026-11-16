@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "scope": "physical-av",
+  "media": {
+    "path": "synthetic-software-only.webm",
+    "sha256": "df2eb25ea078e5174863ffc67ebbb459ead67c71969857b8df1fbdd5b057e4e8",
+    "bytes": 804,
+    "mime": "video/webm"
+  },
+  "ledger_sha256": "e6a3ad2cc8a6a4c046acf166bb5e94c68679859e10d5480cebf9cf20f930a86d",
+  "fixture_sha256": "2a01c9f12b8b482db45748b9d4c3278ba413f6b10d5b87e9bdd3ce2415042c14",
+  "expected_events": 40,
+  "avatar": {
+    "name": "实体三维头部",
+    "version": "solid-v1",
+    "type": "solid-head",
+    "sha256": "5589660f42f67e7d5bd6e13b8248216ecbeaaaa14607da84cecced3a7e5afad6",
+    "file": "http://127.0.0.1:56498/solid-head.js"
+  },
+  "renderer": {
+    "renderer": "ANGLE (Intel, Intel(R) UHD Graphics (0x00009BC4) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "vendor": "Google Inc. (Intel)",
+    "webgl_version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+  },
+  "product_url": "http://127.0.0.1:56498/index.html",
+  "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36",
+  "viewport": {
+    "width": 595,
+    "height": 518,
+    "device_pixel_ratio": 1
+  },
+  "revision_and_conditions": "synthetic upload/schema test only; no physical capture, no calibration",
+  "physical_review": {
+    "basis": "operator-declared",
+    "operator": "synthetic software operator",
+    "conditions_match": true
+  },
+  "complete_playback": false,
+  "audio_non_silent": false,
+  "calibration": {
+    "status": "pending"
+  },
+  "acceptance_status": "pending-independent-media-review",
+  "limitations": [
+    "External media identity and physical conditions are operator declarations, not automatically identified from recorded pixels.",
+    "Complete playback and audible speaker sound are separate operator review declarations, not browser measurements.",
+    "Original media/PTS must be retained; no calibration or event observation is supplied by this manifest.",
+    "Independent calibration and human evidence review remain required; this manifest does not establish acceptance."
+  ]
+}
