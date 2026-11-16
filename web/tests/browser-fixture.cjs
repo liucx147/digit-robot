@@ -20,7 +20,9 @@ async function publicBrowser(webRoot) {
   let browser;
   const close = async () => { try { await browser?.close(); } finally { await new Promise(resolve => server.close(resolve)); } };
   try {
-    browser = await chromium.launch({ executablePath: process.env.CHROME_PATH, headless:true, args:['--no-sandbox','--autoplay-policy=no-user-gesture-required','--use-angle=swiftshader','--enable-unsafe-swiftshader'] });
+    const mode=process.env.BROWSER_RENDERER || 'default';
+    if(!['default','swiftshader'].includes(mode))throw Error('BROWSER_RENDERER must be default or swiftshader');
+    browser = await chromium.launch({ executablePath: process.env.CHROME_PATH, headless:true, args:['--no-sandbox','--autoplay-policy=no-user-gesture-required',...(mode==='swiftshader'?['--use-angle=swiftshader','--enable-unsafe-swiftshader']:[])] });
     return { browser, baseURL:`http://127.0.0.1:${server.address().port}`, close };
   } catch (error) { await close(); throw error; }
 }

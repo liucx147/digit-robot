@@ -1,6 +1,10 @@
 // Public measurement page: observes the real page/canvas/audio, never controller weights.
 const $ = selector => document.querySelector(selector);
 const iframe = $('#product');
+// Historical pixel fixtures remain opt-in; the normal entry follows the product default.
+if (new URLSearchParams(location.search).get('measurementFixture') === 'vrm1') iframe.src='./index.html?measurementFixture=vrm1';
+const ledgerURL='./measurement-fixtures/mandarin40/'+(new URLSearchParams(location.search).get('measurementFixture')==='vrm1'?'ledger.json':'ledger-solid-v1.json');
+$('#ledger-download').href=ledgerURL;
 let frozen, ledgerBytes, ledgerHash, fixtureFile, graphContext, elementSource;
 let recorder, captureStream, recordingDestination, analyser, analysisSource, silentGain;
 let chunks = [], recording = false, maxRms = 0, startedAt = 0, complete = false;
@@ -26,10 +30,11 @@ $('#prepare').addEventListener('click',async()=>{
   try {
     $('#prepare').disabled=true;status('核对固定音频与事件表…');
     await waitUntil(()=>iframe.contentDocument?.querySelector('#sample')?.disabled===false,'说话头资源未就绪');
-    const [ledgerResponse,audioResponse]=await Promise.all([fetch('./measurement-fixtures/mandarin40/ledger.json'),fetch('./measurement-fixtures/mandarin40/fixture.wav')]);
+    const [ledgerResponse,audioResponse]=await Promise.all([fetch(ledgerURL),fetch('./measurement-fixtures/mandarin40/fixture.wav')]);
     if(!ledgerResponse.ok||!audioResponse.ok)throw Error('冻结资源缺失');
     ledgerBytes=await ledgerResponse.arrayBuffer();ledgerHash=await sha256(ledgerBytes);frozen=JSON.parse(new TextDecoder().decode(ledgerBytes));
     const bytes=await audioResponse.arrayBuffer();if(await sha256(bytes)!==frozen.fixture.sha256)throw Error('固定音频哈希不符');
+    if(JSON.parse(product().canvas.dataset.avatar || 'null')?.sha256!==frozen.setup.avatar_sha256)throw Error('当前头部与冻结测量条件不符，请重新冻结独立版本');
     fixtureFile=new File([bytes],'mandarin40.wav',{type:'audio/wav'});
     await loadFrozenInput();
     $('#record-graph').disabled=false;$('#record-display').disabled=false;status(`${frozen.events.length} 个固定事件已就绪。请记录运行条件后采集。`);
@@ -93,6 +98,9 @@ async function startCapture(scope) {
     if(!frozen)throw Error('请先准备固定输入');
     inputLock=lockProductInput();
     const {audio,canvas}=product();
+    const capturedAvatar=JSON.parse(canvas.dataset.avatar || 'null');
+    const capturedRenderer=JSON.parse(canvas.dataset.renderer || 'null');
+    if(!capturedAvatar?.sha256 || !capturedRenderer?.renderer)throw Error('缺少当前资产或渲染器信息，不能建立采集清单');
     graphContext ||= new AudioContext();await graphContext.resume();
     analyser=graphContext.createAnalyser();analyser.fftSize=2048;
     if(scope==='browser-graph') {
@@ -126,6 +134,8 @@ async function startCapture(scope) {
       analysisSource?.disconnect();analysisSource=null;analyser.disconnect();silentGain?.disconnect();silentGain=null;
       rawMedia=new Blob(chunks,{type:mime});
       manifest={schema:1,scope,media:{path:'capture.webm',sha256:await sha256(await rawMedia.arrayBuffer()),bytes:rawMedia.size,mime},ledger_sha256:ledgerHash,fixture_sha256:frozen.fixture.sha256,expected_events:frozen.events.length,playback_integrity:playbackIntegrity,complete_playback:complete,audio_non_silent:maxRms>.001,audio_max_rms:maxRms,track_settings:trackSettings,viewport:{width:canvas.width,height:canvas.height,device_pixel_ratio:devicePixelRatio},user_agent:navigator.userAgent,revision_and_conditions:$('#revision').value,recorder_elapsed_ms_telemetry:performance.now()-startedAt,calibration:{status:'pending'},acceptance_status:'pending-independent-physical-av',limitations:['Elapsed wall time is telemetry, not media PTS or source origin.','Canvas/audio-graph capture does not measure physical output.','Do not score controller records; independently annotate this original A/V file.']};
+      manifest.avatar=capturedAvatar;manifest.renderer=capturedRenderer;
+      manifest.product_url=iframe.contentWindow.location.href;
       loadedManifest={value:manifest,path:'capture-manifest.json',sha256:await sha256(new TextEncoder().encode(JSON.stringify(manifest,null,2)+'\n'))};
       $('#download-media').disabled=false;$('#download-manifest').disabled=false;$('#record-graph').disabled=false;$('#record-display').disabled=false;$('#prepare').disabled=false;
       $('#capture-summary').textContent=`${rawMedia.size} 字节；${complete?'完整播放':playbackIntegrity.status==='invalid'?'采集失效':'提前结束'}；${manifest.audio_non_silent?'已采到非静音音频图信号':'未采到非静音：无效采集'}。最终物理验收待完成。`;
