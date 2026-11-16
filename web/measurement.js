@@ -165,19 +165,20 @@ const video=$('#review-video'),reviewCanvas=$('#review-canvas');
 function presented(now,metadata){framePTS=metadata.mediaTime;$('#frame-pts').textContent=framePTS.toFixed(6);video.requestVideoFrameCallback(presented);}
 if(video.requestVideoFrameCallback)video.requestVideoFrameCallback(presented);
 $('#manifest-file').addEventListener('change',async()=>{
+  resetPhysicalDeclarations();
+  const generation=reviewGeneration;
   try {
-    resetPhysicalDeclarations();
-    const generation=reviewGeneration;
     const file=$('#manifest-file').files[0];if(!file)return;
-    const bytes=await file.arrayBuffer();const value=JSON.parse(new TextDecoder().decode(bytes));
+    const bytes=await file.arrayBuffer();
     if(generation!==reviewGeneration)return;
+    const value=JSON.parse(new TextDecoder().decode(bytes));
     if(value.schema!==1||!value.media?.sha256||!value.ledger_sha256)throw Error('采集清单格式不符');
     if(['browser-graph','browser-output'].includes(value.scope))browserMediaHashes.add(value.media.sha256);
     const manifestHash=await sha256(bytes);if(generation!==reviewGeneration)return;
     loadedManifest={value,path:file.name,sha256:manifestHash};
     $('#scope').value=value.scope;updatePhysicalButton();
     $('#review-status').textContent='已载入原始采集清单。生成模板时会核对媒体和事件表哈希。';
-  }catch(error){loadedManifest=null;$('#review-status').textContent=`清单读取失败：${error.message}`;}
+  }catch(error){if(generation!==reviewGeneration)return;loadedManifest=null;$('#review-status').textContent=`清单读取失败：${error.message}`;}
 });
 $('#review-file').addEventListener('change',async()=>{
   loadedMedia=$('#review-file').files[0];reviewReady=false;

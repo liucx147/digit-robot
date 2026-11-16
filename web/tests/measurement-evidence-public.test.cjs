@@ -167,3 +167,46 @@ test('scope changes clear physical declarations and edits during hashing abort a
   assert.equal(downloads,0);
  }finally{await app.close();}
 });
+
+test('a stale failed manifest read cannot erase the newer original manifest', {timeout:60000},async()=>{
+ const app=await publicBrowser(path.resolve(__dirname,'..'));
+ try{
+  const page=await app.browser.newPage({acceptDownloads:true});
+  await page.goto(app.baseURL+'/measurement.html');await page.locator('#prepare').click();
+  await page.locator('#capture-status').filter({hasText:'40 个固定事件已就绪'}).waitFor();
+  const bytes=await syntheticSoftwareVideo(page);
+  await page.getByLabel('载入原始音视频').setInputFiles({name:'synthetic-current.webm',mimeType:'video/webm',buffer:bytes});
+  await page.locator('#review-status').filter({hasText:'已载入原始音视频'}).waitFor();
+  const ledger=await fs.readFile(path.resolve(__dirname,'../measurement-fixtures/mandarin40/ledger-solid-v1.json'));
+  const manifestBytes=Buffer.from(JSON.stringify({schema:1,scope:'browser-graph',media:{sha256:hash(bytes)},ledger_sha256:hash(ledger)}));
+  for(const failure of ['malformed-json','read-error']){
+   // Delay only this external File read. The real file-input handler, parsing,
+   // validation, status and template generation all run unchanged.
+   await page.evaluate(failure=>{
+    const file=new File(['{invalid json'],'old-invalid.json',{type:'application/json'});
+    file.arrayBuffer=()=>new Promise((resolve,reject)=>{
+     window.releaseOldManifest=()=>failure==='read-error'?reject(new Error('old read failed')):resolve(new TextEncoder().encode('{invalid json').buffer);
+    });
+    const transfer=new DataTransfer();transfer.items.add(file);
+    const input=document.querySelector('#manifest-file');input.files=transfer.files;input.dispatchEvent(new Event('change',{bubbles:true}));
+   },failure);
+   await page.getByLabel('载入采集清单').setInputFiles({name:'current-original.json',mimeType:'application/json',buffer:manifestBytes});
+   await page.locator('#review-status').filter({hasText:'已载入原始采集清单'}).waitFor();
+   const currentStatus=await page.locator('#review-status').textContent();
+   await page.evaluate(async()=>{window.releaseOldManifest();await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));delete window.releaseOldManifest;});
+   assert.equal(await page.locator('#review-status').textContent(),currentStatus,`${failure}: an old failure must not overwrite the newer success`);
+   await page.locator('#annotations').fill('{"capture_manifest":null}');
+   await page.locator('#template').click();
+   await page.waitForFunction(()=>JSON.parse(document.querySelector('#annotations').value).capture_manifest!==null,{},{timeout:3000});
+   const annotations=JSON.parse(await page.locator('#annotations').inputValue());
+   assert.equal(annotations.capture_manifest.path,'current-original.json');
+   assert.equal(annotations.capture_manifest.sha256,hash(manifestBytes),`${failure}: the template retains the newer original file identity`);
+  }
+  // Current errors still surface, and the prior manifest cannot remain usable.
+  await page.getByLabel('载入采集清单').setInputFiles({name:'current-invalid.json',mimeType:'application/json',buffer:Buffer.from('{invalid json')});
+  await page.locator('#review-status').filter({hasText:'清单读取失败'}).waitFor();
+  await page.locator('#template').click();
+  await page.waitForFunction(()=>JSON.parse(document.querySelector('#annotations').value).capture_manifest===null,{},{timeout:3000});
+  assert.match(await page.locator('#review-status').textContent(),/清单读取失败/);
+ }finally{await app.close();}
+});
