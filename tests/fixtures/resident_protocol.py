@@ -12,6 +12,10 @@ for line in sys.stdin:
         break
     if request['op'] == 'cancel':
         continue
+    if request['payload'].get('stream'):
+        print(json.dumps({'id': request['id'], 'event': 'text', 'text': request['payload']['messages'][-1]['content']}), flush=True)
+        print(json.dumps({'id': request['id'], 'event': 'done'}), flush=True)
+        continue
     if request['payload'].get('late'):
         def late(request=request):
             time.sleep(.25)

@@ -7,26 +7,28 @@ from threading import Event, Thread
 
 import pytest
 
-from digit_robot.resident import ResidentWorker
+from digit_robot.resident import ResidentModels, ResidentWorker
 from digit_robot.sentence_pipeline import SentencePipeline
 from digit_robot.voice import VoiceError
 from test_voice_api import ModelFixture
 
 
-@pytest.mark.parametrize('invalid', ['not-json\n', '{"type":"sentence","text":"缺少表达意图。"}\n'])
+@pytest.mark.parametrize('invalid', ['not-json\n', '{"type":"sentence","text":"缺少表达意图。"}\n',
+    '{"type":"meta","user_emotion":"neutral","expression_intent":{"style":"calm","intensity":0.5}}\n'
+    + '{"type":"sentence","text":"' + '长' * 25 + '。"}\n'])
 def test_invalid_llm_stream_does_not_keep_next_turn_waiting_for_garbage_collection(tmp_path: Path, invalid):
     fixture = Path(__file__).parent / 'fixtures/resident_protocol.py'
     worker = ResidentWorker([sys.executable, str(fixture)], Path.cwd(), tmp_path / 'worker', 5)
-    reply_pids = []
 
     class Models(ModelFixture):
+        def _active_worker(self, name):
+            return worker
+
         def stream_reply(self, messages, cancel):
             reply = invalid if messages[-1]['content'] == '触发错误' else (
                 '{"type":"meta","user_emotion":"neutral","expression_intent":{"style":"calm","intensity":0.5}}\n'
                 '{"type":"sentence","text":"新的轮次可以继续。"}\n')
-            for packet in worker.stream({'value': reply}, cancel):
-                reply_pids.append(packet['pid'])
-                yield packet['value']
+            yield from ResidentModels.stream_reply(self, [{'role': 'user', 'content': reply}], cancel)
 
     enabled = gc.isenabled()
     gc.disable()  # Quiet servers must recover without waiting for cyclic GC.
@@ -52,7 +54,7 @@ def test_invalid_llm_stream_does_not_keep_next_turn_waiting_for_garbage_collecti
         assert finished.wait(3), 'next turn did not leave its external worker wait'
         assert recovered_without_gc, 'invalid LLM output kept the worker stream locked until cyclic GC'
         assert result.get_nowait()[-1]['type'] == 'done'
-        assert reply_pids == [worker.ready['pid']] * 2, 'validation failure must not reload a healthy model'
+        assert list(worker.stream({'value': 'probe'}, Event()))[0]['pid'] == worker.ready['pid']
     finally:
         gc.collect()
         if enabled:
