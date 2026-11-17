@@ -1,0 +1,134 @@
+✔ occupied microphone explains how to recover and a retry releases its audio track (2541.149ms)
+✔ a microphone turn posts mono PCM16 WAV and displays ASR text before actual reply playback (4666.9563ms)
+✔ ASR, generation and synthesis remain visible while waiting; recorded latency starts at End and ends at real media start (2372.7377ms)
+✔ the head keeps a bounded height and active Stop remains visible at 1100px (740.8383ms)
+✔ the head keeps a bounded height and active Stop remains visible at 390px (716.2514ms)
+✔ permission denied is explained without a fabricated successful audio turn (634.7597ms)
+✔ unsupported browser is explained without a fabricated successful audio turn (717.1494ms)
+✔ empty recorder data is explained without a fabricated successful audio turn (1307.5034ms)
+✔ silent microphone is explained without a fabricated successful audio turn (1378.9291ms)
+✔ corrupt recorder format is explained without a fabricated successful audio turn (1365.4614ms)
+✔ oversized recorder data is explained without a fabricated successful audio turn (1075.9851ms)
+✔ the 30-second recording deadline visibly cancels and releases the microphone without upload (900.9073ms)
+✔ global Stop during permission discards late device work, releases tracks and permits a new microphone epoch (2894.1872ms)
+✔ global Stop during onstop discards late device work, releases tracks and permits a new microphone epoch (3437.3492ms)
+✔ global Stop during decode discards late device work, releases tracks and permits a new microphone epoch (2481.5757ms)
+✔ global Stop during recording cancels rather than submitting the collected speech (931.7713ms)
+✔ Stop discards microphone POST HTTP 200 and its old status while a new recording is active (3880.6391ms)
+✔ Stop discards microphone POST HTTP 502 and its old status while a new recording is active (3854.9688ms)
+✔ ASR empty_transcript stays an explicit failure instead of a spoken success (1359.9546ms)
+✔ ASR stage_timeout stays an explicit failure instead of a spoken success (1384.6131ms)
+✔ ASR unsupported_media_type stays an explicit failure instead of a spoken success (1331.4225ms)
+✔ a nominally successful response with blank ASR text cannot fetch or play the reply audio (1367.5339ms)
+✔ local audio playback offers no concurrent microphone turn and enables it again after completion (3475.9333ms)
+✔ a microphone recording failure releases only audio tracks and leaves camera-only gaze available (980.3909ms)
+✖ a later text turn clears the microphone input timing instead of reusing the previous speech end (4484.3004ms)
+✔ 1000 ms leading silence keeps reply activity timing pending until real playback reaches the signal (3003.6248ms)
+✔ paused media and a rejected play acknowledgement leave reply activity pending until an explicit retry (5635.6205ms)
+✖ Stop before reply activity ignores late device acknowledgement and isolates the next text turn (3680.7369ms)
+✔ Stop before reply activity ignores late device acknowledgement and isolates the next microphone turn (5727.3936ms)
+✔ replaying the same reply preserves the first file-start and reply-activity observations (4824.2014ms)
+✔ current head and local sample operate with every nonlocal request blocked (1895.1843ms)
+✔ missing current geometry visibly fails without substituting a historical head (1061.3752ms)
+Actual WebGL renderer: ANGLE (NVIDIA, NVIDIA GeForce GTX 1650 Ti (0x00001F95) Direct3D11 vs_5_0 ps_5_0, D3D11)
+✔ manual profile creation and explicit selection bind subsequent turns to the chosen person (1891.3692ms)
+✔ server preferences are read across switches and reload, renamed safely, cleared and deleted (1512.9241ms)
+✔ editing a profile immediately stops actual audio and blocks new turns until server confirmation (2553.1325ms)
+✔ switching profiles aborts a pending audio download and cannot replay its old response (1036.4605ms)
+✔ failed preference writes stay visible and block turns until retry or confirmed server refresh (913.9278ms)
+✔ a mutation carrying another session epoch confirms this session before the next turn (831.4208ms)
+✔ a delayed preference read cannot overwrite the explicitly rebound profile after reconnect (1081.835ms)
+✔ service restart reconnect binds a valid saved choice and visibly clears a deleted choice (818.9233ms)
+✔ local audio invalidating an unconfirmed profile switch requires a fresh server read before dialogue (1046.6953ms)
+✔ preference mutation cancels playing sentences and prefetched later audio without reviving the queue (1264.3647ms)
+✔ changing profiles clears the previous response playback record and disables its download (1368.8149ms)
+✔ failed preference reads after binding another profile clear stale identity and forbid writes until explicit refresh (1165.8183ms)
+✔ profile UI reads real SQLite state after service restart and clears/deletes persisted preferences (5032.1992ms)
+✔ Stop during queued download rejects late work and preserves a new sentence turn (5335.6415ms)
+✔ Stop during queued decode rejects late work and preserves a new sentence turn (3295.6713ms)
+✔ Stop during queued play-ack rejects late work and preserves a new sentence turn (4458.3227ms)
+✔ a stalled stream becomes a visible timeout, then a new turn can play and stop again (1028.6977ms)
+✔ completed generation cannot hide a stalled WAV download (841.9107ms)
+✔ missing-done visibly fails, clears playback and allows recovery plus another Stop (1010.2976ms)
+✔ error visibly fails, clears playback and allows recovery plus another Stop (1141.1387ms)
+✔ disconnect visibly fails, clears playback and allows recovery plus another Stop (1108.9827ms)
+✔ download visibly fails, clears playback and allows recovery plus another Stop (1087.8953ms)
+✔ decode visibly fails, clears playback and allows recovery plus another Stop (1138.0399ms)
+✔ play visibly fails, clears playback and allows recovery plus another Stop (1112.892ms)
+✔ first sentence plays while generation is unfinished; full queue exports correlated frames and separate timing (3805.5845ms)
+✔ prefetched audio can finish out of order but playback stays in sentence order (4166.0373ms)
+✔ Stop drops the current segment and late future sentences without reviving audio (1214.9342ms)
+✔ foreign segment audio is a visible failure and is never fetched (812.5465ms)
+✔ segment gap includes delayed actual second playback (3730.5143ms)
+✔ late done cannot inflate actual last-ended playback duration (3898.7769ms)
+✔ invalid tooMany stream cannot report successful playback (736.2469ms)
+✔ invalid mismatch stream cannot report successful playback (782.4409ms)
+✔ next segment decoding starts before the previous media ends (4042.966ms)
+✔ a late status poll cannot replace the final playing state (3180.4209ms)
+✔ a late status poll cannot replace the final failure state (1862.2975ms)
+✔ Chinese text returns readable reply, real audio and visible face with server-linked playback frames (5692.7623ms)
+✔ invalid model output cannot become a successful spoken reply (690.1317ms)
+✔ silent service WAV is an audio failure rather than a completed reply (766.9626ms)
+✔ late rejected device acknowledgement cannot fail replay of the same server utterance (5017.1379ms)
+✔ Stop discards late text HTTP 200 and permits a new server epoch (1099.5333ms)
+✔ Stop discards late text HTTP 502 and permits a new server epoch (1100.876ms)
+✔ Stop discards late audio HTTP 200 and permits a new server epoch (1150.2271ms)
+✔ Stop discards late audio HTTP 502 and permits a new server epoch (1163.1828ms)
+✔ Local sample during an unconfirmed Stop requires reconnect and cannot revive old audio (1552.7232ms)
+✔ Local file during an unconfirmed Stop requires reconnect and cannot revive old audio (1531.1839ms)
+✔ Invalid reconnect address disables the old session until a valid reconnect succeeds (854.5112ms)
+✔ Stop failure leaves actual audio stopped and requires reconnect before a new turn (1579.4408ms)
+✔ gpu_busy is visible and never enables a successful reply (648.4153ms)
+✔ model_failure is visible and never enables a successful reply (648.8347ms)
+✔ corrupt_audio is visible and never enables a successful reply (766.3168ms)
+✔ missing_audio is visible and never enables a successful reply (668.6392ms)
+✔ foreign_audio is visible and never enables a successful reply (648.1141ms)
+✔ wrong_epoch is visible and never enables a successful reply (665.6231ms)
+✔ fallback is visible and never enables a successful reply (650.4622ms)
+✔ cheerful uses the documented real face channels independently of sadness (1938.2182ms)
+✔ calm uses the documented real face channels independently of sadness (1731.6901ms)
+✔ serious uses the documented real face channels independently of sadness (1715.6818ms)
+ℹ tests 89
+ℹ suites 0
+ℹ pass 87
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 185910.4091
+
+✖ failing tests:
+
+test at web\tests\microphone-public.test.cjs:241:1
+✖ a later text turn clears the microphone input timing instead of reusing the previous speech end (4484.3004ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /等待本轮发言/. Input:
+  
+  '发言结束至回复语音活动：软件观测 79 毫秒；文件起播 51 毫秒（能量活动检测，回复意义仍需人工核对；不是物理出声测量）。'
+  
+      at TestContext.<anonymous> (C:\Users\30415\.codex\worktrees\b-profile-ui\b-voice-integration\web\tests\microphone-public.test.cjs:250:10)
+      at async Test.run (node:internal/test_runner/test:1332:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:911:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '发言结束至回复语音活动：软件观测 79 毫秒；文件起播 51 毫秒（能量活动检测，回复意义仍需人工核对；不是物理出声测量）。',
+    expected: /等待本轮发言/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at web\tests\microphone-public.test.cjs:312:2
+✖ Stop before reply activity ignores late device acknowledgement and isolates the next text turn (3680.7369ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (C:\Users\30415\.codex\worktrees\b-profile-ui\b-voice-integration\web\tests\microphone-public.test.cjs:328:16)
+      at async Test.run (node:internal/test_runner/test:1332:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:911:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

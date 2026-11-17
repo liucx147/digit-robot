@@ -1,0 +1,10 @@
+✔ software-only accelerated clock requires 30 minutes and 20 complete turns in the same uninterrupted segment (57291.3163ms)
+✔ browser heartbeat gap and visibility loss retain review events and exclude unobserved time (2820.8399ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 60727.3633

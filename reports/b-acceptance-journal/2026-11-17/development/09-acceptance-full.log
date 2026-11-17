@@ -1,0 +1,24 @@
+✔ journal is collapsed and stores nothing until explicit validated start; export includes actual renderer and declared scope (1782.7557ms)
+✔ actual single reply playback counts one full turn, excludes replay and dialogue contents (3819.9263ms)
+✔ actual two sentence playback counts one full turn, excludes replay and dialogue contents (3509.6019ms)
+✔ model failure is retained without content or completed turn; recovery still records (1827.1015ms)
+✔ media failure is retained without content or completed turn; recovery still records (1907.3823ms)
+✔ stop preserves cancelled attempt, ignores late HTTP work and a new turn can complete (1751.1791ms)
+✔ capture joining an in-flight turn cannot claim its completion; local audio is excluded (3231.329ms)
+✔ reload preserves interrupted draft without auto capture; manual restart and end create separate segments; clear is explicit (3494.3922ms)
+✔ software-only accelerated clock requires 30 minutes and 20 complete turns in the same uninterrupted segment (56544.4887ms)
+✔ browser heartbeat gap and visibility loss retain review events and exclude unobserved time (2834.0739ms)
+✔ quota failure stops collection, retains memory and cannot prevent actual Stop (2442.6166ms)
+✔ restored storage is projected through whitelist; corrupt draft stays visible and is not overwritten (1320.6187ms)
+✔ capacity boundary keeps old draft events and stops visibly without truncating (1206.1468ms)
+✔ hidden fraction between heartbeats and UTC clock shifts cannot inflate observed duration (1223.273ms)
+✔ microphone input ends at the actual end button, not delayed permission; draft contains timing only (3041.0154ms)
+✔ failed stop acknowledgement remains in journal after local cancellation without raw server error (932.18ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 16
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 91473.6762

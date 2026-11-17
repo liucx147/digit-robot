@@ -1,0 +1,11 @@
+✔ quota failure stops collection, retains memory and cannot prevent actual Stop (3899.3663ms)
+✔ restored storage is projected through whitelist; corrupt draft stays visible and is not overwritten (1306.0257ms)
+✔ capacity boundary keeps old draft events and stops visibly without truncating (1155.8839ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6964.0665

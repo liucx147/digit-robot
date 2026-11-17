@@ -1,0 +1,12 @@
+✔ shared draft has one page owner; other pages cannot restore-write, capture or clear it and cleared history never revives (8521.354ms)
+✔ simultaneous shared-page starts choose one owner and later takeover re-reads all segments and failures (8560.6863ms)
+✔ failed clear stops the owner and keeps its memory export and exclusive draft permission (1814.7025ms)
+✔ missing browser draft ownership disables capture and clear but preserves default-off playback and Stop (1781.6741ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 21258.0222

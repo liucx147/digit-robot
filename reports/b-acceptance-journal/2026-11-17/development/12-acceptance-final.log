@@ -1,0 +1,30 @@
+✔ journal is collapsed and stores nothing until explicit validated start; export includes actual renderer and declared scope (2255.7404ms)
+✔ actual single reply playback counts one full turn, excludes replay and dialogue contents (4234.2526ms)
+✔ actual two sentence playback counts one full turn, excludes replay and dialogue contents (3665.8778ms)
+✔ model failure is retained without content or completed turn; recovery still records (1985.01ms)
+✔ media failure is retained without content or completed turn; recovery still records (2076.3689ms)
+✔ stop preserves cancelled attempt, ignores late HTTP work and a new turn can complete (1901.1919ms)
+✔ capture joining an in-flight turn cannot claim its completion; local audio is excluded (3458.1047ms)
+✔ reload preserves interrupted draft without auto capture; manual restart and end create separate segments; clear is explicit (3620.6127ms)
+✖ software-only accelerated clock requires 30 minutes and 20 complete turns in the same uninterrupted segment (90011.3635ms)
+✔ browser heartbeat gap and visibility loss retain review events and exclude unobserved time (3092.0074ms)
+✔ quota failure stops collection, retains memory and cannot prevent actual Stop (3347.0472ms)
+✔ restored storage is projected through whitelist; corrupt draft stays visible and is not overwritten (1759.6354ms)
+✔ capacity boundary keeps old draft events and stops visibly without truncating (1255.2619ms)
+✔ hidden fraction between heartbeats and UTC clock shifts cannot inflate observed duration (1288.7057ms)
+✔ microphone input ends at the actual end button, not delayed permission; draft contains timing only (3128.386ms)
+✔ failed stop acknowledgement remains in journal after local cancellation without raw server error (952.7557ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 1
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 128751.3867
+
+✖ failing tests:
+
+test at web\tests\acceptance-journal-public.test.cjs:121:1
+✖ software-only accelerated clock requires 30 minutes and 20 complete turns in the same uninterrupted segment (90011.3635ms)
+  'test timed out after 90000ms'

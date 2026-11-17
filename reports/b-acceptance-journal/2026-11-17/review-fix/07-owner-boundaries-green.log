@@ -1,0 +1,24 @@
+✔ shared draft has one page owner; other pages cannot restore-write, capture or clear it and cleared history never revives (7893.2127ms)
+✔ simultaneous shared-page starts choose one owner and later takeover re-reads all segments and failures (8620.1153ms)
+✖ failed clear stops the owner and keeps its memory export and exclusive draft permission (619.049ms)
+✔ missing browser draft ownership disables capture and clear but preserves default-off playback and Stop (1805.131ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 3
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 19590.4223
+
+✖ failing tests:
+
+test at web\tests\acceptance-journal-public.test.cjs:257:1
+✖ failed clear stops the owner and keeps its memory export and exclusive draft permission (619.049ms)
+  clock.pauseAt: Error: Cannot fast-forward to the past
+      at ClockController._innerFastForwardTo (<anonymous>:202:13)
+      at ClockController.pauseAt (<anonymous>:133:16)
+      at async <anonymous>:337:30
+      at TestContext.<anonymous> (C:\Users\30415\.codex\worktrees\b-profile-ui\b-voice-integration\web\tests\acceptance-journal-public.test.cjs:260:103) {
+    log: []
+  }

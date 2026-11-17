@@ -1,0 +1,15 @@
+software clock phase: advance first 30 minutes
+software clock phase: first 30 minutes advanced
+software clock phase: completed actual media turns 10
+software clock phase: completed actual media turns 20
+software clock phase: independent 15-minute segments
+software clock phase: independent segments advanced
+✔ software-only accelerated clock requires 30 minutes and 20 complete turns in the same uninterrupted segment (57778.8882ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 58337.7328

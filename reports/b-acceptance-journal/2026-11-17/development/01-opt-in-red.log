@@ -1,0 +1,22 @@
+✖ journal is collapsed and stores nothing until explicit validated start; export includes actual renderer and declared scope (4427.0124ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5191.851
+
+✖ failing tests:
+
+test at web\tests\acceptance-journal-public.test.cjs:18:1
+✖ journal is collapsed and stores nothing until explicit validated start; export includes actual renderer and declared scope (4427.0124ms)
+  locator.getAttribute: Timeout 3000ms exceeded.
+  Call log:
+  [2m  - waiting for locator('#acceptance-panel')[22m
+  
+      at TestContext.<anonymous> (C:\Users\30415\.codex\worktrees\b-profile-ui\b-voice-integration\web\tests\acceptance-journal-public.test.cjs:20:55) {
+    name: 'TimeoutError',
+    log: [ "  - waiting for locator('#acceptance-panel')" ]
+  }
