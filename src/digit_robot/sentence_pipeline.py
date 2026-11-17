@@ -13,8 +13,8 @@ from .voice import VoiceError, VoiceModels, VoicePipeline, wav_info
 
 
 class SentencePipeline(VoicePipeline):
-    def __init__(self, models: VoiceModels, output_dir: Path, tts_workers: int = 1) -> None:
-        super().__init__(models, output_dir)
+    def __init__(self, models: VoiceModels, output_dir: Path, tts_workers: int = 1, profiles_db: Path | None = None) -> None:
+        super().__init__(models, output_dir, profiles_db)
         if tts_workers not in (1, 2):
             raise ValueError('TTS concurrency must be one or two')
         self.tts_workers = tts_workers
@@ -50,6 +50,7 @@ class SentencePipeline(VoicePipeline):
                 session = self._session(session_id)
                 if session.epoch != epoch:
                     raise VoiceError('stale_epoch', '会话代次已过期', 409)
+                context = self.profile_context(session)
                 if not self.gpu.acquire(blocking=False):
                     raise VoiceError('gpu_busy', '单卡正在处理另一轮', 409)
                 acquired = True
@@ -73,7 +74,7 @@ class SentencePipeline(VoicePipeline):
                 raise VoiceError('invalid_text', '需要1至2000字的有效文本', 422)
             yield event('transcript', transcript=text)
             self._phase(session, epoch, 'generating')
-            messages = [{'role': 'system', 'content': STREAM_PROMPT}, *history, {'role': 'user', 'content': text}]
+            messages = [{'role': 'system', 'content': STREAM_PROMPT + context}, *history, {'role': 'user', 'content': text}]
             pending: Queue[Any] = Queue(maxsize=2)
 
             def put(value: Any) -> bool:

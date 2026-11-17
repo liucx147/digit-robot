@@ -1,0 +1,50 @@
+{
+  "fixed_code_commit": "dbfe3229da7ca2c61b52eeb4e503369cc4ea814c",
+  "frozen_soak_commit": "6a487c9718d7d04debc83464dbf42ab4f1f62690",
+  "source_files_sha256": {
+    "web/voice-client.js": "8bdd74e4a368cca566f24eaefa463e889458c320d3475b947bb0d5bdc3c01def",
+    "web/tests/profile-real-api.test.cjs": "15faee4d6f2f034f2a60ac212d37803e20de648fa4d3bc72e91680f0cec50960",
+    "tests/test_profile_client_contract.py": "39aa8a4f082d737567c1b8edae1d5c9fa61e9fd013a7370b585fe71bf7b1a36d"
+  },
+  "python": {
+    "passed": 67,
+    "subtests_passed": 42,
+    "command": "python -X utf8 -m pytest -q"
+  },
+  "mypy": {
+    "source_files": 17,
+    "result": "passed",
+    "command": "python -X utf8 -m mypy"
+  },
+  "real_http_disconnect_regressions": {
+    "passed": 2,
+    "command": "python -X utf8 -m pytest tests/test_profile_client_contract.py -q"
+  },
+  "browser": {
+    "passed": 124,
+    "failed": 0,
+    "skipped": 0,
+    "command": "node --test --test-concurrency=1 web/tests/*.cjs",
+    "env_paths": {
+      "PLAYWRIGHT_MODULE": "D:\\tools\\gstack\\node_modules\\playwright",
+      "CHROME_PATH": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "PYTHON_EXE": "D:\\cc-workplace\\digital robot\\digital robot\\.venv\\Scripts\\python.exe",
+      "B_PROFILE_BACKEND_SRC": "C:\\Users\\13953\\.codex\\worktrees\\merge-resident-main\\digital robot\\src",
+      "B_PROFILE_WEB_ROOT": "C:\\Users\\13953\\.codex\\worktrees\\merge-resident-main\\digital robot\\web"
+    }
+  },
+  "prior_parallel_attempt": {
+    "passed": 121,
+    "failed": 1,
+    "error": "WinError 10013 binding test backend port 49980",
+    "log": "fixed-browser-parallel.log",
+    "fixture_port_code_changed": false
+  },
+  "profile_report_backend_files_hash_verified": 14,
+  "reviews": {
+    "standards_new_actionable_findings": 0,
+    "spec_new_actionable_findings": 0
+  },
+  "gpu_or_service_changed_for_fix": false,
+  "scope": "Post-fix real HTTP, SQLite, CPU fixture and browser regression. 30-minute GPU soak belongs only to frozen_soak_commit."
+}

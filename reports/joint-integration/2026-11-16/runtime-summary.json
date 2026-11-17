@@ -1,0 +1,124 @@
+{
+  "started_at_utc": "2026-11-16T11:55:01Z",
+  "commit": "6a487c9",
+  "status": "stopped",
+  "scope": "Synthetic profiles; real local Qwen models via HTTP. No physical microphone or audiovisual acceptance.",
+  "steps": [],
+  "full_commit": "6a487c9718d7d04debc83464dbf42ab4f1f62690",
+  "stage_health": {
+    "status": "ok",
+    "api_version": "0.2.0",
+    "model_policy": "resident_sentence_pipeline",
+    "sentence_streaming": true,
+    "profile_memory": true
+  },
+  "startup_ms": 30582.30885863304,
+  "ready_before": {
+    "asr": {
+      "event": "ready",
+      "role": "asr",
+      "pid": 630858,
+      "load_count": 1,
+      "model_load_ms": 8657.247114926577,
+      "gpu": "NVIDIA GeForce RTX 4090 D",
+      "allocated_bytes": 1571201024,
+      "reserved_bytes": 1885339648,
+      "restart_count": 0
+    },
+    "llm": {
+      "event": "ready",
+      "role": "llm",
+      "pid": 631172,
+      "load_count": 1,
+      "model_load_ms": 6640.7465524971485,
+      "gpu": "NVIDIA GeForce RTX 4090 D",
+      "allocated_bytes": 9180272640,
+      "reserved_bytes": 9219080192,
+      "restart_count": 0
+    },
+    "tts": {
+      "event": "ready",
+      "role": "tts",
+      "pid": 631264,
+      "load_count": 1,
+      "model_load_ms": 7398.449648171663,
+      "gpu": "NVIDIA GeForce RTX 4090 D",
+      "allocated_bytes": 4178577920,
+      "reserved_bytes": 4311744512,
+      "restart_count": 0
+    },
+    "tts-next": {
+      "event": "ready",
+      "role": "tts",
+      "pid": 631576,
+      "load_count": 1,
+      "model_load_ms": 7200.922757387161,
+      "gpu": "NVIDIA GeForce RTX 4090 D",
+      "allocated_bytes": 4178577920,
+      "reserved_bytes": 4311744512,
+      "restart_count": 0
+    }
+  },
+  "stage_api_pid": 630857,
+  "stop_reason": "controller-requested",
+  "ready_after": {
+    "asr": {
+      "event": "ready",
+      "role": "asr",
+      "pid": 630858,
+      "load_count": 1,
+      "model_load_ms": 8657.247114926577,
+      "gpu": "NVIDIA GeForce RTX 4090 D",
+      "allocated_bytes": 1571201024,
+      "reserved_bytes": 1885339648,
+      "restart_count": 0
+    },
+    "llm": {
+      "event": "ready",
+      "role": "llm",
+      "pid": 631172,
+      "load_count": 1,
+      "model_load_ms": 6640.7465524971485,
+      "gpu": "NVIDIA GeForce RTX 4090 D",
+      "allocated_bytes": 9180272640,
+      "reserved_bytes": 9219080192,
+      "restart_count": 0
+    },
+    "tts": {
+      "event": "ready",
+      "role": "tts",
+      "pid": 631264,
+      "load_count": 1,
+      "model_load_ms": 7398.449648171663,
+      "gpu": "NVIDIA GeForce RTX 4090 D",
+      "allocated_bytes": 4178577920,
+      "reserved_bytes": 4311744512,
+      "restart_count": 0
+    },
+    "tts-next": {
+      "event": "ready",
+      "role": "tts",
+      "pid": 631576,
+      "load_count": 1,
+      "model_load_ms": 7200.922757387161,
+      "gpu": "NVIDIA GeForce RTX 4090 D",
+      "allocated_bytes": 4178577920,
+      "reserved_bytes": 4311744512,
+      "restart_count": 0
+    }
+  },
+  "restored_health": {
+    "status": "ok",
+    "api_version": "0.2.0",
+    "model_policy": "resident_sentence_pipeline",
+    "sentence_streaming": true
+  },
+  "restored_pid": 644043,
+  "finished_at_utc": "2026-11-16T12:30:57Z",
+  "gpu_sampling": {
+    "interval_seconds": 1,
+    "soak_samples": 1913,
+    "soak_min_mib": 20343,
+    "soak_max_mib": 20743
+  }
+}

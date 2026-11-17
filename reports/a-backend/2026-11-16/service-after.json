@@ -1,0 +1,62 @@
+{
+  "checked_at_utc": "2026-11-16T10:33:50Z",
+  "pid": 609337,
+  "api_alive": true,
+  "commit": "f17443cc8178e6b611d0d9c832a6dca06945d065",
+  "workers": {
+    "asr": {
+      "pid": 609358,
+      "load_count": 1,
+      "alive": true
+    },
+    "llm": {
+      "pid": 609652,
+      "load_count": 1,
+      "alive": true
+    },
+    "tts": {
+      "pid": 609777,
+      "load_count": 1,
+      "alive": true
+    },
+    "tts-next": {
+      "pid": 610092,
+      "load_count": 1,
+      "alive": true
+    }
+  },
+  "gpu": "name, memory.used [MiB], memory.total [MiB], utilization.gpu [%]\nNVIDIA GeForce RTX 4090 D, 20343 MiB, 24564 MiB, 0 %\n",
+  "health": {
+    "status": "ok",
+    "api_version": "0.2.0",
+    "model_policy": "resident_sentence_pipeline",
+    "sentence_streaming": true
+  },
+  "test_port_stopped": true,
+  "environments": {
+    "llm": {
+      "python": "3.12.3",
+      "sqlite": "3.45.3",
+      "packages": {
+        "torch": "2.8.0+cu128",
+        "transformers": "5.22.2"
+      }
+    },
+    "asr": {
+      "python": "3.12.3",
+      "sqlite": "3.45.3",
+      "packages": {
+        "torch": "2.8.0+cu128",
+        "qwen-asr": "0.0.6"
+      }
+    },
+    "tts": {
+      "python": "3.12.3",
+      "sqlite": "3.45.3",
+      "packages": {
+        "torch": "2.8.0+cu128",
+        "qwen-tts": "0.1.1"
+      }
+    }
+  }
+}
