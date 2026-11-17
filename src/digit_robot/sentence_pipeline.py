@@ -1,5 +1,6 @@
 """A bounded sentence producer overlaps LLM continuation with sequential TTS."""
-from collections.abc import Iterator
+from collections.abc import Generator, Iterator
+from contextlib import closing
 from concurrent.futures import ThreadPoolExecutor
 import json
 from pathlib import Path
@@ -88,19 +89,23 @@ class SentencePipeline(VoicePipeline):
 
             def produce() -> None:
                 before = time.perf_counter()
-                def chunks() -> Iterator[str]:
+                def chunks(source: Iterator[str]) -> Generator[str, None, None]:
                     with (folder / 'llm-output.ndjson').open('w', encoding='utf-8') as raw:
-                        for chunk in self.models.stream_reply(messages, cancel):  # type: ignore[attr-defined]
+                        for chunk in source:
                             timings.setdefault('first_token_ms', elapsed())
                             raw.write(chunk)
                             raw.flush()
                             yield chunk
                 try:
-                    for record in reply_records(chunks()):
-                        if record['type'] == 'sentence':
-                            timings.setdefault('first_sentence_ms', elapsed())
-                        if not put(record):
-                            return
+                    # Parser errors retain tracebacks; do not leave the RPC iterator
+                    # and its serial slot alive until cyclic garbage collection.
+                    with closing(self.models.stream_reply(messages, cancel)) as source:  # type: ignore[attr-defined]
+                        with closing(chunks(source)) as output:
+                            for record in reply_records(output):
+                                if record['type'] == 'sentence':
+                                    timings.setdefault('first_sentence_ms', elapsed())
+                                if not put(record):
+                                    return
                     timings['llm_ms'] = (time.perf_counter() - before) * 1000
                     timings['llm_done_ms'] = elapsed()
                 except Exception as error:

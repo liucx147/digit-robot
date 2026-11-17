@@ -72,12 +72,18 @@ class ResidentWorker:
                 raise VoiceError('worker_failed', '模型RPC通道不可用', 502) from error
 
     def stream(self, payload: dict[str, Any], cancel: Event) -> Iterator[dict[str, Any]]:
-        with self.serial:
+        started = time.monotonic()
+        while not self.serial.acquire(timeout=.05):
+            if cancel.is_set() or time.monotonic() - started > self.timeout:
+                if not cancel.is_set():
+                    self.unhealthy = True
+                raise VoiceError('turn_cancelled' if cancel.is_set() else 'stage_timeout',
+                                 '轮次已取消' if cancel.is_set() else '常驻模型阶段超时', 409 if cancel.is_set() else 504)
+        try:
             request_id = str(uuid.uuid4())
             inbox: Queue[dict[str, Any]] = Queue()
             with self.guard:
                 self.calls[request_id] = inbox
-            started = time.monotonic()
             finished = False
             try:
                 self._send({'op': 'call', 'id': request_id, 'payload': payload})
@@ -106,6 +112,8 @@ class ResidentWorker:
                         pass
                 with self.guard:
                     self.calls.pop(request_id, None)
+        finally:
+            self.serial.release()
 
     def close(self, *, force: bool = False) -> None:
         if self.process.poll() is None:
