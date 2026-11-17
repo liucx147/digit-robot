@@ -35,6 +35,15 @@
         <p id="voice-reply" aria-label="数字人回复">回复将在这里显示。</p>
         <p class="note"><span>用户文本情绪：<output id="user-emotion" aria-label="用户文本情绪">尚无</output></span><br><span>数字人表达：<output id="voice-expression" aria-label="数字人表达">尚无</output></span></p>
       </fieldset>
+      <details id="acceptance-panel" class="acceptance-journal"><summary>验收记录</summary>
+        <p class="note">默认不记录。开始后仅在本机保存非内容时序草稿；不保存发言、回复、姓名或偏好。此处只产生软件记录候选，不能判定工程验收通过。真实实验记录请自行保管，不要自动上传仓库。</p>
+        <label for="acceptance-sha">冻结代码 SHA（操作者声明）<input id="acceptance-sha" maxlength="40" autocomplete="off" spellcheck="false"></label>
+        <label for="acceptance-conditions">运行条件<select id="acceptance-conditions"><option value="">请选择</option><option value="software-test">软件替身测试（非真实验收）</option><option value="real-combination">真实组合运行（操作者声明，证据待复核）</option></select></label>
+        <div class="buttons"><button id="acceptance-start">开始本段采集</button><button id="acceptance-end">结束本段采集</button><button id="acceptance-restart">记录服务重启</button></div>
+        <p id="acceptance-status" role="status" aria-label="验收记录状态" aria-live="polite">未采集。工程验收待复核。</p>
+        <p id="acceptance-summary" aria-label="验收记录统计">尚无记录。</p>
+        <div class="buttons"><button id="acceptance-export">下载验收记录</button><button id="acceptance-clear">清空本机验收草稿</button></div>
+      </details>
       <label class="file-label" for="audio-file">选择本地音频<input id="audio-file" type="file" accept="audio/*"></label>
       <button id="sample" disabled>载入中文录音示例</button><p id="audio-name">尚未选择音频</p>
 

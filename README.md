@@ -79,6 +79,8 @@ python -m digit_robot --help
 python -m digital_human.measurement_cli --help
 ```
 
+首页折叠的验收记录面板用于非内容运行记录采集准备，操作、隐私、断段和真实验收边界见 [验收记录说明](web/README-acceptance.md)。
+
 浏览器回归的依赖配置和命令见 [Web 说明](web/README.md)。素材来源、再分发许可和校验值保留在 `web/` 内，使用时一并保留。B 的运行不需要用户把自己的音视频、私钥、模型权重或凭据提交到仓库。
 
 新事项按仓库的 GitHub 跟踪规则维护；现有 18 张任务继续保留在 [本地索引](.scratch/digital-human-emotion/issues-index.md)，尚未迁移，不重复发布。既有任务的 `Status` 是分诊标签，`State` 单独表示 open / closed 生命周期，详见 [跟踪约定](docs/agents/issue-tracker.md)。
