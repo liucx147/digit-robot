@@ -29,3 +29,9 @@ US21、US22
 ## A阶段进展（2026-11-16）
 
 A后端已完成各阶段失败/超时后恢复、worker退出/挂起/RPC损坏后按role重载；4090真实ASR故障后的新轮次已完成ASR→LLM→TTS。页面完整故障矩阵和物理采集仍待联合验收，且04/05未关闭，本票保持open。 代码与全部成功/失败边界见[A后端验证报告](../../../reports/a-backend/2026-11-16/README.md)，B接口见[档案契约](../../../docs/development/profile-api.md)。本次不以软件测试替代物理验收。
+
+## Comments（LLM异常后永久gpu_busy，2026-11-17）
+
+基于main0f1c7aa修复未关闭的异常LLM源迭代器滞留serial锁、下一轮等待锁绕过超时的问题。4e5a430生产修复、c215836生产适配器测试增强；原225字节回复在生产适配器CPU重放中旧版需GC才恢复，新版无需GC约23.5ms继续。Windows72项/42子测试、mypy17、浏览器144项及Linux5专项通过（版本边界见报告）。
+
+c215已在4090独立目录运行：真实固定录音浏览器两轮成功；真实LLM meta后Stop，旧流turn_cancelled结束，同会话新一轮LLM/TTS成功、无gpu_busy；四worker PID及加载次数保持。初次简化包装器重放误判引发的候选拒绝与回退也保留，没有混作通过。详见[本轮报告](../../../reports/gpu-busy-recovery/2026-11-17/README.md)。本次只补后端软件与真实模型恢复证据，未补齐全部页面/物理故障矩阵，State仍open。

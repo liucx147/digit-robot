@@ -1,0 +1,11 @@
+{
+  "source_label": "fixed",
+  "input_bytes": 225,
+  "input_sha256": "b75d2c7a3f89c0b6adec83a79dd76e56ca1db16fea47c7050f4edd91898a7911",
+  "scope": "Replay of original malformed LLM bytes through CPU subprocess RPC; not new GPU inference",
+  "first_error": "stream_failed",
+  "recovered_without_gc": false,
+  "next_turn_observed_ms": 1500.5059204995632,
+  "next_result": "done",
+  "same_worker": true
+}

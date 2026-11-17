@@ -1,0 +1,104 @@
+FF........................                                               [100%]
+================================== FAILURES ===================================
+_ test_invalid_llm_stream_does_not_keep_next_turn_waiting_for_garbage_collection[not-json\n] _
+
+tmp_path = WindowsPath('C:/Users/13953/AppData/Local/Temp/pytest-of-13953/pytest-78/test_invalid_llm_stream_does_n0')
+invalid = 'not-json\n'
+
+    @pytest.mark.parametrize('invalid', ['not-json\n', '{"type":"sentence","text":"缺少表达意图。"}\n'])
+    def test_invalid_llm_stream_does_not_keep_next_turn_waiting_for_garbage_collection(tmp_path: Path, invalid):
+        fixture = Path(__file__).parent / 'fixtures/resident_protocol.py'
+        worker = ResidentWorker([sys.executable, str(fixture)], Path.cwd(), tmp_path / 'worker', 5)
+    
+        class Models(ModelFixture):
+            def stream_reply(self, messages, cancel):
+                reply = invalid if messages[-1]['content'] == '触发错误' else (
+                    '{"type":"meta","user_emotion":"neutral","expression_intent":{"style":"calm","intensity":0.5}}\n'
+                    '{"type":"sentence","text":"新的轮次可以继续。"}\n')
+                for packet in worker.stream({'value': reply}, cancel):
+                    yield packet['value']
+    
+        enabled = gc.isenabled()
+        gc.disable()  # Quiet servers must recover without waiting for cyclic GC.
+        pipeline = SentencePipeline(Models(), tmp_path / 'turns')
+        sid = pipeline.create_session()['session_id']
+        result = Queue()
+        finished = Event()
+    
+        def send_next():
+            try:
+                result.put(list(pipeline.stream_turn(sid, 0, text='新的一轮')))
+            finally:
+                finished.set()
+    
+        try:
+            first = list(pipeline.stream_turn(sid, 0, text='触发错误'))
+            assert first[-1]['type'] == 'error'
+            assert not any(event['type'] in ('audio_ready', 'done') for event in first)
+            Thread(target=send_next, daemon=True).start()
+            recovered_without_gc = finished.wait(1.5)
+            # Clean up the original defect too, so a failing test leaves no locked thread.
+            gc.collect()
+            assert finished.wait(3), 'next turn did not leave its external worker wait'
+            assert recovered_without_gc, 'invalid LLM output kept the worker stream locked until cyclic GC'
+            assert result.get_nowait()[-1]['type'] == 'done'
+>           assert worker.process.pid == worker.ready['pid'], 'validation failure must not reload a healthy model'
+E           AssertionError: validation failure must not reload a healthy model
+E           assert 49436 == 51948
+E            +  where 49436 = <Popen: returncode: None args: ['D:\\cc-workplace\\digital robot\\digital ro...>.pid
+E            +    where <Popen: returncode: None args: ['D:\\cc-workplace\\digital robot\\digital ro...> = <digit_robot.resident.ResidentWorker object at 0x0000028E2466B080>.process
+
+tests\test_gpu_busy_recovery.py:53: AssertionError
+_ test_invalid_llm_stream_does_not_keep_next_turn_waiting_for_garbage_collection[{"type":"sentence","text":"\u7f3a\u5c11\u8868\u8fbe\u610f\u56fe\u3002"}\n] _
+
+tmp_path = WindowsPath('C:/Users/13953/AppData/Local/Temp/pytest-of-13953/pytest-78/test_invalid_llm_stream_does_n1')
+invalid = '{"type":"sentence","text":"缺少表达意图。"}\n'
+
+    @pytest.mark.parametrize('invalid', ['not-json\n', '{"type":"sentence","text":"缺少表达意图。"}\n'])
+    def test_invalid_llm_stream_does_not_keep_next_turn_waiting_for_garbage_collection(tmp_path: Path, invalid):
+        fixture = Path(__file__).parent / 'fixtures/resident_protocol.py'
+        worker = ResidentWorker([sys.executable, str(fixture)], Path.cwd(), tmp_path / 'worker', 5)
+    
+        class Models(ModelFixture):
+            def stream_reply(self, messages, cancel):
+                reply = invalid if messages[-1]['content'] == '触发错误' else (
+                    '{"type":"meta","user_emotion":"neutral","expression_intent":{"style":"calm","intensity":0.5}}\n'
+                    '{"type":"sentence","text":"新的轮次可以继续。"}\n')
+                for packet in worker.stream({'value': reply}, cancel):
+                    yield packet['value']
+    
+        enabled = gc.isenabled()
+        gc.disable()  # Quiet servers must recover without waiting for cyclic GC.
+        pipeline = SentencePipeline(Models(), tmp_path / 'turns')
+        sid = pipeline.create_session()['session_id']
+        result = Queue()
+        finished = Event()
+    
+        def send_next():
+            try:
+                result.put(list(pipeline.stream_turn(sid, 0, text='新的一轮')))
+            finally:
+                finished.set()
+    
+        try:
+            first = list(pipeline.stream_turn(sid, 0, text='触发错误'))
+            assert first[-1]['type'] == 'error'
+            assert not any(event['type'] in ('audio_ready', 'done') for event in first)
+            Thread(target=send_next, daemon=True).start()
+            recovered_without_gc = finished.wait(1.5)
+            # Clean up the original defect too, so a failing test leaves no locked thread.
+            gc.collect()
+            assert finished.wait(3), 'next turn did not leave its external worker wait'
+            assert recovered_without_gc, 'invalid LLM output kept the worker stream locked until cyclic GC'
+            assert result.get_nowait()[-1]['type'] == 'done'
+>           assert worker.process.pid == worker.ready['pid'], 'validation failure must not reload a healthy model'
+E           AssertionError: validation failure must not reload a healthy model
+E           assert 55292 == 75900
+E            +  where 55292 = <Popen: returncode: None args: ['D:\\cc-workplace\\digital robot\\digital ro...>.pid
+E            +    where <Popen: returncode: None args: ['D:\\cc-workplace\\digital robot\\digital ro...> = <digit_robot.resident.ResidentWorker object at 0x0000028E246735F0>.process
+
+tests\test_gpu_busy_recovery.py:53: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_gpu_busy_recovery.py::test_invalid_llm_stream_does_not_keep_next_turn_waiting_for_garbage_collection[not-json\n]
+FAILED tests/test_gpu_busy_recovery.py::test_invalid_llm_stream_does_not_keep_next_turn_waiting_for_garbage_collection[{"type":"sentence","text":"\u7f3a\u5c11\u8868\u8fbe\u610f\u56fe\u3002"}\n]
+2 failed, 24 passed in 6.39s

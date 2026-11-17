@@ -1,0 +1,39 @@
+{
+  "baseline_main": "0f1c7aa213287522ecf283cd60252aaf3f5833d6",
+  "production_fix": "4e5a430468c5b982d14419c1c6c34266851b611d",
+  "deployed_tested_commit": "c215836f320257523c5b4fada53860c2921afa66",
+  "branch": "codex/gpu-busy-recovery",
+  "src_web_diff_4e5a430_to_c215836": "empty",
+  "source_git_blob_sha256": {
+    "src/digit_robot/resident.py": "d2f109b21039341b9b46d503edd5ff97316c473fa3b39e6d7286e4512d21bc89",
+    "src/digit_robot/sentence_pipeline.py": "25255af082e123d278de45e9083251b4b9303ad6448e242a3c650722c5709ba3",
+    "tests/test_gpu_busy_recovery.py": "0d4bf7917a7a2a3dbab7b5fd0a311caa7c3144cc4e0c14806b12fd3d2b2d8f50",
+    "tests/fixtures/resident_protocol.py": "fe4a5e514c078fdd9d963c5b8dcaf33dae1fcf8d5f8818078a89988d9ee46a42"
+  },
+  "commands": [
+    "python -X utf8 -m pytest -q",
+    "python -X utf8 -m mypy",
+    "node --test --test-concurrency=1 web/tests/*.cjs"
+  ],
+  "local_runtime": {
+    "python": "3.12.7",
+    "node": "22.16.0",
+    "chrome": "157.0.8103.51",
+    "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4060 Laptop GPU (0x000028E0) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+  },
+  "browser_tested_commit": "4e5a430468c5b982d14419c1c6c34266851b611d",
+  "windows_python_passed": 72,
+  "subtests_passed": 42,
+  "browser_tests_passed": 144,
+  "linux_production_adapter_passed": 5,
+  "reviews": {
+    "standards_actionable": 0,
+    "spec_actionable": 0,
+    "test_delta_actionable": 0
+  },
+  "replay_scope": "production adapter and CPU subprocess, original malformed bytes; no new GPU fault output",
+  "real_scope": "One fixed original synthetic Chinese recording at Chromium microphone boundary; real MediaRecorder, ASR/LLM/Qwen3-TTS and rendered audio playback. Fresh session per round. Single-input repeatability, not language-wide quality or physical microphone acceptance.",
+  "raw_browser_data_local_only": "D:\\tools\\codex-tmp\\gpu-busy-browser-real-c215836",
+  "privacy": "No raw original LLM reply, user recording, model weight, key or database submitted",
+  "engineering_acceptance": "not-assessed"
+}

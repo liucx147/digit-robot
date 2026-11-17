@@ -1,0 +1,63 @@
+{
+  "commit": "c215836f320257523c5b4fada53860c2921afa66",
+  "api_pid": 894616,
+  "cwd": "/root/autodl-tmp/digit-robot-releases/gpu-busy-c215836",
+  "health": {
+    "status": "ok",
+    "api_version": "0.2.0",
+    "model_policy": "resident_sentence_pipeline",
+    "sentence_streaming": true,
+    "profile_memory": true
+  },
+  "worker_pids_unchanged": true,
+  "all_load_counts_one": true,
+  "ready_after": {
+    "asr": {
+      "event": "ready",
+      "role": "asr",
+      "pid": 894617,
+      "load_count": 1,
+      "model_load_ms": 8610.87779328227,
+      "gpu": "NVIDIA GeForce RTX 4090 D",
+      "allocated_bytes": 1571201024,
+      "reserved_bytes": 1885339648,
+      "restart_count": 0
+    },
+    "llm": {
+      "event": "ready",
+      "role": "llm",
+      "pid": 894917,
+      "load_count": 1,
+      "model_load_ms": 6574.573293328285,
+      "gpu": "NVIDIA GeForce RTX 4090 D",
+      "allocated_bytes": 9180272640,
+      "reserved_bytes": 9219080192,
+      "restart_count": 0
+    },
+    "tts": {
+      "event": "ready",
+      "role": "tts",
+      "pid": 895030,
+      "load_count": 1,
+      "model_load_ms": 7254.433743655682,
+      "gpu": "NVIDIA GeForce RTX 4090 D",
+      "allocated_bytes": 4178577920,
+      "reserved_bytes": 4311744512,
+      "restart_count": 0
+    },
+    "tts-next": {
+      "event": "ready",
+      "role": "tts",
+      "pid": 895307,
+      "load_count": 1,
+      "model_load_ms": 7156.28756955266,
+      "gpu": "NVIDIA GeForce RTX 4090 D",
+      "allocated_bytes": 4178577920,
+      "reserved_bytes": 4311744512,
+      "restart_count": 0
+    }
+  },
+  "page_has_current_panels": true,
+  "gpu": "NVIDIA GeForce RTX 4090 D, 20745 MiB, 0 %",
+  "real_validation": "two fixed-speech browser rounds + playback stop + real LLM stop and next same-session success"
+}

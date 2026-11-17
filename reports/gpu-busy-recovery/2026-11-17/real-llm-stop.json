@@ -1,0 +1,34 @@
+{
+  "scope": "Real 4090 LLM metadata then Stop; next real LLM/TTS turn on the same session, no model replacement",
+  "old_terminal": "turn_cancelled",
+  "stop_epoch": 1,
+  "stop_to_old_stream_end_ms": 139.99999999941792,
+  "old_audio_delivered": false,
+  "fresh_terminal": "done",
+  "fresh_server_timings_ms": {
+    "first_token_ms": 888.384,
+    "first_sentence_ms": 1398.761,
+    "llm_ms": 2415.4969565570354,
+    "llm_done_ms": 2416.647,
+    "first_audio_ready_ms": 3965.714,
+    "all_audio_ready_ms": 6020.964,
+    "total_ms": 6020.964,
+    "tts_ms": 8207.743
+  },
+  "fresh_audio_checks": [
+    {
+      "segment_index": 0,
+      "bytes": 99884
+    },
+    {
+      "segment_index": 1,
+      "bytes": 142124
+    },
+    {
+      "segment_index": 2,
+      "bytes": 84524
+    }
+  ],
+  "fresh_gpu_busy_errors": 0,
+  "physical_stop_assessed": false
+}

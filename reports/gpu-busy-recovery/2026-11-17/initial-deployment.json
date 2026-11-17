@@ -1,0 +1,69 @@
+{
+  "commit": "4e5a430468c5b982d14419c1c6c34266851b611d",
+  "status": "failed",
+  "scope": "real models and synthetic input; no physical acceptance",
+  "previous_pid": 886480,
+  "pid": 888952,
+  "health": {
+    "status": "ok",
+    "api_version": "0.2.0",
+    "model_policy": "resident_sentence_pipeline",
+    "sentence_streaming": true,
+    "profile_memory": true
+  },
+  "ready": {
+    "asr": {
+      "event": "ready",
+      "role": "asr",
+      "pid": 888953,
+      "load_count": 1,
+      "model_load_ms": 8564.297184348106,
+      "gpu": "NVIDIA GeForce RTX 4090 D",
+      "allocated_bytes": 1571201024,
+      "reserved_bytes": 1885339648,
+      "restart_count": 0
+    },
+    "llm": {
+      "event": "ready",
+      "role": "llm",
+      "pid": 889253,
+      "load_count": 1,
+      "model_load_ms": 6513.283021748066,
+      "gpu": "NVIDIA GeForce RTX 4090 D",
+      "allocated_bytes": 9180272640,
+      "reserved_bytes": 9219080192,
+      "restart_count": 0
+    },
+    "tts": {
+      "event": "ready",
+      "role": "tts",
+      "pid": 889341,
+      "load_count": 1,
+      "model_load_ms": 6934.891473501921,
+      "gpu": "NVIDIA GeForce RTX 4090 D",
+      "allocated_bytes": 4178577920,
+      "reserved_bytes": 4311744512,
+      "restart_count": 0
+    },
+    "tts-next": {
+      "event": "ready",
+      "role": "tts",
+      "pid": 889643,
+      "load_count": 1,
+      "model_load_ms": 7048.771698027849,
+      "gpu": "NVIDIA GeForce RTX 4090 D",
+      "allocated_bytes": 4178577920,
+      "reserved_bytes": 4311744512,
+      "restart_count": 0
+    }
+  },
+  "failure_type": "RuntimeError",
+  "failure": "verification rejected",
+  "rollback_health": {
+    "status": "ok",
+    "api_version": "0.2.0",
+    "model_policy": "resident_sentence_pipeline",
+    "sentence_streaming": true
+  },
+  "rollback_pid": 891629
+}

@@ -1,0 +1,24 @@
+{
+  "algorithm": "sha256",
+  "files": {
+    ".gitattributes": "920781736b28385b1c3625f2a8a187763ea8facb06daa3f6bb319bee46182807",
+    ".gitignore": "72f38dc63dfd954cdae501e40eff819490fff2ea46b524c2d9c001b251e83dcc",
+    "browser-summary.json": "7ea15a4f35aeff814877bbd6d235324afaa0b16a8543dac61d5db771e432e08a",
+    "browser.log": "6139dec074a04fd3504191900be1251539d7a2c640e7f1512eac7708d086e3dc",
+    "deployment-status.json": "25566f5972e01c4c8f5adda1c7b79c929cf052cc667e5c83334dd04c45b7360f",
+    "first-attempt.log": "ac34e9f73376ad05485c77119676ef551e4b1dd9b95cf9844989001e2e0f82c2",
+    "initial-deployment.json": "8addfc4041bc1c1e73d7c65208a187e03f70a49960b5e5ed1d5f5cb31f7aae1e",
+    "initial-simplified-fixed.json": "df6cf4a8d796a3976175c3a7275b8220b26a36cf13a695ed69542c88d468fc00",
+    "initial-simplified-old.json": "e61ce799130937905cf88f02b41bc0c8b087a27c9bd57208ead455f1bbf4af1f",
+    "linux-adapter.log": "ad232691ca727da164b5589c096585a451a4365409d3341915ae46d8034577e5",
+    "mypy.log": "63da153bcdac04b2cc982479df4378f21b20029f9acb87ad908fb4d5befe6a43",
+    "python.log": "9c9f79674746711350a666546eff5a7d3e276a02fbb8e20322bb8ebdfe502838",
+    "README.md": "1f47cea68a8bb89bd927dd9f68f5b0b1390cae24df15e4c1b46dd786e39345c6",
+    "real-llm-stop.json": "3dcfa58e9309b13cf123f1d07d688fccf3bbbed96ce10efad88d3b5648da590e",
+    "red.log": "f3df608945ce550f049a2077171d6bd8ebac1a091fd0a4fb9bbbeace1f9acc93",
+    "replay-fixed.json": "7b3e0ec6bef97de696edd03cfb09ee69f59e1958d490d0dfb5a66a31351830c3",
+    "replay-old.json": "424aa7a98fd766b0467bed6f79d9c929de6a4a46c5711843374bdb55f7ac0103",
+    "runtime-proof.json": "26cc09f14ce142b39992f08cae8b4867ba23bdda7944e5e0e63db2bed80ef85d",
+    "verification.json": "dff06bf21185550dca0dfb2a7264357e35fd604f1702c85bcdbcef7f1f981a69"
+  }
+}
