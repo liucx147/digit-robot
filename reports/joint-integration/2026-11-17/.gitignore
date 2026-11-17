@@ -1,0 +1,13 @@
+*
+!.gitignore
+!.gitattributes
+!README.md
+!python.log
+!mypy.log
+!browser.log
+!browser-after-clock-fix.log
+!clock-proposal.log
+!profile-report.json
+!browser-environment.json
+!verification.json
+!sha256sums.json

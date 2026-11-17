@@ -6,6 +6,8 @@
 
 **Status:** ready-for-agent
 
+**State:** open
+
 **Category:** enhancement
 
 **Parent:** [数字人优先的单卡离线情感交互与蒸馏规格 v1.1](../spec.md)
@@ -22,3 +24,8 @@
 ## User stories
 
 US02、US34、US46、US47
+
+
+## A阶段进展（2026-11-16）
+
+A已交付启动前检查、显式持久数据库参数、初始化失败资源清理、受控验证与回退说明。4090完成真实模型启动、停止再启动、SQLite持久化和模型故障恢复；这不等于单5090同主机断网验收，保持open。 代码与全部成功/失败边界见[A后端验证报告](../../../reports/a-backend/2026-11-16/README.md)，B接口见[档案契约](../../../docs/development/profile-api.md)。本次不以软件测试替代物理验收。

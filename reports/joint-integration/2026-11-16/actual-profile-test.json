@@ -1,0 +1,23 @@
+{
+  "tested_integration_sha": "6a487c9718d7d04debc83464dbf42ab4f1f62690",
+  "backend_src": "C:\\Users\\13953\\.codex\\worktrees\\merge-resident-main\\digital robot\\src",
+  "web_root": "C:\\Users\\13953\\.codex\\worktrees\\merge-resident-main\\digital robot\\web",
+  "backend_files_sha256": {
+    "src/digit_robot/profiles.py": "3f33867d5bd6d798a93cdb6e54461d1cd1e67466d631382e41f346cc9e4490cb",
+    "src/digit_robot/voice.py": "0cef9ba2ae80c0985fca1ae91e22eb7053c9b2230cfcadaae219924486cbb2ca",
+    "src/digit_robot/server.py": "4e87969dd93f62dd48c598954a8a74ac1757036f290b437ec8f145b82f93ffb2"
+  },
+  "scope": "real HTTP and SQLite; synthetic model only",
+  "inherited_test_report_declared_a_sha": "26c6b995c165d14753612aed4dad8dc78cedbaad",
+  "note": "Inherited B test hardcodes a_source_sha=26c6b9. This execution used the actual integration checkout above; the declared old SHA is not presented as the actual tested backend version.",
+  "browser": "157.0.8103.51",
+  "renderer": {
+    "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4060 Laptop GPU (0x000028E0) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "vendor": "Google Inc. (NVIDIA)",
+    "webgl_version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+  },
+  "service_restart": true,
+  "read_changed_server_value": true,
+  "cleared_preferences": true,
+  "deleted_profile": true
+}

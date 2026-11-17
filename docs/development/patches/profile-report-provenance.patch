@@ -1,0 +1,21 @@
+--- a/web/tests/profile-real-api.test.cjs
++++ b/web/tests/profile-real-api.test.cjs
+@@ -1,5 +1,6 @@
+ // Real A HTTP/SQLite, synthetic model only. No GPU or production service.
+ const {test}=require('node:test');
++const {createHash}=require('node:crypto');
+ const assert=require('node:assert/strict');
+ const fs=require('node:fs/promises');
+ const os=require('node:os');
+@@ -70,6 +71,10 @@
+   await page.waitForFunction(()=>document.querySelector('#profile-current').textContent.includes('匿名'));
+   assert.equal((await fetch(`${service.base}/v1/profiles/${profile.profile_id}`)).status,404);
+   const renderer=await page.locator('#avatar').getAttribute('data-renderer');
+-  await fs.writeFile(path.join(evidence,'report.json'),JSON.stringify({scope:'real-A-HTTP-and-SQLite-with-synthetic-model-only',a_source_sha:'26c6b995c165d14753612aed4dad8dc78cedbaad',browser:await app.browser.version(),renderer:JSON.parse(renderer),service_restart:true,read_changed_server_value:true,cleared_preferences:true,deleted_profile:true,real_model_or_physical_acceptance:false},null,2));
++  const aSource = await fs.realpath(process.env.B_PROFILE_BACKEND_SRC), aHashes = {};
++  for (const name of (await fs.readdir(path.join(aSource,'digit_robot'))).filter(name=>name.endsWith('.py')).sort()) {
++    aHashes['digit_robot/'+name] = createHash('sha256').update(await fs.readFile(path.join(aSource,'digit_robot',name))).digest('hex');
++  }
++  await fs.writeFile(path.join(evidence,'report.json'),JSON.stringify({scope:'real-A-HTTP-and-SQLite-with-synthetic-model-only',a_source_sha:null,a_source_path:aSource,a_source_files_sha256:aHashes,browser:await app.browser.version(),renderer:JSON.parse(renderer),service_restart:true,read_changed_server_value:true,cleared_preferences:true,deleted_profile:true,real_model_or_physical_acceptance:false},null,2));
+  }finally{await service?.stop();await app.close();}
+ });

@@ -1,0 +1,75 @@
+{
+  "integration_source_commit": "85562c5b1d0ed2ce018c44bab927f9cac241672d",
+  "prior_integration_commit": "0627fcecf688e0a4fbc6283adb70dfdc78c22f37",
+  "b_product_commit": "837d4b04ae408b987e7c6d4de2e9882f0059469f",
+  "merge_method": "fast-forward, preserving A and B history",
+  "attachment_matches_b_handoff_after_newline_normalization": true,
+  "b_evidence_files_hash_verified": 44,
+  "a_backend_files_hash_verified": 14,
+  "backend_tests_and_profile_contract_diff_from_prior": "empty",
+  "production_web_and_backend_diff_from_b_product_commit": "empty",
+  "changed_files_audited": 54,
+  "new_audio_database_model_files": 0,
+  "credential_pattern_matches": 0,
+  "engineering_acceptance": "not-assessed",
+  "gpu_or_remote_service_changed": false,
+  "checked_at_utc": "2026-11-17T05:35:35.166746+00:00",
+  "authorized_clock_fix_commit": "a6bde0857adf52ae11d58621315971bcf9d65044",
+  "clock_fix_changed_files": [
+    "web/tests/acceptance-journal-public.test.cjs"
+  ],
+  "python": {
+    "passed": 67,
+    "subtests_passed": 42,
+    "command": "python -X utf8 -m pytest -q"
+  },
+  "mypy": {
+    "source_files": 17,
+    "result": "passed",
+    "command": "python -X utf8 -m mypy"
+  },
+  "browser_initial": {
+    "passed": 143,
+    "failed": 1,
+    "skipped": 0,
+    "failure": "clock.pauseAt target sampled in a prior RPC had become the past"
+  },
+  "browser_final": {
+    "passed": 144,
+    "failed": 0,
+    "skipped": 0,
+    "command": "node --test --test-concurrency=1 web/tests/*.cjs"
+  },
+  "runtime": {
+    "node": "22.16.0",
+    "python": "3.12.7",
+    "chrome": "157.0.8103.51"
+  },
+  "source_files_sha256": {
+    "web/acceptance-journal.js": "b9d55c0c9f08deecdaeb0d7e987e21da134ab34bae7c1b61de88f43c6c08e770",
+    "web/main.js": "c34b74fdb0b1da1f88af721de88aa6c6a63a53c796bc3a099d0cfa03a3269592",
+    "web/index.html": "871309299fadde54d988c4f5248e639235c80e23dd8a15c8324952134f48d744",
+    "web/style.css": "9d0c9ad8830758dd9f43bf7a31955c7369eda2a10af473929405303519a15dfa",
+    "web/tests/acceptance-journal-public.test.cjs": "5a381392034ca1a30e5b90fb9f50ef4e4777cf96e30a3fda9afaa31ca7fc770e"
+  },
+  "reviews": {
+    "standards_initial_actionable_findings": 0,
+    "spec_initial_actionable_findings": 0,
+    "clock_proposal_spec_findings": 0
+  },
+  "service_observation": {
+    "remote8003_health_http": 200,
+    "local18000_listening": false,
+    "local18000_health_reachable": false,
+    "local_tunnel_start": "automatic approval review rejected: blocked by policy; no detailed reason provided",
+    "remote_process_changed": false
+  },
+  "execution_environment": {
+    "PLAYWRIGHT_MODULE": "D:\\tools\\gstack\\node_modules\\playwright",
+    "CHROME_PATH": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+    "PYTHON_EXE": "D:\\cc-workplace\\digital robot\\digital robot\\.venv\\Scripts\\python.exe",
+    "B_PROFILE_BACKEND_SRC": "C:\\Users\\13953\\.codex\\worktrees\\merge-resident-main\\digital robot\\src",
+    "B_PROFILE_WEB_ROOT": "C:\\Users\\13953\\.codex\\worktrees\\merge-resident-main\\digital robot\\web"
+  },
+  "scope": "Local synthetic audio/model HTTP/browser regression, accelerated clock tests only; no new real-model GPU soak or physical audiovisual acceptance."
+}

@@ -1,0 +1,28 @@
+✖ reload preserves interrupted draft without auto capture; manual restart and end create separate segments; clear is explicit (4542.5951ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5156.1287
+
+✖ failing tests:
+
+test at web\tests\acceptance-journal-public.test.cjs:105:1
+✖ reload preserves interrupted draft without auto capture; manual restart and end create separate segments; clear is explicit (4542.5951ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (C:\Users\30415\.codex\worktrees\b-profile-ui\b-voice-integration\web\tests\acceptance-journal-public.test.cjs:109:39)
+      at async Test.run (node:internal/test_runner/test:1332:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

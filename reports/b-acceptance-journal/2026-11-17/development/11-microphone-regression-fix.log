@@ -1,0 +1,10 @@
+✔ a later text turn clears the microphone input timing instead of reusing the previous speech end (8690.3543ms)
+✔ Stop before reply activity ignores late device acknowledgement and isolates the next text turn (6061.2189ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 15470.2851

@@ -1,0 +1,21 @@
+# Software substitutes only; no real-model, GPU-load or physical acceptance evidence.
+$env:PLAYWRIGHT_MODULE='C:\Users\30415\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\node_modules\playwright'
+$env:CHROME_PATH='C:\Program Files\Google\Chrome\Application\chrome.exe'
+$env:BROWSER_RENDERER='default'
+# Default renderer, no SwiftShader flags. One browser suite at a time.
+# 01-shared-red.log: original 1191f942 module, shared-context public-page failure.
+# 02/03: still red; python.exe was Windows Store alias, py default pointed to missing D:\python.
+# 04: code applied through E:\AI-Tools\Python311\python.exe; async status assertion failed.
+# 05: first shared-context green after waiting for public UI lock result.
+# 06-owner-boundaries-red.log: baseline module, 0/3; run-baseline-red.py restores fixed module in finally.
+& 'E:\AI-Tools\Python311\python.exe' artifacts/b-acceptance-journal-review/run-baseline-red.py
+# 07: 3/4; pauseAt sampled current time occasionally in the past. New cases now pause at +100ms.
+# 08-owner-boundaries-green.log: 4/4 after clock seam correction.
+node --test --test-name-pattern='shared draft|simultaneous shared|failed clear stops|missing browser draft' web/tests/acceptance-journal-public.test.cjs
+# 09-journal-full.log: full original sixteen + four new public cases.
+node --test web/tests/acceptance-journal-public.test.cjs
+# 10-profile-public.log / 11-offline-public.log: default-off compatibility, sequential.
+node --test web/tests/profile-public.test.cjs
+node --test web/tests/offline-page-public.test.cjs
+# Review scope: only journal module, its public tests and README changed.
+git diff --check

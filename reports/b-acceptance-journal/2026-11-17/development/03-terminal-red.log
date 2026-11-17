@@ -1,0 +1,65 @@
+✖ model failure is retained without content or completed turn; recovery still records (1716.4077ms)
+✖ media failure is retained without content or completed turn; recovery still records (1013.4026ms)
+✖ stop preserves cancelled attempt, ignores late HTTP work and a new turn can complete (2258.5853ms)
+✔ capture joining an in-flight turn cannot claim its completion; local audio is excluded (3137.3908ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 1
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8730.6499
+
+✖ failing tests:
+
+test at web\tests\acceptance-journal-public.test.cjs:75:40
+✖ model failure is retained without content or completed turn; recovery still records (1716.4077ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (C:\Users\30415\.codex\worktrees\b-profile-ui\b-voice-integration\web\tests\acceptance-journal-public.test.cjs:82:88)
+      at async Test.run (node:internal/test_runner/test:1332:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at web\tests\acceptance-journal-public.test.cjs:75:40
+✖ media failure is retained without content or completed turn; recovery still records (1013.4026ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (C:\Users\30415\.codex\worktrees\b-profile-ui\b-voice-integration\web\tests\acceptance-journal-public.test.cjs:82:88)
+      at async Test.run (node:internal/test_runner/test:1332:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:911:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at web\tests\acceptance-journal-public.test.cjs:86:1
+✖ stop preserves cancelled attempt, ignores late HTTP work and a new turn can complete (2258.5853ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (C:\Users\30415\.codex\worktrees\b-profile-ui\b-voice-integration\web\tests\acceptance-journal-public.test.cjs:93:58)
+      at async Test.run (node:internal/test_runner/test:1332:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:911:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

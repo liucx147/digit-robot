@@ -1,0 +1,28 @@
+✖ shared draft has one page owner; other pages cannot restore-write, capture or clear it and cleared history never revives (4048.9268ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4637.3689
+
+✖ failing tests:
+
+test at web\tests\acceptance-journal-public.test.cjs:216:1
+✖ shared draft has one page owner; other pages cannot restore-write, capture or clear it and cleared history never revives (4048.9268ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /另一个页面/. Input:
+  
+  '已读取本机草稿快照，旧采集不自动继续；开始新段时重新读取，其他页面可能仍在采集。工程验收待复核。'
+  
+      at TestContext.<anonymous> (C:\Users\30415\.codex\worktrees\b-profile-ui\b-voice-integration\web\tests\acceptance-journal-public.test.cjs:224:28)
+      at async Test.run (node:internal/test_runner/test:1332:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '已读取本机草稿快照，旧采集不自动继续；开始新段时重新读取，其他页面可能仍在采集。工程验收待复核。',
+    expected: /另一个页面/,
+    operator: 'match',
+    diff: 'simple'
+  }

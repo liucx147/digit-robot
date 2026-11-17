@@ -1,0 +1,79 @@
+test_37_of_40_fails_without_rounding_up (test_cli.MeasurementCLI.test_37_of_40_fails_without_rounding_up) ... ok
+test_browser_manifest_is_required_and_incomplete_or_silent_capture_fails_every_event (test_cli.MeasurementCLI.test_browser_manifest_is_required_and_incomplete_or_silent_capture_fails_every_event) ... ok
+test_calibration_uncertainty_is_conservative_and_browser_scope_stays_pending (test_cli.MeasurementCLI.test_calibration_uncertainty_is_conservative_and_browser_scope_stays_pending) ... ok
+test_freeze_creates_reproducible_mandarin_fixture_and_40_expected_edges (test_cli.MeasurementCLI.test_freeze_creates_reproducible_mandarin_fixture_and_40_expected_edges) ... ok
+test_inclusive_signed_boundaries_and_fixed_denominator (test_cli.MeasurementCLI.test_inclusive_signed_boundaries_and_fixed_denominator) ... ok
+test_invalid_or_tampered_inputs_are_rejected (test_cli.MeasurementCLI.test_invalid_or_tampered_inputs_are_rejected) ... ok
+test_missing_ambiguous_reused_and_uncertain_edges_stay_failures (test_cli.MeasurementCLI.test_missing_ambiguous_reused_and_uncertain_edges_stay_failures) ... ok
+test_silent_capture_fails_all_events_and_missing_manifest_is_rejected (test_cli.MeasurementCLI.test_silent_capture_fails_all_events_and_missing_manifest_is_rejected) ... ok
+test_wrong_or_missing_capture_identity_fails_all_frozen_events (test_cli.MeasurementCLI.test_wrong_or_missing_capture_identity_fails_all_frozen_events) ... 
+  test_wrong_or_missing_capture_identity_fails_all_frozen_events (test_cli.MeasurementCLI.test_wrong_or_missing_capture_identity_fails_all_frozen_events) (name='old VRM asset') ... FAIL
+  test_wrong_or_missing_capture_identity_fails_all_frozen_events (test_cli.MeasurementCLI.test_wrong_or_missing_capture_identity_fails_all_frozen_events) (name='missing avatar') ... FAIL
+  test_wrong_or_missing_capture_identity_fails_all_frozen_events (test_cli.MeasurementCLI.test_wrong_or_missing_capture_identity_fails_all_frozen_events) (name='missing renderer') ... FAIL
+  test_wrong_or_missing_capture_identity_fails_all_frozen_events (test_cli.MeasurementCLI.test_wrong_or_missing_capture_identity_fails_all_frozen_events) (name='incomplete renderer') ... FAIL
+test_wrong_type_unpairable_edges_and_review_errors_count_as_failures (test_cli.MeasurementCLI.test_wrong_type_unpairable_edges_and_review_errors_count_as_failures) ... ok
+
+======================================================================
+FAIL: test_wrong_or_missing_capture_identity_fails_all_frozen_events (test_cli.MeasurementCLI.test_wrong_or_missing_capture_identity_fails_all_frozen_events) (name='old VRM asset')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\30415\.codex\worktrees\b-profile-ui\b-voice-integration\tests\measurement\test_cli.py", line 172, in test_wrong_or_missing_capture_identity_fails_all_frozen_events
+    self.assertEqual((report["passed"], report["total"], report["threshold_pass"]), (0, 40, False))
+AssertionError: Tuples differ: (40, 40, True) != (0, 40, False)
+
+First differing element 0:
+40
+0
+
+- (40, 40, True)
++ (0, 40, False)
+
+======================================================================
+FAIL: test_wrong_or_missing_capture_identity_fails_all_frozen_events (test_cli.MeasurementCLI.test_wrong_or_missing_capture_identity_fails_all_frozen_events) (name='missing avatar')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\30415\.codex\worktrees\b-profile-ui\b-voice-integration\tests\measurement\test_cli.py", line 172, in test_wrong_or_missing_capture_identity_fails_all_frozen_events
+    self.assertEqual((report["passed"], report["total"], report["threshold_pass"]), (0, 40, False))
+AssertionError: Tuples differ: (40, 40, True) != (0, 40, False)
+
+First differing element 0:
+40
+0
+
+- (40, 40, True)
++ (0, 40, False)
+
+======================================================================
+FAIL: test_wrong_or_missing_capture_identity_fails_all_frozen_events (test_cli.MeasurementCLI.test_wrong_or_missing_capture_identity_fails_all_frozen_events) (name='missing renderer')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\30415\.codex\worktrees\b-profile-ui\b-voice-integration\tests\measurement\test_cli.py", line 172, in test_wrong_or_missing_capture_identity_fails_all_frozen_events
+    self.assertEqual((report["passed"], report["total"], report["threshold_pass"]), (0, 40, False))
+AssertionError: Tuples differ: (40, 40, True) != (0, 40, False)
+
+First differing element 0:
+40
+0
+
+- (40, 40, True)
++ (0, 40, False)
+
+======================================================================
+FAIL: test_wrong_or_missing_capture_identity_fails_all_frozen_events (test_cli.MeasurementCLI.test_wrong_or_missing_capture_identity_fails_all_frozen_events) (name='incomplete renderer')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\30415\.codex\worktrees\b-profile-ui\b-voice-integration\tests\measurement\test_cli.py", line 172, in test_wrong_or_missing_capture_identity_fails_all_frozen_events
+    self.assertEqual((report["passed"], report["total"], report["threshold_pass"]), (0, 40, False))
+AssertionError: Tuples differ: (40, 40, True) != (0, 40, False)
+
+First differing element 0:
+40
+0
+
+- (40, 40, True)
++ (0, 40, False)
+
+----------------------------------------------------------------------
+Ran 10 tests in 4.164s
+
+FAILED (failures=4)

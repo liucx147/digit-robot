@@ -1,0 +1,755 @@
+TAP version 13
+# Subtest: web\\tests\\browser-fixture.cjs
+ok 1 - web\\tests\\browser-fixture.cjs
+  ---
+  duration_ms: 762.9414
+  type: 'test'
+  ...
+# Subtest: real CPU face inference on fixed photographs visibly moves the actual eyes left and right with local resources only
+ok 2 - real CPU face inference on fixed photographs visibly moves the actual eyes left and right with local resources only
+  ---
+  duration_ms: 2290.3245
+  type: 'test'
+  ...
+# Subtest: fixed up/down faces and empty input have explicit visible behavior, and Stop releases gaze while preserving audio
+ok 3 - fixed up/down faces and empty input have explicit visible behavior, and Stop releases gaze while preserving audio
+  ---
+  duration_ms: 1998.7285
+  type: 'test'
+  ...
+# Subtest: camera permission denial is explained and remains neutral without affecting audio controls
+ok 4 - camera permission denial is explained and remains neutral without affecting audio controls
+  ---
+  duration_ms: 425.2693
+  type: 'test'
+  ...
+# Subtest: camera pixels drive mirrored gaze through the shared mixer while real audio keeps its mouth/pause/expression, and both Stops release input
+ok 5 - camera pixels drive mirrored gaze through the shared mixer while real audio keeps its mouth/pause/expression, and both Stops release input
+  ---
+  duration_ms: 2391.6963
+  type: 'test'
+  ...
+# Subtest: a fixed local video of real face pixels follows both sides then returns neutral on completion
+ok 6 - a fixed local video of real face pixels follows both sides then returns neutral on completion
+  ---
+  duration_ms: 8640.6421
+  type: 'test'
+  ...
+# Subtest: a local model load failure is visible, closes input, and can be retried from the same page
+ok 7 - a local model load failure is visible, closes input, and can be retried from the same page
+  ---
+  duration_ms: 861.4078
+  type: 'test'
+  ...
+# Subtest: Stop cancels a late camera grant and prevents old input from restoring gaze
+ok 8 - Stop cancels a late camera grant and prevents old input from restoring gaze
+  ---
+  duration_ms: 1940.9626
+  type: 'test'
+  ...
+# Subtest: a busy camera explains competing use and can be retried after the device becomes available
+ok 9 - a busy camera explains competing use and can be retried after the device becomes available
+  ---
+  duration_ms: 1359.7529
+  type: 'test'
+  ...
+# Subtest: default measurement captures the current head and records actual renderer without implying physical acceptance
+ok 10 - default measurement captures the current head and records actual renderer without implying physical acceptance
+  ---
+  duration_ms: 2712.1598
+  type: 'test'
+  ...
+# Subtest: external media needs explicit condition declarations before a physical manifest can be downloaded
+ok 11 - external media needs explicit condition declarations before a physical manifest can be downloaded
+  ---
+  duration_ms: 2213.3481
+  type: 'test'
+  ...
+# Subtest: audio-only original media cannot produce a physical screen-video manifest
+ok 12 - audio-only original media cannot produce a physical screen-video manifest
+  ---
+  duration_ms: 1698.5327
+  type: 'test'
+  ...
+# Subtest: a known browser-origin manifest cannot be relabeled as a physical capture
+ok 13 - a known browser-origin manifest cannot be relabeled as a physical capture
+  ---
+  duration_ms: 1836.7266
+  type: 'test'
+  ...
+# Subtest: scope changes clear physical declarations and edits during hashing abort an export
+ok 14 - scope changes clear physical declarations and edits during hashing abort an export
+  ---
+  duration_ms: 1855.5507
+  type: 'test'
+  ...
+# Subtest: a stale failed manifest read cannot erase the newer original manifest
+ok 15 - a stale failed manifest read cannot erase the newer original manifest
+  ---
+  duration_ms: 1780.0609
+  type: 'test'
+  ...
+# Subtest: legacy VRM diagnostic records canvas pixels and audible graph output
+ok 16 - legacy VRM diagnostic records canvas pixels and audible graph output
+  ---
+  duration_ms: 39151.874
+  type: 'test'
+  ...
+# Subtest: permission denial and capture without an audio track are visible failures without silent fallback
+ok 17 - permission denial and capture without an audio track are visible failures without silent fallback
+  ---
+  duration_ms: 1277.5208
+  type: 'test'
+  ...
+# Subtest: a missing frozen fixture is explained and recording remains unavailable
+ok 18 - a missing frozen fixture is explained and recording remains unavailable
+  ---
+  duration_ms: 378.7545
+  type: 'test'
+  ...
+# Subtest: capture reloads the frozen Mandarin from the beginning after the embedded page changes or plays another input
+ok 19 - capture reloads the frozen Mandarin from the beginning after the embedded page changes or plays another input
+  ---
+  duration_ms: 1038.8924
+  type: 'test'
+  ...
+# Subtest: recording locks audio replacement, replay and dialogue controls while keeping expression and gaze available
+ok 20 - recording locks audio replacement, replay and dialogue controls while keeping expression and gaze available
+  ---
+  duration_ms: 937.0648
+  type: 'test'
+  ...
+# Subtest: a changed media source, seek, replay, pause or rate invalidates capture and retains the original evidence
+ok 21 - a changed media source, seek, replay, pause or rate invalidates capture and retains the original evidence
+  ---
+  duration_ms: 8036.4502
+  type: 'test'
+  ...
+# Subtest: occupied microphone explains how to recover and a retry releases its audio track
+ok 22 - occupied microphone explains how to recover and a retry releases its audio track
+  ---
+  duration_ms: 1484.4478
+  type: 'test'
+  ...
+# Subtest: a microphone turn posts mono PCM16 WAV and displays ASR text before actual reply playback
+ok 23 - a microphone turn posts mono PCM16 WAV and displays ASR text before actual reply playback
+  ---
+  duration_ms: 3731.3217
+  type: 'test'
+  ...
+# Subtest: ASR, generation and synthesis remain visible while waiting; recorded latency starts at End and ends at real media start
+ok 24 - ASR, generation and synthesis remain visible while waiting; recorded latency starts at End and ends at real media start
+  ---
+  duration_ms: 1726.8642
+  type: 'test'
+  ...
+# Subtest: the head keeps a bounded height and active Stop remains visible at 1100px
+ok 25 - the head keeps a bounded height and active Stop remains visible at 1100px
+  ---
+  duration_ms: 531.2204
+  type: 'test'
+  ...
+# Subtest: the head keeps a bounded height and active Stop remains visible at 390px
+ok 26 - the head keeps a bounded height and active Stop remains visible at 390px
+  ---
+  duration_ms: 521.5519
+  type: 'test'
+  ...
+# Subtest: permission denied is explained without a fabricated successful audio turn
+ok 27 - permission denied is explained without a fabricated successful audio turn
+  ---
+  duration_ms: 462.5167
+  type: 'test'
+  ...
+# Subtest: unsupported browser is explained without a fabricated successful audio turn
+ok 28 - unsupported browser is explained without a fabricated successful audio turn
+  ---
+  duration_ms: 466.2201
+  type: 'test'
+  ...
+# Subtest: empty recorder data is explained without a fabricated successful audio turn
+ok 29 - empty recorder data is explained without a fabricated successful audio turn
+  ---
+  duration_ms: 1067.4725
+  type: 'test'
+  ...
+# Subtest: silent microphone is explained without a fabricated successful audio turn
+ok 30 - silent microphone is explained without a fabricated successful audio turn
+  ---
+  duration_ms: 1069.701
+  type: 'test'
+  ...
+# Subtest: corrupt recorder format is explained without a fabricated successful audio turn
+ok 31 - corrupt recorder format is explained without a fabricated successful audio turn
+  ---
+  duration_ms: 1078.0887
+  type: 'test'
+  ...
+# Subtest: oversized recorder data is explained without a fabricated successful audio turn
+ok 32 - oversized recorder data is explained without a fabricated successful audio turn
+  ---
+  duration_ms: 893.9215
+  type: 'test'
+  ...
+# Subtest: the 30-second recording deadline visibly cancels and releases the microphone without upload
+ok 33 - the 30-second recording deadline visibly cancels and releases the microphone without upload
+  ---
+  duration_ms: 674.1917
+  type: 'test'
+  ...
+# Subtest: global Stop during permission discards late device work, releases tracks and permits a new microphone epoch
+ok 34 - global Stop during permission discards late device work, releases tracks and permits a new microphone epoch
+  ---
+  duration_ms: 1313.7553
+  type: 'test'
+  ...
+# Subtest: global Stop during onstop discards late device work, releases tracks and permits a new microphone epoch
+ok 35 - global Stop during onstop discards late device work, releases tracks and permits a new microphone epoch
+  ---
+  duration_ms: 1777.7714
+  type: 'test'
+  ...
+# Subtest: global Stop during decode discards late device work, releases tracks and permits a new microphone epoch
+ok 36 - global Stop during decode discards late device work, releases tracks and permits a new microphone epoch
+  ---
+  duration_ms: 1781.2407
+  type: 'test'
+  ...
+# Subtest: global Stop during recording cancels rather than submitting the collected speech
+ok 37 - global Stop during recording cancels rather than submitting the collected speech
+  ---
+  duration_ms: 616.1675
+  type: 'test'
+  ...
+# Subtest: Stop discards microphone POST HTTP 200 and its old status while a new recording is active
+ok 38 - Stop discards microphone POST HTTP 200 and its old status while a new recording is active
+  ---
+  duration_ms: 2214.089
+  type: 'test'
+  ...
+# Subtest: Stop discards microphone POST HTTP 502 and its old status while a new recording is active
+ok 39 - Stop discards microphone POST HTTP 502 and its old status while a new recording is active
+  ---
+  duration_ms: 2227.6761
+  type: 'test'
+  ...
+# Subtest: ASR empty_transcript stays an explicit failure instead of a spoken success
+ok 40 - ASR empty_transcript stays an explicit failure instead of a spoken success
+  ---
+  duration_ms: 1082.3296
+  type: 'test'
+  ...
+# Subtest: ASR stage_timeout stays an explicit failure instead of a spoken success
+ok 41 - ASR stage_timeout stays an explicit failure instead of a spoken success
+  ---
+  duration_ms: 1068.5482
+  type: 'test'
+  ...
+# Subtest: ASR unsupported_media_type stays an explicit failure instead of a spoken success
+ok 42 - ASR unsupported_media_type stays an explicit failure instead of a spoken success
+  ---
+  duration_ms: 1084.5879
+  type: 'test'
+  ...
+# Subtest: a nominally successful response with blank ASR text cannot fetch or play the reply audio
+ok 43 - a nominally successful response with blank ASR text cannot fetch or play the reply audio
+  ---
+  duration_ms: 1085.4209
+  type: 'test'
+  ...
+# Subtest: local audio playback offers no concurrent microphone turn and enables it again after completion
+ok 44 - local audio playback offers no concurrent microphone turn and enables it again after completion
+  ---
+  duration_ms: 3018.5369
+  type: 'test'
+  ...
+# Subtest: a microphone recording failure releases only audio tracks and leaves camera-only gaze available
+ok 45 - a microphone recording failure releases only audio tracks and leaves camera-only gaze available
+  ---
+  duration_ms: 732.7964
+  type: 'test'
+  ...
+# Subtest: a later text turn clears the microphone input timing instead of reusing the previous speech end
+ok 46 - a later text turn clears the microphone input timing instead of reusing the previous speech end
+  ---
+  duration_ms: 3780.819
+  type: 'test'
+  ...
+# Subtest: 1000 ms leading silence keeps reply activity timing pending until real playback reaches the signal
+ok 47 - 1000 ms leading silence keeps reply activity timing pending until real playback reaches the signal
+  ---
+  duration_ms: 2482.7184
+  type: 'test'
+  ...
+# Subtest: paused media and a rejected play acknowledgement leave reply activity pending until an explicit retry
+ok 48 - paused media and a rejected play acknowledgement leave reply activity pending until an explicit retry
+  ---
+  duration_ms: 5037.7576
+  type: 'test'
+  ...
+# Subtest: Stop before reply activity ignores late device acknowledgement and isolates the next text turn
+ok 49 - Stop before reply activity ignores late device acknowledgement and isolates the next text turn
+  ---
+  duration_ms: 3834.704
+  type: 'test'
+  ...
+# Subtest: Stop before reply activity ignores late device acknowledgement and isolates the next microphone turn
+ok 50 - Stop before reply activity ignores late device acknowledgement and isolates the next microphone turn
+  ---
+  duration_ms: 4443.6899
+  type: 'test'
+  ...
+# Subtest: replaying the same reply preserves the first file-start and reply-activity observations
+ok 51 - replaying the same reply preserves the first file-start and reply-activity observations
+  ---
+  duration_ms: 4049.0898
+  type: 'test'
+  ...
+# Subtest: current head and local sample operate with every nonlocal request blocked
+ok 52 - current head and local sample operate with every nonlocal request blocked
+  ---
+  duration_ms: 1591.5334
+  type: 'test'
+  ...
+# Subtest: missing current geometry visibly fails without substituting a historical head
+ok 53 - missing current geometry visibly fails without substituting a historical head
+  ---
+  duration_ms: 1080.6247
+  type: 'test'
+  ...
+# Actual WebGL renderer: ANGLE (NVIDIA, NVIDIA GeForce RTX 4060 Laptop GPU (0x000028E0) Direct3D11 vs_5_0 ps_5_0, D3D11)
+# Subtest: manual profile creation and explicit selection bind subsequent turns to the chosen person
+ok 54 - manual profile creation and explicit selection bind subsequent turns to the chosen person
+  ---
+  duration_ms: 1660.4039
+  type: 'test'
+  ...
+# Subtest: server preferences are read across switches and reload, renamed safely, cleared and deleted
+ok 55 - server preferences are read across switches and reload, renamed safely, cleared and deleted
+  ---
+  duration_ms: 1097.7485
+  type: 'test'
+  ...
+# Subtest: editing a profile immediately stops actual audio and blocks new turns until server confirmation
+ok 56 - editing a profile immediately stops actual audio and blocks new turns until server confirmation
+  ---
+  duration_ms: 1118.8368
+  type: 'test'
+  ...
+# Subtest: switching profiles aborts a pending audio download and cannot replay its old response
+ok 57 - switching profiles aborts a pending audio download and cannot replay its old response
+  ---
+  duration_ms: 730.5208
+  type: 'test'
+  ...
+# Subtest: failed preference writes stay visible and block turns until retry or confirmed server refresh
+ok 58 - failed preference writes stay visible and block turns until retry or confirmed server refresh
+  ---
+  duration_ms: 630.3629
+  type: 'test'
+  ...
+# Subtest: a mutation carrying another session epoch confirms this session before the next turn
+ok 59 - a mutation carrying another session epoch confirms this session before the next turn
+  ---
+  duration_ms: 548.7046
+  type: 'test'
+  ...
+# Subtest: a delayed preference read cannot overwrite the explicitly rebound profile after reconnect
+ok 60 - a delayed preference read cannot overwrite the explicitly rebound profile after reconnect
+  ---
+  duration_ms: 869.2196
+  type: 'test'
+  ...
+# Subtest: service restart reconnect binds a valid saved choice and visibly clears a deleted choice
+ok 61 - service restart reconnect binds a valid saved choice and visibly clears a deleted choice
+  ---
+  duration_ms: 637.5926
+  type: 'test'
+  ...
+# Subtest: local audio invalidating an unconfirmed profile switch requires a fresh server read before dialogue
+ok 62 - local audio invalidating an unconfirmed profile switch requires a fresh server read before dialogue
+  ---
+  duration_ms: 780.6831
+  type: 'test'
+  ...
+# Subtest: preference mutation cancels playing sentences and prefetched later audio without reviving the queue
+ok 63 - preference mutation cancels playing sentences and prefetched later audio without reviving the queue
+  ---
+  duration_ms: 925.8292
+  type: 'test'
+  ...
+# Subtest: changing profiles clears the previous response playback record and disables its download
+ok 64 - changing profiles clears the previous response playback record and disables its download
+  ---
+  duration_ms: 994.5276
+  type: 'test'
+  ...
+# Subtest: failed preference reads after binding another profile clear stale identity and forbid writes until explicit refresh
+ok 65 - failed preference reads after binding another profile clear stale identity and forbid writes until explicit refresh
+  ---
+  duration_ms: 895.9494
+  type: 'test'
+  ...
+# Subtest: profile UI reads real SQLite state after service restart and clears/deletes persisted preferences
+ok 66 - profile UI reads real SQLite state after service restart and clears/deletes persisted preferences
+  ---
+  duration_ms: 4097.8765
+  type: 'test'
+  ...
+# Subtest: a missing avatar resource is explained on the public page and playback stays unavailable
+ok 67 - a missing avatar resource is explained on the public page and playback stays unavailable
+  ---
+  duration_ms: 719.8121
+  type: 'test'
+  ...
+# Subtest: the offline page loads its licensed 3D avatar into a visible WebGL canvas
+ok 68 - the offline page loads its licensed 3D avatar into a visible WebGL canvas
+  ---
+  duration_ms: 686.0704
+  type: 'test'
+  ...
+# Subtest: local audio actually plays, changes the visible mouth around a fixed pause, closes at end, and exports linked frames
+ok 69 - local audio actually plays, changes the visible mouth around a fixed pause, closes at end, and exports linked frames
+  ---
+  duration_ms: 3510.5664
+  type: 'test'
+  ...
+# Subtest: the Stop button pauses real audio and invalidates the current animation epoch within 500 ms
+ok 70 - the Stop button pauses real audio and invalidates the current animation epoch within 500 ms
+  ---
+  duration_ms: 1106.31
+  type: 'test'
+  ...
+# Subtest: audible opposite-polarity stereo still opens the mouth rather than cancelling the envelope
+ok 71 - audible opposite-polarity stereo still opens the mouth rather than cancelling the envelope
+  ---
+  duration_ms: 724.5306
+  type: 'test'
+  ...
+# Subtest: corrupt avatar bytes produce a visible resource failure without enabling playback
+ok 72 - corrupt avatar bytes produce a visible resource failure without enabling playback
+  ---
+  duration_ms: 264.941
+  type: 'test'
+  ...
+# Subtest: invalid audio is explained and the bundled Mandarin recording can recover and play to completion
+ok 73 - invalid audio is explained and the bundled Mandarin recording can recover and play to completion
+  ---
+  duration_ms: 1808.3955
+  type: 'test'
+  ...
+# Subtest: Stop is available while the real audio device play acknowledgement is pending and late acknowledgement cannot resume it
+ok 74 - Stop is available while the real audio device play acknowledgement is pending and late acknowledgement cannot resume it
+  ---
+  duration_ms: 1503.378
+  type: 'test'
+  ...
+# Subtest: a late sample HTTP 200 cannot replace or fail a newer local audio selection
+ok 75 - a late sample HTTP 200 cannot replace or fail a newer local audio selection
+  ---
+  duration_ms: 593.7445
+  type: 'test'
+  ...
+# Subtest: a late sample HTTP 404 cannot replace or fail a newer local audio selection
+ok 76 - a late sample HTTP 404 cannot replace or fail a newer local audio selection
+  ---
+  duration_ms: 588.5581
+  type: 'test'
+  ...
+# Subtest: a late acknowledgement from a stopped utterance does not pause a newer playback
+ok 77 - a late acknowledgement from a stopped utterance does not pause a newer playback
+  ---
+  duration_ms: 1834.8215
+  type: 'test'
+  ...
+# Subtest: web\\tests\\recorded-mouth.cjs
+ok 11 - web\\tests\\recorded-mouth.cjs
+  ---
+  duration_ms: 47.6095
+  type: 'test'
+  ...
+# Subtest: Stop during queued download rejects late work and preserves a new sentence turn
+ok 79 - Stop during queued download rejects late work and preserves a new sentence turn
+  ---
+  duration_ms: 3871.0893
+  type: 'test'
+  ...
+# Subtest: Stop during queued decode rejects late work and preserves a new sentence turn
+ok 80 - Stop during queued decode rejects late work and preserves a new sentence turn
+  ---
+  duration_ms: 2958.3738
+  type: 'test'
+  ...
+# Subtest: Stop during queued play-ack rejects late work and preserves a new sentence turn
+ok 81 - Stop during queued play-ack rejects late work and preserves a new sentence turn
+  ---
+  duration_ms: 4203.3729
+  type: 'test'
+  ...
+# Subtest: a stalled stream becomes a visible timeout, then a new turn can play and stop again
+ok 82 - a stalled stream becomes a visible timeout, then a new turn can play and stop again
+  ---
+  duration_ms: 727.9348
+  type: 'test'
+  ...
+# Subtest: completed generation cannot hide a stalled WAV download
+ok 83 - completed generation cannot hide a stalled WAV download
+  ---
+  duration_ms: 563.0068
+  type: 'test'
+  ...
+# Subtest: missing-done visibly fails, clears playback and allows recovery plus another Stop
+ok 84 - missing-done visibly fails, clears playback and allows recovery plus another Stop
+  ---
+  duration_ms: 710.6548
+  type: 'test'
+  ...
+# Subtest: error visibly fails, clears playback and allows recovery plus another Stop
+ok 85 - error visibly fails, clears playback and allows recovery plus another Stop
+  ---
+  duration_ms: 713.2231
+  type: 'test'
+  ...
+# Subtest: disconnect visibly fails, clears playback and allows recovery plus another Stop
+ok 86 - disconnect visibly fails, clears playback and allows recovery plus another Stop
+  ---
+  duration_ms: 785.1622
+  type: 'test'
+  ...
+# Subtest: download visibly fails, clears playback and allows recovery plus another Stop
+ok 87 - download visibly fails, clears playback and allows recovery plus another Stop
+  ---
+  duration_ms: 713.5373
+  type: 'test'
+  ...
+# Subtest: decode visibly fails, clears playback and allows recovery plus another Stop
+ok 88 - decode visibly fails, clears playback and allows recovery plus another Stop
+  ---
+  duration_ms: 771.8734
+  type: 'test'
+  ...
+# Subtest: play visibly fails, clears playback and allows recovery plus another Stop
+ok 89 - play visibly fails, clears playback and allows recovery plus another Stop
+  ---
+  duration_ms: 738.0901
+  type: 'test'
+  ...
+# Subtest: first sentence plays while generation is unfinished; full queue exports correlated frames and separate timing
+ok 90 - first sentence plays while generation is unfinished; full queue exports correlated frames and separate timing
+  ---
+  duration_ms: 2940.1354
+  type: 'test'
+  ...
+# Subtest: prefetched audio can finish out of order but playback stays in sentence order
+ok 91 - prefetched audio can finish out of order but playback stays in sentence order
+  ---
+  duration_ms: 3970.2403
+  type: 'test'
+  ...
+# Subtest: Stop drops the current segment and late future sentences without reviving audio
+ok 92 - Stop drops the current segment and late future sentences without reviving audio
+  ---
+  duration_ms: 942.9898
+  type: 'test'
+  ...
+# Subtest: foreign segment audio is a visible failure and is never fetched
+ok 93 - foreign segment audio is a visible failure and is never fetched
+  ---
+  duration_ms: 501.1643
+  type: 'test'
+  ...
+# Subtest: segment gap includes delayed actual second playback
+ok 94 - segment gap includes delayed actual second playback
+  ---
+  duration_ms: 3450.2302
+  type: 'test'
+  ...
+# Subtest: late done cannot inflate actual last-ended playback duration
+ok 95 - late done cannot inflate actual last-ended playback duration
+  ---
+  duration_ms: 3621.5117
+  type: 'test'
+  ...
+# Subtest: invalid tooMany stream cannot report successful playback
+ok 96 - invalid tooMany stream cannot report successful playback
+  ---
+  duration_ms: 494.8059
+  type: 'test'
+  ...
+# Subtest: invalid mismatch stream cannot report successful playback
+ok 97 - invalid mismatch stream cannot report successful playback
+  ---
+  duration_ms: 500.8424
+  type: 'test'
+  ...
+# Subtest: next segment decoding starts before the previous media ends
+ok 98 - next segment decoding starts before the previous media ends
+  ---
+  duration_ms: 3328.2608
+  type: 'test'
+  ...
+# Subtest: a solid head can be viewed from side and back, then reset to the identical initial view
+ok 99 - a solid head can be viewed from side and back, then reset to the identical initial view
+  ---
+  duration_ms: 1635.305
+  type: 'test'
+  ...
+# Subtest: turning the model during real audio preserves playback and Stop still closes the mouth
+ok 100 - turning the model during real audio preserves playback and Stop still closes the mouth
+  ---
+  duration_ms: 926.3769
+  type: 'test'
+  ...
+# Subtest: a late status poll cannot replace the final playing state
+ok 101 - a late status poll cannot replace the final playing state
+  ---
+  duration_ms: 1514.4017
+  type: 'test'
+  ...
+# Subtest: a late status poll cannot replace the final failure state
+ok 102 - a late status poll cannot replace the final failure state
+  ---
+  duration_ms: 638.0484
+  type: 'test'
+  ...
+# Subtest: Chinese text returns readable reply, real audio and visible face with server-linked playback frames
+ok 103 - Chinese text returns readable reply, real audio and visible face with server-linked playback frames
+  ---
+  duration_ms: 4335.2779
+  type: 'test'
+  ...
+# Subtest: invalid model output cannot become a successful spoken reply
+ok 104 - invalid model output cannot become a successful spoken reply
+  ---
+  duration_ms: 466.4
+  type: 'test'
+  ...
+# Subtest: silent service WAV is an audio failure rather than a completed reply
+ok 105 - silent service WAV is an audio failure rather than a completed reply
+  ---
+  duration_ms: 527.6576
+  type: 'test'
+  ...
+# Subtest: late rejected device acknowledgement cannot fail replay of the same server utterance
+ok 106 - late rejected device acknowledgement cannot fail replay of the same server utterance
+  ---
+  duration_ms: 4831.5723
+  type: 'test'
+  ...
+# Subtest: Stop discards late text HTTP 200 and permits a new server epoch
+ok 107 - Stop discards late text HTTP 200 and permits a new server epoch
+  ---
+  duration_ms: 799.3496
+  type: 'test'
+  ...
+# Subtest: Stop discards late text HTTP 502 and permits a new server epoch
+ok 108 - Stop discards late text HTTP 502 and permits a new server epoch
+  ---
+  duration_ms: 783.5716
+  type: 'test'
+  ...
+# Subtest: Stop discards late audio HTTP 200 and permits a new server epoch
+ok 109 - Stop discards late audio HTTP 200 and permits a new server epoch
+  ---
+  duration_ms: 800.3942
+  type: 'test'
+  ...
+# Subtest: Stop discards late audio HTTP 502 and permits a new server epoch
+ok 110 - Stop discards late audio HTTP 502 and permits a new server epoch
+  ---
+  duration_ms: 838.5493
+  type: 'test'
+  ...
+# Subtest: Local sample during an unconfirmed Stop requires reconnect and cannot revive old audio
+ok 111 - Local sample during an unconfirmed Stop requires reconnect and cannot revive old audio
+  ---
+  duration_ms: 1182.7015
+  type: 'test'
+  ...
+# Subtest: Local file during an unconfirmed Stop requires reconnect and cannot revive old audio
+ok 112 - Local file during an unconfirmed Stop requires reconnect and cannot revive old audio
+  ---
+  duration_ms: 1188.8251
+  type: 'test'
+  ...
+# Subtest: Invalid reconnect address disables the old session until a valid reconnect succeeds
+ok 113 - Invalid reconnect address disables the old session until a valid reconnect succeeds
+  ---
+  duration_ms: 561.0727
+  type: 'test'
+  ...
+# Subtest: Stop failure leaves actual audio stopped and requires reconnect before a new turn
+ok 114 - Stop failure leaves actual audio stopped and requires reconnect before a new turn
+  ---
+  duration_ms: 1221.2929
+  type: 'test'
+  ...
+# Subtest: gpu_busy is visible and never enables a successful reply
+ok 115 - gpu_busy is visible and never enables a successful reply
+  ---
+  duration_ms: 467.9503
+  type: 'test'
+  ...
+# Subtest: model_failure is visible and never enables a successful reply
+ok 116 - model_failure is visible and never enables a successful reply
+  ---
+  duration_ms: 452.4009
+  type: 'test'
+  ...
+# Subtest: corrupt_audio is visible and never enables a successful reply
+ok 117 - corrupt_audio is visible and never enables a successful reply
+  ---
+  duration_ms: 483.3168
+  type: 'test'
+  ...
+# Subtest: missing_audio is visible and never enables a successful reply
+ok 118 - missing_audio is visible and never enables a successful reply
+  ---
+  duration_ms: 484.8959
+  type: 'test'
+  ...
+# Subtest: foreign_audio is visible and never enables a successful reply
+ok 119 - foreign_audio is visible and never enables a successful reply
+  ---
+  duration_ms: 482.5831
+  type: 'test'
+  ...
+# Subtest: wrong_epoch is visible and never enables a successful reply
+ok 120 - wrong_epoch is visible and never enables a successful reply
+  ---
+  duration_ms: 464.5092
+  type: 'test'
+  ...
+# Subtest: fallback is visible and never enables a successful reply
+ok 121 - fallback is visible and never enables a successful reply
+  ---
+  duration_ms: 479.1653
+  type: 'test'
+  ...
+# Subtest: cheerful uses the documented real face channels independently of sadness
+ok 122 - cheerful uses the documented real face channels independently of sadness
+  ---
+  duration_ms: 1468.2114
+  type: 'test'
+  ...
+# Subtest: calm uses the documented real face channels independently of sadness
+ok 123 - calm uses the documented real face channels independently of sadness
+  ---
+  duration_ms: 1452.819
+  type: 'test'
+  ...
+# Subtest: serious uses the documented real face channels independently of sadness
+ok 124 - serious uses the documented real face channels independently of sadness
+  ---
+  duration_ms: 1458.5217
+  type: 'test'
+  ...
+1..124
+# tests 124
+# suites 0
+# pass 124
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 249205.8649

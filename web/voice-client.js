@@ -22,7 +22,7 @@ export function createVoiceClient(baseUrl) {
     const response = await fetch(new URL(path, base), { cache: 'no-store', ...options });
     let body;
     try { body = await response.json(); } catch { throw new Error('本地服务未返回有效 JSON'); }
-    if (!response.ok) throw new Error(body.code === 'gpu_busy' ? '模型服务正在处理其他轮次，请稍后重试。' : `${body.message || '服务请求失败'}${body.code ? `（${body.code}）` : ''}`);
+    if (!response.ok) { const error = new Error(body.code === 'gpu_busy' ? '模型服务正在处理其他轮次，请稍后重试。' : `${body.message || '服务请求失败'}${body.code ? `（${body.code}）` : ''}`); error.code = body.code; throw error; }
     return body;
   }
   function route(suffix = '') {
@@ -31,13 +31,15 @@ export function createVoiceClient(baseUrl) {
   }
   async function send(suffix, options, requireTranscript = false) {
     const stamp = ++generation, sid = session?.session_id, epoch = session?.session_epoch;
+    streamAbort?.abort();
+    const controller = streamAbort = new AbortController();
     try {
-      const result = await request(route(suffix), options);
+      const result = await request(route(suffix), {...options,signal:controller.signal});
       if (!current(stamp, sid, epoch)) return null;
       if (result.session_id !== sid || result.session_epoch !== epoch) throw new Error('服务返回了不匹配的会话或代次');
       validateResult(result);
       if (requireTranscript && (typeof result.transcript !== 'string' || !result.transcript.trim() || result.transcript.length > 2000)) throw new Error('未得到有效语音转写，未播放回复');
-      const response = await fetch(new URL(result.audio.url, base), { cache: 'no-store' });
+      const response = await fetch(new URL(result.audio.url, base), { cache: 'no-store', signal:controller.signal });
       if (!current(stamp, sid, epoch)) return null;
       if (!response.ok) throw new Error(`语音获取失败（HTTP ${response.status}）`);
       const blob = await response.blob();
@@ -48,8 +50,33 @@ export function createVoiceClient(baseUrl) {
     const stamp = ++generation, sid = session?.session_id, epoch = session?.session_epoch;
     streamAbort?.abort();
     const controller = streamAbort = new AbortController();
+    let idleTimer, timedOut = false;
+    const armDeadline = () => {
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(() => { timedOut = true; controller.abort(); }, 15000);
+    };
     let reader, uid, metadata, nextSegment = 0, done = false, awaitingAudio = null, spoken = '';
+    async function downloadAudio(url) {
+      const download = new AbortController();
+      const stop = () => download.abort();
+      controller.signal.addEventListener('abort', stop, {once:true});
+      if (controller.signal.aborted) stop();
+      let downloadTimedOut = false;
+      const deadline = setTimeout(() => { downloadTimedOut = true; download.abort(); }, 15000);
+      try {
+        const response = await fetch(new URL(url, base), {signal:download.signal,cache:'no-store'});
+        if (!response.ok) throw new Error(`分句音频获取失败（HTTP ${response.status}）`);
+        const blob = await response.blob();
+        return current(stamp, sid, epoch) ? blob : null;
+      } catch (error) {
+        if (downloadTimedOut) throw new Error('分句音频下载超时：15秒内未完成，请重试');
+        throw error;
+      } finally {
+        clearTimeout(deadline);controller.signal.removeEventListener('abort',stop);
+      }
+    }
     try {
+      armDeadline();
       const response = await fetch(new URL(route(suffix).replace('/v1/', '/v2/'), base), { ...options, signal: controller.signal, cache: 'no-store' });
       if (!current(stamp, sid, epoch)) return null;
       if (!response.ok) { const error = await response.json(); throw new Error(error.message || '分句请求失败'); }
@@ -77,11 +104,7 @@ export function createVoiceClient(baseUrl) {
           awaitingAudio = null;
           nextSegment++;
           // Start prefetch now; playback consumes these promises in segment order.
-          value.blob = fetch(new URL(audio.url, base), {signal:controller.signal,cache:'no-store'}).then(async response => {
-            if (!response.ok) throw new Error(`分句音频获取失败（HTTP ${response.status}）`);
-            const blob = await response.blob();
-            return current(stamp, sid, epoch) ? blob : null;
-          });
+          value.blob = downloadAudio(audio.url);
           value.blob.catch(() => {}); // Queue consumption owns the visible error.
           Object.assign(value, {user_emotion:metadata.user_emotion,expression_intent:metadata.expression_intent});
         } else if (value.type === 'done') {
@@ -90,6 +113,7 @@ export function createVoiceClient(baseUrl) {
         } else if (value.type === 'error') throw new Error(value.message || '分句回复失败');
         else if (!['start','transcript','meta'].includes(value.type)) throw new Error('未知的分句事件');
         await onEvent(value);
+        armDeadline();
       };
       while (current(stamp, sid, epoch)) {
         const {value, done:ended} = await reader.read();
@@ -102,10 +126,62 @@ export function createVoiceClient(baseUrl) {
       if (!current(stamp, sid, epoch)) return null;
       if (!done) throw new Error('分句回复连接提前结束');
       return true;
-    } catch (error) { if (!current(stamp, sid, epoch)) return null; throw error; }
-    finally { reader?.releaseLock(); }
+    } catch (error) { if (!current(stamp, sid, epoch)) return null; if (timedOut) throw new Error('分句回复超时：15秒未收到有效事件，请重试'); throw error; }
+    finally { clearTimeout(idleTimer); if (reader) { reader.cancel().catch(() => {}); reader.releaseLock(); } }
+  }
+  function profileSession(next, sid, epoch) {
+    if (!validSession(next) || next.session_id !== sid || next.session_epoch < epoch || !(next.profile_id === null || typeof next.profile_id === 'string')) throw new Error('无法确认当前档案，请重新连接');
+    session = next; return next;
+  }
+  async function confirmProfileSession() {
+    const path = route(), sid = session.session_id, epoch = session.session_epoch, stamp = ++generation;
+    streamAbort?.abort();
+    const next = await request(path);
+    if (!current(stamp,sid,epoch)) return null;
+    return profileSession(next,sid,epoch);
+  }
+  async function mutateProfile(id, suffix, method, data) {
+    const sid = session?.session_id, epoch = session?.session_epoch, stamp = ++generation;
+    streamAbort?.abort();
+    const value = await request('/v1/profiles/' + encodeURIComponent(id) + suffix, {method,headers:{'Content-Type':'application/json'},...(data === undefined ? {} : {body:JSON.stringify(data)})});
+    if (!current(stamp,sid,epoch)) return null;
+    const affected = value.affected_sessions?.find(s => s.session_id === sid);
+    const next = affected || await request(route());
+    if (!current(stamp,sid,epoch)) return null;
+    profileSession(next,sid,epoch);
+    return value;
   }
   return {
+    async profilesSupported() { if (!Object.hasOwn(session || {}, 'profile_id')) return false; try { return (await request('/v1/health')).profile_memory === true; } catch (error) { if (error.code === 'not_found') return false; throw error; } },
+    profiles() { return request('/v1/profiles'); },
+    createProfile(display_name) { return request('/v1/profiles', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({display_name})}); },
+    preferences(id) { return request('/v1/profiles/' + encodeURIComponent(id) + '/preferences'); },
+    renameProfile(id, display_name) { return mutateProfile(id,'','PATCH',{display_name}); },
+    deleteProfile(id) { return mutateProfile(id,'','DELETE'); },
+    savePreferences(id, preferences) { return mutateProfile(id,'/preferences','PATCH',preferences); },
+    clearPreferences(id) { return mutateProfile(id,'/preferences','DELETE'); },
+    confirmProfileSession,
+    async bindProfile(profile_id) {
+      const sid = session?.session_id, stamp = ++generation;
+      let epoch = session?.session_epoch;
+      streamAbort?.abort();
+      for (let attempt = 0; attempt < 2; attempt++) {
+        let next;
+        try {
+          next = await request(route('/profile'), {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({profile_id,session_epoch:epoch})});
+        } catch (error) {
+          if (error.code !== 'stale_epoch' || attempt || !current(stamp,sid,epoch)) throw error;
+          const latest = await request(route());
+          if (!current(stamp,sid,epoch)) return null;
+          profileSession(latest,sid,epoch);
+          epoch = latest.session_epoch;
+          continue;
+        }
+        if (!current(stamp,sid,epoch)) return null;
+        if (!validSession(next) || next.session_id !== sid || next.session_epoch <= epoch || next.profile_id !== profile_id) throw new Error('无法确认档案切换，请重新连接');
+        session = next; return next;
+      }
+    },
     get sentenceStreaming() { return sentenceStreaming; },
     get connected() { return !!session; },
     invalidate() {
@@ -153,3 +229,4 @@ export function createVoiceClient(baseUrl) {
     },
   };
 }
+

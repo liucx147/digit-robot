@@ -16,10 +16,10 @@ class MeasurementCLI(unittest.TestCase):
         self.root = Path(self.temp.name)
         (self.root / "fixture.wav").write_bytes(b"synthetic frozen speech test")
         (self.root / "capture.webm").write_bytes(b"synthetic recording evidence, not acceptance")
-        self.ledger = {"schema": 1, "fixture": {"path": "fixture.wav", "sha256": self.digest("fixture.wav")}, "rules": {"tolerance_ms": 200, "required_ratio": 0.95, "pairing_window_ms": 1000, "audio_rule": "fixed independent review", "visual_rule": "first visible pixel change"}, "events": [{"id": f"e{i}", "type": "open" if i % 2 == 0 else "close", "source_ms": 1000 + i * 2000} for i in range(40)]}
+        self.ledger = {"schema": 1, "setup": {"avatar_sha256": "5589660f42f67e7d5bd6e13b8248216ecbeaaaa14607da84cecced3a7e5afad6"}, "fixture": {"path": "fixture.wav", "sha256": self.digest("fixture.wav")}, "rules": {"tolerance_ms": 200, "required_ratio": 0.95, "pairing_window_ms": 1000, "audio_rule": "fixed independent review", "visual_rule": "first visible pixel change"}, "events": [{"id": f"e{i}", "type": "open" if i % 2 == 0 else "close", "source_ms": 1000 + i * 2000} for i in range(40)]}
         self.write("ledger.json", self.ledger)
         self.annotations = {"schema": 1, "ledger_sha256": self.digest("ledger.json"), "media": {"path": "capture.webm", "sha256": self.digest("capture.webm"), "scope": "browser-graph", "duration_ms": 85000, "timebase": "single-media-timeline"}, "review": {"annotator": "synthetic CLI test", "method": "independent-media-review", "audio_basis": "captured-audio", "visual_basis": "recorded-pixels"}, "source_origin_ms": 0, "calibration": {"status": "pending"}, "events": [{"expected_id": e["id"], "type": e["type"], "audio_ms": [e["source_ms"], e["source_ms"]], "visual_ms": [e["source_ms"], e["source_ms"]], "audio_observation_id": f"a{i}", "visual_observation_id": f"v{i}", "audio_evidence": "synthetic test audio edge", "visual_evidence": "synthetic test pixel edge"} for i,e in enumerate(self.ledger["events"])], "unexpected": []}
-        self.write("capture-manifest.json", {"schema": 1, "scope": "browser-graph", "media": {"sha256": self.digest("capture.webm")}, "ledger_sha256": self.digest("ledger.json"), "complete_playback": True, "audio_non_silent": True})
+        self.write("capture-manifest.json", {"schema": 1, "scope": "browser-graph", "media": {"sha256": self.digest("capture.webm")}, "ledger_sha256": self.digest("ledger.json"), "complete_playback": True, "audio_non_silent": True, "avatar": {"sha256": "5589660f42f67e7d5bd6e13b8248216ecbeaaaa14607da84cecced3a7e5afad6", "type": "synthetic-head", "version": "test-v1"}, "renderer": {"renderer": "synthetic-test-renderer", "vendor": "synthetic", "webgl_version": "WebGL 2 synthetic"}})
         self.annotations["capture_manifest"] = {"path": "capture-manifest.json", "sha256": self.digest("capture-manifest.json")}
     def tearDown(self):
         self.temp.cleanup()
@@ -127,8 +127,7 @@ class MeasurementCLI(unittest.TestCase):
         self.assertEqual((self.root / "frozen/ledger.json").read_bytes(), original)
         self.assertEqual(ledger["fixture"]["sha256"], hashlib.sha256((self.root / "frozen/fixture.wav").read_bytes()).hexdigest())
     def test_browser_manifest_is_required_and_incomplete_or_silent_capture_fails_every_event(self):
-        (self.root / "capture-manifest.json").write_text(json.dumps({"schema":1,"scope":"browser-graph","media":{"sha256":self.digest("capture.webm")},"ledger_sha256":self.digest("ledger.json"),"complete_playback":False,"audio_non_silent":True}), encoding="utf-8")
-        self.annotations["capture_manifest"] = {"path":"capture-manifest.json","sha256":self.digest("capture-manifest.json")}
+        self.update_manifest(complete_playback=False)
         result, report = self.score()
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual((report["passed"], report["total"]), (0,40))
@@ -148,3 +147,97 @@ class MeasurementCLI(unittest.TestCase):
         result, report = self.score()
         self.assertEqual(result.returncode, 2, result.stderr)
         self.assertIsNone(report)
+
+    def update_manifest(self, **fields):
+        manifest = json.loads((self.root / "capture-manifest.json").read_text())
+        manifest.update(fields)
+        self.write("capture-manifest.json", manifest)
+        self.annotations["capture_manifest"]["sha256"] = self.digest("capture-manifest.json")
+
+    def test_wrong_or_missing_capture_identity_fails_all_frozen_events(self):
+        original = json.loads((self.root / "capture-manifest.json").read_text())
+        cases = [
+            ("old VRM asset", {"sha256": "12c2b97e95e700783a6a550dc0eee2d7880aeedccef9ae67bc4c5a2f0f2631a2", "type": "vrm", "version": "legacy"}, original["renderer"], "avatar-mismatch"),
+            ("missing avatar", None, original["renderer"], "missing-avatar-identity"),
+            ("missing renderer", original["avatar"], None, "missing-renderer-identity"),
+            ("incomplete renderer", original["avatar"], {"renderer": "synthetic"}, "missing-renderer-identity"),
+        ]
+        for name, avatar, renderer, failure in cases:
+            with self.subTest(name=name):
+                self.update_manifest(avatar=avatar, renderer=renderer)
+                (self.root / "report.json").unlink(missing_ok=True)
+                result, report = self.score()
+                self.assertEqual(result.returncode, 0, result.stderr)
+                self.assertEqual((report["passed"], report["total"], report["threshold_pass"]), (0, 40, False))
+                self.assertEqual(report["provenance"]["capture_failure"], failure)
+                self.assertTrue(all(row["reason"] == failure for row in report["events"]))
+
+    def physical_capture(self, calibrated=True):
+        self.annotations["media"]["scope"] = "physical-av"
+        self.update_manifest(scope="physical-av", revision_and_conditions="synthetic software case only", physical_review={"basis": "operator-declared", "operator": "synthetic CLI operator", "conditions_match": True})
+        if calibrated:
+            (self.root / "calibration.webm").write_bytes(b"synthetic independent calibration schema test")
+            self.annotations["calibration"] = {"status": "calibrated", "method": "independent-av-calibration", "offset_ms": 0, "uncertainty_ms": 0, "description": "synthetic software test only, no physical acceptance", "evidence": {"path": "calibration.webm", "sha256": self.digest("calibration.webm")}}
+
+    def test_physical_scope_requires_original_matching_manifest_without_writing_invalid_reports(self):
+        self.physical_capture()
+        original = json.loads((self.root / "capture-manifest.json").read_text())
+        for field, value in [("scope", "browser-graph"), ("ledger_sha256", "0" * 64), ("media", {"sha256": "0" * 64})]:
+            with self.subTest(field=field):
+                self.write("capture-manifest.json", original)
+                self.update_manifest(**{field: value})
+                (self.root / "report.json").unlink(missing_ok=True)
+                result, report = self.score()
+                self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+                self.assertIsNone(report)
+        self.annotations.pop("capture_manifest")
+        result, report = self.score()
+        self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+        self.assertIsNone(report)
+
+    def test_physical_bad_identity_or_incomplete_conditions_never_become_eligible(self):
+        self.physical_capture()
+        original = json.loads((self.root / "capture-manifest.json").read_text())
+        for name, fields, failure in [
+            ("old VRM", {"avatar": {"sha256": "12c2b97e95e700783a6a550dc0eee2d7880aeedccef9ae67bc4c5a2f0f2631a2", "type": "vrm", "version": "legacy"}}, "avatar-mismatch"),
+            ("missing renderer", {"renderer": None}, "missing-renderer-identity"),
+            ("no condition confirmation", {"physical_review": None}, "missing-physical-declaration"),
+            ("unfinished", {"complete_playback": False}, "incomplete-capture"),
+            ("silent", {"audio_non_silent": False}, "missing-captured-audio"),
+        ]:
+            with self.subTest(name=name):
+                self.write("capture-manifest.json", original)
+                self.update_manifest(**fields)
+                (self.root / "report.json").unlink(missing_ok=True)
+                result, report = self.score()
+                self.assertEqual(result.returncode, 0, result.stderr)
+                self.assertEqual((report["passed"], report["total"]), (0, 40))
+                self.assertEqual(report["provenance"]["capture_failure"], failure)
+                self.assertEqual(report["acceptance_status"], "invalid-capture-evidence")
+
+    def test_matching_physical_context_preserves_provenance_and_only_allows_human_review(self):
+        self.physical_capture()
+        result, report = self.score()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual((report["passed"], report["total"]), (40, 40))
+        self.assertEqual(report["acceptance_status"], "eligible-for-human-evidence-review")
+        self.assertEqual(report["provenance"]["capture_context"]["avatar"]["sha256"], "5589660f42f67e7d5bd6e13b8248216ecbeaaaa14607da84cecced3a7e5afad6")
+        self.assertEqual(report["provenance"]["capture_context"]["renderer"]["renderer"], "synthetic-test-renderer")
+        self.assertEqual(report["provenance"]["capture_context"]["physical_review"]["basis"], "operator-declared")
+        self.assertEqual(report["provenance"]["capture_manifest"]["sha256"], self.digest("capture-manifest.json"))
+
+    def test_physical_pending_calibration_and_legacy_unfrozen_identity_are_diagnostic(self):
+        self.physical_capture(calibrated=False)
+        result, report = self.score()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(report["acceptance_status"], "pending-calibration")
+        (self.root / "report.json").unlink()
+        self.physical_capture()
+        self.ledger.pop("setup")
+        self.write("ledger.json", self.ledger)
+        self.annotations["ledger_sha256"] = self.digest("ledger.json")
+        self.update_manifest(ledger_sha256=self.digest("ledger.json"))
+        result, report = self.score()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual((report["passed"], report["total"]), (40, 40))
+        self.assertEqual(report["acceptance_status"], "pending-frozen-avatar-identity")

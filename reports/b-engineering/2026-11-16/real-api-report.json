@@ -1,0 +1,15 @@
+{
+  "scope": "real-A-HTTP-and-SQLite-with-synthetic-model-only",
+  "a_source_sha": "26c6b995c165d14753612aed4dad8dc78cedbaad",
+  "browser": "157.0.8103.51",
+  "renderer": {
+    "renderer": "ANGLE (Intel, Intel(R) UHD Graphics (0x00009BC4) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "vendor": "Google Inc. (Intel)",
+    "webgl_version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+  },
+  "service_restart": true,
+  "read_changed_server_value": true,
+  "cleared_preferences": true,
+  "deleted_profile": true,
+  "real_model_or_physical_acceptance": false
+}

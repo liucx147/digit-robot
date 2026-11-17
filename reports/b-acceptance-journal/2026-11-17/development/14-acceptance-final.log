@@ -1,0 +1,31 @@
+✔ journal is collapsed and stores nothing until explicit validated start; export includes actual renderer and declared scope (1987.4905ms)
+✔ actual single reply playback counts one full turn, excludes replay and dialogue contents (3939.7318ms)
+✔ actual two sentence playback counts one full turn, excludes replay and dialogue contents (3636.159ms)
+✔ model failure is retained without content or completed turn; recovery still records (1858.6348ms)
+✔ media failure is retained without content or completed turn; recovery still records (1886.9913ms)
+✔ stop preserves cancelled attempt, ignores late HTTP work and a new turn can complete (1780.7628ms)
+✔ capture joining an in-flight turn cannot claim its completion; local audio is excluded (3239.8652ms)
+software clock phase: independent segments advanced
+✔ reload preserves interrupted draft without auto capture; manual restart and end create separate segments; clear is explicit (3582.178ms)
+software clock phase: advance first 30 minutes
+software clock phase: first 30 minutes advanced
+software clock phase: completed actual media turns 10
+software clock phase: completed actual media turns 20
+software clock phase: independent 15-minute segments
+software clock phase: independent segments advanced
+✔ software-only accelerated clock requires 30 minutes and 20 complete turns in the same uninterrupted segment (56893.4661ms)
+✔ browser heartbeat gap and visibility loss retain review events and exclude unobserved time (2890.4075ms)
+✔ quota failure stops collection, retains memory and cannot prevent actual Stop (2959.0952ms)
+✔ restored storage is projected through whitelist; corrupt draft stays visible and is not overwritten (1317.9289ms)
+✔ capacity boundary keeps old draft events and stops visibly without truncating (1215.9036ms)
+✔ hidden fraction between heartbeats and UTC clock shifts cannot inflate observed duration (1283.6885ms)
+✔ microphone input ends at the actual end button, not delayed permission; draft contains timing only (3036.1765ms)
+✔ failed stop acknowledgement remains in journal after local cancellation without raw server error (1009.5873ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 16
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 93255.753

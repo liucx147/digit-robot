@@ -1,0 +1,35 @@
+✔ journal is collapsed and stores nothing until explicit validated start; export includes actual renderer and declared scope (1618.2784ms)
+✔ actual single reply playback counts one full turn, excludes replay and dialogue contents (3791.6426ms)
+✔ actual two sentence playback counts one full turn, excludes replay and dialogue contents (3577.4255ms)
+✔ model failure is retained without content or completed turn; recovery still records (1852.5035ms)
+✔ media failure is retained without content or completed turn; recovery still records (1948.1871ms)
+✔ stop preserves cancelled attempt, ignores late HTTP work and a new turn can complete (1801.2626ms)
+✔ capture joining an in-flight turn cannot claim its completion; local audio is excluded (3273.8719ms)
+software clock phase: independent segments advanced
+✔ reload preserves interrupted draft without auto capture; manual restart and end create separate segments; clear is explicit (3641.3372ms)
+software clock phase: advance first 30 minutes
+software clock phase: first 30 minutes advanced
+software clock phase: completed actual media turns 10
+software clock phase: completed actual media turns 20
+software clock phase: independent 15-minute segments
+software clock phase: independent segments advanced
+✔ software-only accelerated clock requires 30 minutes and 20 complete turns in the same uninterrupted segment (131433.0063ms)
+✔ browser heartbeat gap and visibility loss retain review events and exclude unobserved time (2813.7949ms)
+✔ quota failure stops collection, retains memory and cannot prevent actual Stop (3183.0622ms)
+✔ restored storage is projected through whitelist; corrupt draft stays visible and is not overwritten (1428.7973ms)
+✔ capacity boundary keeps old draft events and stops visibly without truncating (1577.6097ms)
+✔ hidden fraction between heartbeats and UTC clock shifts cannot inflate observed duration (1371.326ms)
+✔ microphone input ends at the actual end button, not delayed permission; draft contains timing only (3382.1391ms)
+✔ failed stop acknowledgement remains in journal after local cancellation without raw server error (1119.9957ms)
+✔ shared draft has one page owner; other pages cannot restore-write, capture or clear it and cleared history never revives (4331.1065ms)
+✔ simultaneous shared-page starts choose one owner and later takeover re-reads all segments and failures (8550.8379ms)
+✔ failed clear stops the owner and keeps its memory export and exclusive draft permission (1823.6002ms)
+✔ missing browser draft ownership disables capture and clear but preserves default-off playback and Stop (1808.1796ms)
+ℹ tests 20
+ℹ suites 0
+ℹ pass 20
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 184940.3494

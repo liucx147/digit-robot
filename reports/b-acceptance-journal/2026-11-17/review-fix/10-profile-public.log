@@ -1,0 +1,21 @@
+Actual WebGL renderer: ANGLE (NVIDIA, NVIDIA GeForce GTX 1650 Ti (0x00001F95) Direct3D11 vs_5_0 ps_5_0, D3D11)
+✔ manual profile creation and explicit selection bind subsequent turns to the chosen person (1712.5788ms)
+✔ server preferences are read across switches and reload, renamed safely, cleared and deleted (1450.0791ms)
+✔ editing a profile immediately stops actual audio and blocks new turns until server confirmation (2548.5624ms)
+✔ switching profiles aborts a pending audio download and cannot replay its old response (1001.1994ms)
+✔ failed preference writes stay visible and block turns until retry or confirmed server refresh (985.2477ms)
+✔ a mutation carrying another session epoch confirms this session before the next turn (830.6017ms)
+✔ a delayed preference read cannot overwrite the explicitly rebound profile after reconnect (1113.9297ms)
+✔ service restart reconnect binds a valid saved choice and visibly clears a deleted choice (820.2582ms)
+✔ local audio invalidating an unconfirmed profile switch requires a fresh server read before dialogue (1078.1699ms)
+✔ preference mutation cancels playing sentences and prefetched later audio without reviving the queue (1266.24ms)
+✔ changing profiles clears the previous response playback record and disables its download (1370.2741ms)
+✔ failed preference reads after binding another profile clear stale identity and forbid writes until explicit refresh (1195.7166ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 15976.4377

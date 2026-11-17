@@ -1,0 +1,229 @@
+{
+  "schema": 1,
+  "fixture": {
+    "path": "fixture.wav",
+    "sha256": "2a01c9f12b8b482db45748b9d4c3278ba413f6b10d5b87e9bdd3ce2415042c14",
+    "duration_ms": 35065.833333333336
+  },
+  "source": {
+    "path": "source.wav",
+    "sha256": "4c874c2b1030cc276aee5003af1ba4439394f2c20cf3849cd4d9398a434c0729",
+    "description": "Luilui6666 Mandarin nihao, CC0; unchanged source repeated 20 times with silence",
+    "license_notice": "../../assets/NOTICES.md"
+  },
+  "setup": {
+    "avatar_sha256": "5589660f42f67e7d5bd6e13b8248216ecbeaaaa14607da84cecced3a7e5afad6",
+    "view": "solid-v1 current default camera; record viewport, rotation and actual renderer per capture",
+    "conditions": "Current solid head only; cadence diagnostic first, mixed expression/gaze separate; no physical acceptance implied"
+  },
+  "rules": {
+    "tolerance_ms": 200,
+    "required_ratio": 0.95,
+    "pairing_window_ms": 1000,
+    "audio_rule": "Each phrase outer boundaries: 10ms PCM RMS >=0.01 full scale, first window start / last window end. Review captured audio independently using the same rule; annotate timing intervals and preserve internal transitions as unexpected where applicable.",
+    "visual_rule": "Review actual recorded mouth pixels against a closed reference before each phrase. Bracket first visible opening / return to closed between adjacent presented frames. Do not read controller weights. Any ambiguous/occluded edge is missing or review-error; preserve extra oscillations.",
+    "pairing": "Match frozen phrase ID and open/close type in order, once only, within +/-1000ms of frozen audio edge plus declared single source origin. Whole conservative error interval must lie inside inclusive +/-200ms."
+  },
+  "events": [
+    {
+      "id": "phrase-01-open",
+      "type": "open",
+      "source_ms": 1230.0
+    },
+    {
+      "id": "phrase-01-close",
+      "type": "close",
+      "source_ms": 1730.0
+    },
+    {
+      "id": "phrase-02-open",
+      "type": "open",
+      "source_ms": 2883.2916666666665
+    },
+    {
+      "id": "phrase-02-close",
+      "type": "close",
+      "source_ms": 3383.2916666666665
+    },
+    {
+      "id": "phrase-03-open",
+      "type": "open",
+      "source_ms": 4536.583333333333
+    },
+    {
+      "id": "phrase-03-close",
+      "type": "close",
+      "source_ms": 5036.583333333333
+    },
+    {
+      "id": "phrase-04-open",
+      "type": "open",
+      "source_ms": 6189.875
+    },
+    {
+      "id": "phrase-04-close",
+      "type": "close",
+      "source_ms": 6689.875
+    },
+    {
+      "id": "phrase-05-open",
+      "type": "open",
+      "source_ms": 7843.166666666667
+    },
+    {
+      "id": "phrase-05-close",
+      "type": "close",
+      "source_ms": 8343.166666666666
+    },
+    {
+      "id": "phrase-06-open",
+      "type": "open",
+      "source_ms": 9496.458333333334
+    },
+    {
+      "id": "phrase-06-close",
+      "type": "close",
+      "source_ms": 9996.458333333334
+    },
+    {
+      "id": "phrase-07-open",
+      "type": "open",
+      "source_ms": 11149.75
+    },
+    {
+      "id": "phrase-07-close",
+      "type": "close",
+      "source_ms": 11649.75
+    },
+    {
+      "id": "phrase-08-open",
+      "type": "open",
+      "source_ms": 12803.041666666666
+    },
+    {
+      "id": "phrase-08-close",
+      "type": "close",
+      "source_ms": 13303.041666666666
+    },
+    {
+      "id": "phrase-09-open",
+      "type": "open",
+      "source_ms": 14456.333333333334
+    },
+    {
+      "id": "phrase-09-close",
+      "type": "close",
+      "source_ms": 14956.333333333334
+    },
+    {
+      "id": "phrase-10-open",
+      "type": "open",
+      "source_ms": 16109.625
+    },
+    {
+      "id": "phrase-10-close",
+      "type": "close",
+      "source_ms": 16609.625
+    },
+    {
+      "id": "phrase-11-open",
+      "type": "open",
+      "source_ms": 17762.916666666668
+    },
+    {
+      "id": "phrase-11-close",
+      "type": "close",
+      "source_ms": 18262.916666666668
+    },
+    {
+      "id": "phrase-12-open",
+      "type": "open",
+      "source_ms": 19416.208333333332
+    },
+    {
+      "id": "phrase-12-close",
+      "type": "close",
+      "source_ms": 19916.208333333332
+    },
+    {
+      "id": "phrase-13-open",
+      "type": "open",
+      "source_ms": 21069.5
+    },
+    {
+      "id": "phrase-13-close",
+      "type": "close",
+      "source_ms": 21569.5
+    },
+    {
+      "id": "phrase-14-open",
+      "type": "open",
+      "source_ms": 22722.791666666668
+    },
+    {
+      "id": "phrase-14-close",
+      "type": "close",
+      "source_ms": 23222.791666666668
+    },
+    {
+      "id": "phrase-15-open",
+      "type": "open",
+      "source_ms": 24376.083333333332
+    },
+    {
+      "id": "phrase-15-close",
+      "type": "close",
+      "source_ms": 24876.083333333332
+    },
+    {
+      "id": "phrase-16-open",
+      "type": "open",
+      "source_ms": 26029.375
+    },
+    {
+      "id": "phrase-16-close",
+      "type": "close",
+      "source_ms": 26529.375
+    },
+    {
+      "id": "phrase-17-open",
+      "type": "open",
+      "source_ms": 27682.666666666668
+    },
+    {
+      "id": "phrase-17-close",
+      "type": "close",
+      "source_ms": 28182.666666666668
+    },
+    {
+      "id": "phrase-18-open",
+      "type": "open",
+      "source_ms": 29335.958333333332
+    },
+    {
+      "id": "phrase-18-close",
+      "type": "close",
+      "source_ms": 29835.958333333332
+    },
+    {
+      "id": "phrase-19-open",
+      "type": "open",
+      "source_ms": 30989.25
+    },
+    {
+      "id": "phrase-19-close",
+      "type": "close",
+      "source_ms": 31489.25
+    },
+    {
+      "id": "phrase-20-open",
+      "type": "open",
+      "source_ms": 32642.541666666668
+    },
+    {
+      "id": "phrase-20-close",
+      "type": "close",
+      "source_ms": 33142.541666666664
+    }
+  ]
+}

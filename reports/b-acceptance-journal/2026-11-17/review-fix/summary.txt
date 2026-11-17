@@ -1,0 +1,17 @@
+Verification summary (software-only substitutes; no physical acceptance claims)
+Baseline: 1191f942112aacafcae6ab7aa614e5e7a8dce858, clean checkout verified before branch creation.
+Root handoff tip a9344e044eff00e4772332aaa83dc84988475b79 fast-forwarded before final fix commit; only existing handoff document changed in that ancestor.
+01 red: original module rewrote the owner draft simply by opening the second same-origin page.
+02 / 03: failed red attempts due to Python aliases/missing default interpreter. Not green evidence.
+04: fixed module, failed early asynchronous conflict UI assertion. 05 first shared-page green.
+06 baseline boundary red: 0/3; two simultaneous collectors, clear failure did not stop collection, unsupported locks did not disable capture.
+07: 3/4; one external Playwright pauseAt current-time sampling race. New pauses changed to +100ms.
+08 final focused: 4/4, 0 failures.
+09 complete journal: 20/20, 0 failures, 184940ms (original 16 + new 4).
+10 profile-public: 12/12, 0 failures, 15976ms.
+11 offline-page-public: 2/2, 0 failures, 3122ms.
+All suites ran sequentially with default renderer (NVIDIA GTX 1650 Ti local browser, not target 5090 evidence).
+Only journal module, its public tests and acceptance README modified in fix commit. No main.js, A, API, GPU, production deployment, push or issue mutation.
+Storage/lock behavior: restore read-only; explicit start/clear requests browser lock; denied claims visibly preserve owner draft and memory snapshots; lock retained across stop, clear, capacity or storage failure until page exits; new owner refreshes canonical draft under lock before start. Pagehide finishes before releasing lock. No Web Locks disables journal mutations only.
+First commit attempt had no Git identity; final commit used command-local Codex <codex@local.invalid> matching existing history, without config changes.
+837d4b04ae408b987e7c6d4de2e9882f0059469f

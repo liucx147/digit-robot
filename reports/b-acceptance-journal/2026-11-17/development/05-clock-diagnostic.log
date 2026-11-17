@@ -1,0 +1,25 @@
+✖ software-only accelerated clock requires 30 minutes and 20 complete turns in the same uninterrupted segment (10025.6492ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 10617.8638
+
+✖ failing tests:
+
+test at web\tests\acceptance-journal-public.test.cjs:119:1
+✖ software-only accelerated clock requires 30 minutes and 20 complete turns in the same uninterrupted segment (10025.6492ms)
+  AssertionError [ERR_ASSERTION]: {"observed":142,"review":true,"last":[{"type":"heartbeat","observed_monotonic_ms":1506320,"observed_utc":"2026-11-16T11:49:10.258Z"},{"type":"heartbeat-gap","delta_ms":217000,"observed_monotonic_ms":1723320,"observed_utc":"2026-11-16T11:52:47.258Z"},{"type":"heartbeat","observed_monotonic_ms":1723320,"observed_utc":"2026-11-16T11:52:47.258Z"},{"type":"heartbeat-gap","delta_ms":77008,"observed_monotonic_ms":1800328,"observed_utc":"2026-11-16T11:54:04.266Z"}]}
+      at TestContext.<anonymous> (C:\Users\30415\.codex\worktrees\b-profile-ui\b-voice-integration\web\tests\acceptance-journal-public.test.cjs:128:91)
+      at async Test.run (node:internal/test_runner/test:1332:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

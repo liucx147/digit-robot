@@ -1,0 +1,47 @@
+✔ journal is collapsed and stores nothing until explicit validated start; export includes actual renderer and declared scope (1639.8049ms)
+✖ actual single reply playback counts one full turn, excludes replay and dialogue contents (3626.3263ms)
+✖ actual two sentence playback counts one full turn, excludes replay and dialogue contents (3476.596ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 1
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9358.7525
+
+✖ failing tests:
+
+test at web\tests\acceptance-journal-public.test.cjs:62:37
+✖ actual single reply playback counts one full turn, excludes replay and dialogue contents (3626.3263ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (C:\Users\30415\.codex\worktrees\b-profile-ui\b-voice-integration\web\tests\acceptance-journal-public.test.cjs:67:9)
+      at async Test.run (node:internal/test_runner/test:1332:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:911:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at web\tests\acceptance-journal-public.test.cjs:62:37
+✖ actual two sentence playback counts one full turn, excludes replay and dialogue contents (3476.596ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (C:\Users\30415\.codex\worktrees\b-profile-ui\b-voice-integration\web\tests\acceptance-journal-public.test.cjs:67:9)
+      at async Test.run (node:internal/test_runner/test:1332:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:911:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

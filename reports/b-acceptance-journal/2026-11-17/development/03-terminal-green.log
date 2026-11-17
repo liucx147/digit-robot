@@ -1,0 +1,12 @@
+✔ model failure is retained without content or completed turn; recovery still records (3777.2224ms)
+✔ media failure is retained without content or completed turn; recovery still records (1824.6355ms)
+✔ stop preserves cancelled attempt, ignores late HTTP work and a new turn can complete (1634.6575ms)
+✔ capture joining an in-flight turn cannot claim its completion; local audio is excluded (3115.3688ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 10961.7057

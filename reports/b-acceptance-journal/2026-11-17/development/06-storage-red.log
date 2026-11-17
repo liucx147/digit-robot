@@ -1,0 +1,51 @@
+✖ quota failure stops collection, retains memory and cannot prevent actual Stop (1943.0652ms)
+✔ restored storage is projected through whitelist; corrupt draft stays visible and is not overwritten (1337.1957ms)
+✖ capacity boundary keeps old draft events and stops visibly without truncating (1177.6519ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 1
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5067.133
+
+✖ failing tests:
+
+test at web\tests\acceptance-journal-public.test.cjs:147:1
+✖ quota failure stops collection, retains memory and cannot prevent actual Stop (1943.0652ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'recording'
+  - 'storage-failed'
+  
+      at TestContext.<anonymous> (C:\Users\30415\.codex\worktrees\b-profile-ui\b-voice-integration\web\tests\acceptance-journal-public.test.cjs:152:41)
+      at async Test.run (node:internal/test_runner/test:1332:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'recording',
+    expected: 'storage-failed',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at web\tests\acceptance-journal-public.test.cjs:166:1
+✖ capacity boundary keeps old draft events and stops visibly without truncating (1177.6519ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'recording'
+  - 'capacity-exceeded'
+  
+      at TestContext.<anonymous> (C:\Users\30415\.codex\worktrees\b-profile-ui\b-voice-integration\web\tests\acceptance-journal-public.test.cjs:172:92)
+      at async Test.run (node:internal/test_runner/test:1332:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:911:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'recording',
+    expected: 'capacity-exceeded',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

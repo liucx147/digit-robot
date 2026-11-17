@@ -36,6 +36,45 @@ class ModelFixture:
         return path
 
 
+def test_v1_disconnect_stops_own_turn_before_late_result_and_recovers(tmp_path: Path):
+    import socket
+    import time
+    import httpx
+    from test_sentence_api import serve
+
+    entered, release = Event(), Event()
+
+    class Delayed(ModelFixture):
+        def generate(self, messages, output_dir, cancel):
+            entered.set()
+            assert release.wait(5)
+            return super().generate(messages, output_dir, cancel)
+
+    pipeline = VoicePipeline(Delayed(), tmp_path)
+    with serve(create_app(pipeline)) as base, httpx.Client(base_url=base, timeout=5) as client:
+        sid = client.post('/v1/sessions').json()['session_id']
+        body = json.dumps({'text': '你好', 'session_epoch': 0}).encode()
+        port = int(base.rsplit(':', 1)[1])
+        sock = socket.create_connection(('127.0.0.1', port))
+        sock.sendall(f'POST /v1/sessions/{sid}/text HTTP/1.1\r\nHost: localhost\r\nContent-Type: application/json\r\nContent-Length: {len(body)}\r\n\r\n'.encode() + body)
+        try:
+            assert entered.wait(3)
+            sock.close()
+            deadline = time.monotonic() + 2
+            while client.get(f'/v1/sessions/{sid}').json()['state'] != 'stopped' and time.monotonic() < deadline:
+                time.sleep(.02)
+            state = client.get(f'/v1/sessions/{sid}').json()
+            assert state['state'] == 'stopped' and state['session_epoch'] == 1
+        finally:
+            sock.close()
+            release.set()
+        deadline = time.monotonic() + 3
+        while pipeline.gpu.locked() and time.monotonic() < deadline:
+            time.sleep(.02)
+        assert not pipeline.sessions[sid].audio
+        assert client.post(f'/v1/sessions/{sid}/text', json={'text': '新一轮', 'session_epoch': 1}).status_code == 200
+
+
 def test_text_turn_returns_playable_audio_and_expression(tmp_path: Path) -> None:
     client = TestClient(create_app(VoicePipeline(ModelFixture(), tmp_path)))
     session = client.post("/v1/sessions").json()

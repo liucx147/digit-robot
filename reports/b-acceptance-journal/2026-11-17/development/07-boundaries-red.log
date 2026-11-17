@@ -1,0 +1,29 @@
+✖ hidden fraction between heartbeats and UTC clock shifts cannot inflate observed duration (1859.4061ms)
+✔ microphone input ends at the actual end button, not delayed permission; draft contains timing only (3537.6017ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 1
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5996.345
+
+✖ failing tests:
+
+test at web\tests\acceptance-journal-public.test.cjs:175:1
+✖ hidden fraction between heartbeats and UTC clock shifts cannot inflate observed duration (1859.4061ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  300 !== 8
+  
+      at TestContext.<anonymous> (C:\Users\30415\.codex\worktrees\b-profile-ui\b-voice-integration\web\tests\acceptance-journal-public.test.cjs:182:39)
+      at async Test.run (node:internal/test_runner/test:1332:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 300,
+    expected: 8,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

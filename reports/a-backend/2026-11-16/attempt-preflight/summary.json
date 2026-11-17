@@ -1,0 +1,13 @@
+{
+  "started_at_utc": "2026-11-16T07:48:13Z",
+  "commit": "0ee0618",
+  "status": "failed",
+  "scope": "Real ASR process failure and new-turn CUDA recovery only. Initial profile tests and failed attempt remain separately preserved.",
+  "steps": [],
+  "gpu_samples": [],
+  "failure": {
+    "type": "AssertionError",
+    "detail": ""
+  },
+  "finished_at_utc": "2026-11-16T07:48:13Z"
+}

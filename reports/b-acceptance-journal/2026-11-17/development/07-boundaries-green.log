@@ -1,0 +1,10 @@
+✔ hidden fraction between heartbeats and UTC clock shifts cannot inflate observed duration (2157.299ms)
+✔ microphone input ends at the actual end button, not delayed permission; draft contains timing only (3408.5225ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6179.398

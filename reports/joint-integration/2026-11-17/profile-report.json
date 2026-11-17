@@ -1,0 +1,32 @@
+{
+  "scope": "real-A-HTTP-and-SQLite-with-synthetic-model-only",
+  "a_source_sha": null,
+  "a_source_path": "C:\\Users\\13953\\.codex\\worktrees\\merge-resident-main\\digital robot\\src",
+  "a_source_files_sha256": {
+    "digit_robot/__init__.py": "73b901234bbf89992ecbb6514e43934bc401eb87420dc039116e384e49f1490c",
+    "digit_robot/__main__.py": "482b8693e2fe6dbd732e3d7961e03827d3efa187bad11d29da188be580ebbeea",
+    "digit_robot/cli.py": "c92a228392b24bc048d9ffdf515973f6be0105b7a08b62e9261c78e714a78d44",
+    "digit_robot/dialogue.py": "e9ebe0630774259cca582e8150323dde38109ec86b09088b93560805ce7e65a6",
+    "digit_robot/model_worker.py": "67506043d09d79838da7e98ed87c7302e183c8dc2751f790004846cae2e830a4",
+    "digit_robot/process_models.py": "b12689e25017626066a2c3f69c5431901762ff33c3ebe24d08d25c82b39ed953",
+    "digit_robot/profiles.py": "3f33867d5bd6d798a93cdb6e54461d1cd1e67466d631382e41f346cc9e4490cb",
+    "digit_robot/reply_stream.py": "438977b3efbfa826c25e1fbffe067542882c7f7628c4caaf50d3ec80794d486a",
+    "digit_robot/resident.py": "5579c5051848e01e45768b92a67994733e954d75fe7746e16848e02897331c02",
+    "digit_robot/resident_worker.py": "2e80c1eef6ddee6827fa7f5f64099b56d0840f46325ea342be7b533800aa46de",
+    "digit_robot/sentence_pipeline.py": "f426b5f6c580e22b1d6736d07ad57ae6f6635321016ede38713f5c52834a7171",
+    "digit_robot/server.py": "4e87969dd93f62dd48c598954a8a74ac1757036f290b437ec8f145b82f93ffb2",
+    "digit_robot/transformers_backend.py": "00544a1d7a41d6aebc23634be12785cb51dabb6a120a448df602e623a98f5429",
+    "digit_robot/voice.py": "0cef9ba2ae80c0985fca1ae91e22eb7053c9b2230cfcadaae219924486cbb2ca"
+  },
+  "browser": "157.0.8103.51",
+  "renderer": {
+    "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 4060 Laptop GPU (0x000028E0) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "vendor": "Google Inc. (NVIDIA)",
+    "webgl_version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+  },
+  "service_restart": true,
+  "read_changed_server_value": true,
+  "cleared_preferences": true,
+  "deleted_profile": true,
+  "real_model_or_physical_acceptance": false
+}

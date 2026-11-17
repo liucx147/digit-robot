@@ -1,0 +1,7 @@
+{
+  "checked_utc": "2026-11-17T04:16:52.0455553Z",
+  "url": "http://127.0.0.1:18000/v1/health",
+  "scope": "local-health-only-no-inference",
+  "outcome": "unavailable",
+  "error_type": "HttpRequestException"
+}

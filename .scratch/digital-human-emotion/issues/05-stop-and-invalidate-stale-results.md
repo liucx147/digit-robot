@@ -6,6 +6,8 @@
 
 **Status:** ready-for-agent
 
+**State:** open
+
 **Category:** enhancement
 
 **Parent:** [数字人优先的单卡离线情感交互与蒸馏规格 v1.1](../spec.md)
@@ -22,3 +24,8 @@
 ## User stories
 
 US19、US20、US55
+
+
+## A阶段进展（2026-11-16）
+
+A后端已验证v1实际TCP断连取消、ASR/LLM/TTS各阶段停止、迟到结果失效及后续新轮次；当前分句和双TTS保持兼容。物理500ms与完整页面/动画固定用例尚未全部验收，保持open。 代码与全部成功/失败边界见[A后端验证报告](../../../reports/a-backend/2026-11-16/README.md)，B接口见[档案契约](../../../docs/development/profile-api.md)。本次不以软件测试替代物理验收。

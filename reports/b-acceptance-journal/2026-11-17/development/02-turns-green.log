@@ -1,0 +1,11 @@
+✔ journal is collapsed and stores nothing until explicit validated start; export includes actual renderer and declared scope (1743.5856ms)
+✔ actual single reply playback counts one full turn, excludes replay and dialogue contents (4478.4306ms)
+✔ actual two sentence playback counts one full turn, excludes replay and dialogue contents (3496.6965ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 10377.158
