@@ -181,7 +181,8 @@ test('capacity boundary keeps old draft events and stops visibly without truncat
 });
 test('hidden fraction between heartbeats and UTC clock shifts cannot inflate observed duration',async()=>{
  const page=await setup({clock:true});try{
- await open(page);await start(page);await page.clock.pauseAt(await page.evaluate(()=>new Date().toISOString()));
+ await page.clock.pauseAt(new Date(Date.now()+60000));
+ await open(page);await start(page);
  const before=(await download(page)).segments[0].observed_ms;
  await page.evaluate(()=>{Object.defineProperty(document,'visibilityState',{configurable:true,get:()=> 'hidden'});document.dispatchEvent(new Event('visibilitychange'));});
  await page.clock.runFor(400);
