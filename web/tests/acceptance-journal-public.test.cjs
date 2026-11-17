@@ -12,8 +12,9 @@ after(async()=>app.close());
 function tone(){const rate=16000,n=8000,b=Buffer.alloc(44+n*2);b.write('RIFF');b.writeUInt32LE(b.length-8,4);b.write('WAVEfmt ',8);b.writeUInt32LE(16,16);b.writeUInt16LE(1,20);b.writeUInt16LE(1,22);b.writeUInt32LE(rate,24);b.writeUInt32LE(rate*2,28);b.writeUInt16LE(2,32);b.writeUInt16LE(16,34);b.write('data',36);b.writeUInt32LE(n*2,40);for(let i=2880;i<n;i++)b.writeInt16LE(Math.round(8000*Math.sin(i/rate*2*Math.PI*220)),44+i*2);return b;}
 const sound=tone();
 async function setup(options={}){
- const page=await app.browser.newPage({acceptDownloads:true,viewport:{width:1280,height:1100}});page.setDefaultTimeout(3000);
+ const page=options.context?await options.context.newPage():await app.browser.newPage({acceptDownloads:true,viewport:{width:1280,height:1100}});page.setDefaultTimeout(3000);
  if(options.clock)await page.clock.install();
+ if(options.noLocks)await page.addInitScript(()=>Object.defineProperty(navigator,'locks',{configurable:true,value:undefined}));
  let epoch=0,sequence=0;
  await page.route('http://127.0.0.1:18000/**',async route=>{
   const request=route.request(),p=new URL(request.url()).pathname;
@@ -38,7 +39,7 @@ async function setup(options={}){
  await page.goto(app.baseURL);await page.getByRole('status',{name:'播放状态'}).filter({hasText:'三维头部已就绪'}).waitFor();return page;
 }
 async function open(page){await page.getByText('验收记录',{exact:true}).click();}
-async function start(page){await page.getByLabel('冻结代码 SHA（操作者声明）').fill(sha);await page.getByLabel('运行条件').selectOption('software-test');await page.getByRole('button',{name:'开始本段采集'}).click();}
+async function start(page){await page.getByLabel('冻结代码 SHA（操作者声明）').fill(sha);await page.getByLabel('运行条件').selectOption('software-test');await page.getByRole('button',{name:'开始本段采集'}).click();await page.waitForFunction(()=>!document.querySelector('#acceptance-start').disabled||!document.querySelector('#acceptance-end').disabled||/容量|保存或记录失败/.test(document.querySelector('#acceptance-status').textContent));}
 async function download(page){const d=page.waitForEvent('download');await page.getByRole('button',{name:'下载验收记录'}).click();return JSON.parse(await fs.readFile(await(await d).path(),'utf8'));}
 test('journal is collapsed and stores nothing until explicit validated start; export includes actual renderer and declared scope',async()=>{
  const page=await setup();try{
@@ -210,5 +211,67 @@ test('failed stop acknowledgement remains in journal after local cancellation wi
  const page=await setup({handle:async(route,json,p)=>{if(p.endsWith('/stop')){await json({message:'私密停止错误'},503);return true;}return false;}});try{
  await open(page);await start(page);await connect(page);await send(page);await page.waitForFunction(()=>!document.querySelector('#audio').paused);await page.locator('#stop').click();await page.locator('#voice-status').filter({hasText:'服务端停止失败'}).waitFor();
  const data=await download(page);assert.ok(data.segments[0].events.some(e=>e.type==='cancelled'));assert.ok(data.segments[0].events.some(e=>e.type==='failed'&&e.stage==='stop'));assert.equal(data.segments[0].completed_turns,0);assert.ok(!JSON.stringify(data).includes('私密'));assert.equal(await page.locator('#audio').evaluate(a=>a.paused),true);
+ }finally{await page.close();}
+});
+
+test('shared draft has one page owner; other pages cannot restore-write, capture or clear it and cleared history never revives',async()=>{
+ const context=await app.browser.newContext({acceptDownloads:true,viewport:{width:1280,height:1100}});
+ try{
+ const owner=await setup({context,clock:true});await open(owner);await start(owner);await connect(owner);await send(owner);await finished(owner);
+ await owner.clock.pauseAt(await owner.evaluate(()=>new Date(Date.now()+100).toISOString()));
+ const original=await owner.evaluate(k=>localStorage.getItem(k),key);
+ const other=await setup({context});await open(other);
+ assert.equal(await other.evaluate(k=>localStorage.getItem(k),key),original,'opening a shared draft must not rewrite its active segment');
+ await start(other);assert.match(await other.locator('#acceptance-status').textContent(),/另一个页面/);
+ assert.equal((await download(other)).segments.length,1);
+ await other.locator('#acceptance-clear').click();await other.locator('#acceptance-status').filter({hasText:'另一个页面'}).waitFor();assert.match(await other.locator('#acceptance-status').textContent(),/另一个页面/);
+ await owner.clock.runFor(2000);let data=await download(owner);assert.equal(data.segments[0].completed_turns,1);assert.equal(data.segments[0].status,'recording');
+ assert.equal(JSON.parse(await other.evaluate(k=>localStorage.getItem(k),key)).segments[0].completed_turns,1);
+ await owner.locator('#acceptance-clear').click();await owner.clock.runFor(2000);assert.equal(await other.evaluate(k=>localStorage.getItem(k),key),null);
+ await start(other);assert.match(await other.locator('#acceptance-status').textContent(),/另一个页面/);assert.equal(await owner.evaluate(k=>localStorage.getItem(k),key),null);
+ await owner.close();await start(other);data=await download(other);assert.equal(data.segments.length,1);assert.equal(data.segments[0].completed_turns,0);assert.equal(data.segments[0].status,'recording');
+ }finally{await context.close();}
+});
+
+test('simultaneous shared-page starts choose one owner and later takeover re-reads all segments and failures',async()=>{
+ const context=await app.browser.newContext({acceptDownloads:true,viewport:{width:1280,height:1100}});
+ try{
+ const pages=await Promise.all([setup({context}),setup({context})]);
+ for(const page of pages){await open(page);await page.locator('#acceptance-sha').fill(sha);await page.locator('#acceptance-conditions').selectOption('software-test');}
+ await Promise.all(pages.map(page=>page.locator('#acceptance-start').click()));
+ await Promise.all(pages.map(page=>page.locator('#acceptance-status').filter({hasText:/正在采集|另一个页面/}).waitFor()));
+ const recording=await Promise.all(pages.map(page=>page.locator('#acceptance-end').isEnabled()));assert.equal(recording.filter(Boolean).length,1);
+ const owner=pages[recording.indexOf(true)],other=pages[recording.indexOf(false)];
+ await owner.locator('#acceptance-restart').click();await start(owner);await connect(owner);await send(owner);await owner.waitForFunction(()=>!document.querySelector('#audio').paused);
+ await owner.evaluate(()=>{const write=Storage.prototype.setItem;Storage.prototype.setItem=function(k,v){if(k==='digitalhuman.acceptance-journal.v1')throw new DOMException('quota','QuotaExceededError');return write.call(this,k,v);};});
+ await owner.locator('#stop').click();let data=await download(owner);assert.equal(data.segments.length,2);assert.equal(data.segments[1].status,'storage-failed');assert.ok(data.segments[1].events.some(e=>e.type==='cancelled'));
+ await start(other);await other.locator('#acceptance-status').filter({hasText:'另一个页面'}).waitFor();await other.locator('#acceptance-clear').click();await other.locator('#acceptance-status').filter({hasText:'另一个页面'}).waitFor();
+ assert.equal((await download(owner)).segments[1].status,'storage-failed');
+ // The failed in-memory export above survives until reload; only previously saved history can be recovered after reload.
+ await owner.reload();await owner.locator('#status').filter({hasText:'三维头部已就绪'}).waitFor();await open(owner);await start(owner);await owner.locator('#acceptance-restart').click();
+ const saved=JSON.parse(await owner.evaluate(k=>localStorage.getItem(k),key));assert.equal(saved.segments.length,3);assert.equal(saved.segments[2].status,'service-restart');
+ await owner.close();await start(other);data=await download(other);assert.equal(data.segments.length,4);assert.equal(data.segments[0].status,'service-restart');assert.equal(data.segments[2].status,'service-restart');assert.equal(data.segments[3].status,'recording');
+ }finally{await context.close();}
+});
+
+test('failed clear stops the owner and keeps its memory export and exclusive draft permission',async()=>{
+ const context=await app.browser.newContext({acceptDownloads:true,viewport:{width:1280,height:1100}});
+ try{
+ const owner=await setup({context,clock:true});await open(owner);await start(owner);await owner.clock.pauseAt(await owner.evaluate(()=>new Date(Date.now()+100).toISOString()));
+ const stored=await owner.evaluate(k=>localStorage.getItem(k),key);
+ await owner.evaluate(()=>{const remove=Storage.prototype.removeItem;Storage.prototype.removeItem=function(k){if(k==='digitalhuman.acceptance-journal.v1')throw new DOMException('denied','SecurityError');return remove.call(this,k);};});
+ await owner.locator('#acceptance-clear').click();assert.equal(await owner.locator('#acceptance-end').isDisabled(),true);assert.equal(await owner.locator('#acceptance-start').isDisabled(),true);
+ const data=await download(owner);assert.equal(data.segments[0].status,'storage-failed');assert.ok(data.segments[0].events.some(e=>e.type==='storage-failed'));
+ await owner.clock.runFor(2000);assert.equal(await owner.evaluate(k=>localStorage.getItem(k),key),stored);
+ const other=await setup({context});await open(other);await other.locator('#acceptance-clear').click();await other.locator('#acceptance-status').filter({hasText:'另一个页面'}).waitFor();assert.equal(await other.evaluate(k=>localStorage.getItem(k),key),stored);
+ }finally{await context.close();}
+});
+
+test('missing browser draft ownership disables capture and clear but preserves default-off playback and Stop',async()=>{
+ const page=await setup({noLocks:true});try{
+ await open(page);assert.equal(await page.locator('#acceptance-start').isDisabled(),true);assert.match(await page.locator('#acceptance-status').textContent(),/不支持/);
+ await page.locator('#acceptance-clear').click();assert.match(await page.locator('#acceptance-status').textContent(),/不支持/);assert.equal(await page.evaluate(()=>localStorage.length),0);
+ await connect(page);await send(page);await finished(page);await send(page);await page.waitForFunction(()=>!document.querySelector('#audio').paused);await page.locator('#stop').click();await page.locator('#voice-status').filter({hasText:'旧结果已失效'}).waitFor();assert.equal(await page.locator('#audio').evaluate(a=>a.paused),true);
+ assert.equal(await page.evaluate(()=>localStorage.length),0);assert.equal((await download(page)).segments.length,0);
  }finally{await page.close();}
 });

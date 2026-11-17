@@ -51,11 +51,13 @@ export function attachAcceptanceJournal() {
   const $=id=>document.getElementById(id);
   let data=empty(),active=null,blocked=false,lastMono=0,lastWall=0,lastVisible=document.visibilityState==='visible';
   const attempts=new Map();
+  let ownsDraft=false,ownershipPending=false,releaseOwnership=null,leaving=false;
+  const supportsOwnership=typeof navigator.locks?.request==='function';
   function status(text){$('acceptance-status').textContent=text;}
   function candidate(s){s.software_candidate=!s.needs_review&&['recording','stopped'].includes(s.status)&&s.observed_ms>=1800000&&s.completed_turns>=20;}
   function render(){
     for(const s of data.segments)candidate(s);
-    $('acceptance-start').disabled=!!active||blocked;
+    $('acceptance-start').disabled=!!active||blocked||ownershipPending||!supportsOwnership;
     $('acceptance-end').disabled=!active;$('acceptance-restart').disabled=!active;
     $('acceptance-sha').disabled=!!active;$('acceptance-conditions').disabled=!!active;
     $('acceptance-summary').textContent=data.segments.length?data.segments.map((s,i)=>`第 ${i+1} 段：观测 ${(s.observed_ms/60000).toFixed(2)} 分钟，完成 ${s.completed_turns} 轮，${STATUS_LABELS[s.status]}，${s.needs_review?'连续性待复核':s.software_candidate?'达到软件计数候选，工程验收待复核':'未达到软件计数候选，工程验收待复核'}`).join('；'):'尚无记录。';
@@ -68,7 +70,7 @@ export function attachAcceptanceJournal() {
     status(reason==='capacity-exceeded'?'记录容量已满，采集已停止；内存记录完整保留，请下载后再显式清空。':'本机草稿保存或记录失败，采集已停止；请立即下载内存记录，再显式清空后重试。');render();
   }
   function save(){
-    if(blocked)return;
+    if(blocked||!ownsDraft)return;
     for(const s of data.segments)candidate(s);
     const raw=JSON.stringify(data);
     if(data.segments.reduce((n,s)=>n+s.events.length,0)>10000||raw.length>2*1024*1024){halt('capacity-exceeded');return;}
@@ -85,13 +87,42 @@ export function attachAcceptanceJournal() {
     lastMono=now;lastWall=wall;lastVisible=document.visibilityState==='visible';
   }
   function finish(type){if(!active)return;account();append(type);active.status=type==='service-restart'?'service-restart':type==='page-interrupted'?'interrupted':'stopped';active.needs_review ||= type==='service-restart'||type==='page-interrupted';active.ended_utc=new Date().toISOString();active.ended_monotonic_ms=performance.now();active=null;attempts.clear();save();if(!blocked)status('本段已结束；软件记录候选，工程验收待复核。');render();}
-  try{const raw=localStorage.getItem(KEY);if(raw!==null){data=restore(raw);save();if(!blocked)status('已恢复本机草稿，旧段已中断；请手动开始新段，工程验收待复核。');}}catch{blocked=true;status('本机草稿无法读取。请先保管原草稿；显式清空后才能开始。');}
+  function readDraft(){
+    try{const raw=localStorage.getItem(KEY);data=raw===null?empty():restore(raw);return true;}
+    catch{blocked=true;status('本机草稿无法读取。请先保管原草稿；显式清空后才能开始。');render();return false;}
+  }
+  // Viewing/restoring is read-only. All mutations share one browser-managed lock,
+  // held for the page lifetime, including stopped, failed and explicitly cleared drafts.
+  // A new owner must re-read under the lock instead of publishing its stale snapshot.
+  async function mutateDraft(action){
+    if(ownsDraft){action(false);return;}
+    if(ownershipPending||leaving)return;
+    if(!supportsOwnership){status('浏览器不支持安全的跨页面草稿所有权，验收采集与清空不可用；仍可下载内存记录，业务功能照常。');return;}
+    ownershipPending=true;render();
+    try{
+      await navigator.locks.request(KEY,{mode:'exclusive',ifAvailable:true},async lock=>{
+        if(!lock){status('另一个页面持有验收草稿，不能采集或清空；请先下载所需记录并关闭该页面，再重试。本页内存快照仍可下载。');return;}
+        if(leaving)return;
+        ownsDraft=true;
+        const held=new Promise(resolve=>{releaseOwnership=resolve;});
+        ownershipPending=false;
+        try{action(true);}catch{halt('journal-failed');}
+        render();await held;ownsDraft=false;releaseOwnership=null;
+      });
+    }catch{status('无法取得安全的草稿写入权限；采集未开始，内存记录仍可下载。');}
+    finally{ownershipPending=false;render();}
+  }
+  if(readDraft()&&data.segments.length)status('已读取本机草稿快照，旧采集不自动继续；开始新段时重新读取，其他页面可能仍在采集。工程验收待复核。');
+  if(!supportsOwnership)status('浏览器不支持安全的跨页面草稿所有权，验收采集与清空不可用；仍可下载内存记录，业务功能照常。');
   $('acceptance-start').addEventListener('click',()=>{
     const code=$('acceptance-sha').value.trim(),conditions=$('acceptance-conditions').value,snapshot=context();
     if(active||blocked)return;
     if(!/^[a-fA-F0-9]{40}$/.test(code)||!['software-test','real-combination'].includes(conditions)||!snapshot){status('请填写完整冻结代码 SHA、运行条件，并等待三维头部就绪。');return;}
-    active={segment_id:crypto.randomUUID(),declared_code_sha:code.toLowerCase(),conditions,context:snapshot,started_utc:new Date().toISOString(),started_monotonic_ms:performance.now(),events:[],completed_turns:0,observed_ms:0,software_candidate:false,needs_review:document.visibilityState!=='visible',status:'recording'};
-    attempts.clear();lastMono=performance.now();lastWall=Date.now();lastVisible=document.visibilityState==='visible';data.segments.push(active);append('capture-start');save();if(active)status('正在采集；仅软件记录候选，工程验收待复核。');render();
+    void mutateDraft(fresh=>{
+      if(fresh&&!readDraft())return;
+      active={segment_id:crypto.randomUUID(),declared_code_sha:code.toLowerCase(),conditions,context:snapshot,started_utc:new Date().toISOString(),started_monotonic_ms:performance.now(),events:[],completed_turns:0,observed_ms:0,software_candidate:false,needs_review:document.visibilityState!=='visible',status:'recording'};
+      attempts.clear();lastMono=performance.now();lastWall=Date.now();lastVisible=document.visibilityState==='visible';data.segments.push(active);append('capture-start');save();if(active)status('正在采集；仅软件记录候选，工程验收待复核。');render();
+    });
   });
   function observe(type,value={}){
     if(!active)return;
@@ -109,10 +140,11 @@ export function attachAcceptanceJournal() {
   }
   $('acceptance-end').addEventListener('click',()=>finish('capture-end'));
   $('acceptance-restart').addEventListener('click',()=>finish('service-restart'));
-  $('acceptance-clear').addEventListener('click',()=>{try{localStorage.removeItem(KEY);data=empty();active=null;blocked=false;attempts.clear();status('本机验收草稿已清空。');render();}catch{status('清空失败，原草稿与内存记录已保留。');}});
+  $('acceptance-clear').addEventListener('click',()=>{void mutateDraft(()=>{try{localStorage.removeItem(KEY);data=empty();active=null;blocked=false;attempts.clear();status('本机验收草稿已清空。');render();}catch{halt('storage-failed');status('清空失败，采集已停止；原草稿与内存记录已保留，请先下载。');}});});
   $('acceptance-export').addEventListener('click',()=>{if(active){account();save();render();}const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));const link=document.createElement('a');link.href=url;link.download='acceptance-journal.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);});
   setInterval(()=>{if(!active)return;account();append('heartbeat');save();render();},1000);
   document.addEventListener('visibilitychange',()=>{if(!active)return;account();active.needs_review=true;append(document.visibilityState==='hidden'?'page-hidden':'page-visible');save();render();});
-  window.addEventListener('pagehide',()=>finish('page-interrupted'));
+  window.addEventListener('pagehide',()=>{leaving=true;finish('page-interrupted');releaseOwnership?.();});
+  window.addEventListener('pageshow',()=>{leaving=false;});
   render();return {observe(type,value){try{observe(type,value);}catch{halt('journal-failed');}}};
 }
